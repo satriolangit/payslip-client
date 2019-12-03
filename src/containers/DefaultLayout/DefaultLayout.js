@@ -1,7 +1,7 @@
-import React, { Component, Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import * as router from 'react-router-dom';
-import { Container } from 'reactstrap';
+import React, { useContext, Suspense, useEffect, useState } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import * as router from "react-router-dom";
+import { Container } from "reactstrap";
 
 import {
   AppAside,
@@ -13,80 +13,138 @@ import {
   AppSidebarHeader,
   AppSidebarMinimizer,
   AppBreadcrumb2 as AppBreadcrumb,
-  AppSidebarNav2 as AppSidebarNav,
-} from '@coreui/react';
+  AppSidebarNav2 as AppSidebarNav
+} from "@coreui/react";
 // sidebar nav config
-import navigation from '../../_nav';
+import defaultNavigation from "../../_nav";
 // routes config
-import routes from '../../routes';
+import routes from "../../routes";
+import AuthContext from "./../../context/auth/authContext";
 
-const DefaultAside = React.lazy(() => import('./DefaultAside'));
-const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
-const DefaultHeader = React.lazy(() => import('./DefaultHeader'));
+const DefaultAside = React.lazy(() => import("./DefaultAside"));
+const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
+const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
 
-class DefaultLayout extends Component {
+const DefaultLayout = props => {
+  const authContext = useContext(AuthContext);
+  const { logout, isAuthenticated, user } = authContext;
+  const [navigation, setNavigation] = useState(defaultNavigation);
+  const [currentUser, setCurrentUser] = useState({
+    id: "",
+    name: "",
+    role: "",
+    photo: "",
+    employee_id: ""
+  });
 
-  loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  const loading = () => (
+    <div className="animated fadeIn pt-1 text-center">Loading...</div>
+  );
 
-  signOut(e) {
-    e.preventDefault()
-    this.props.history.push('/login')
-  }
+  const signOut = e => {
+    e.preventDefault();
+    logout();
+  };
 
-  render() {
-    return (
-      <div className="app">
-        <AppHeader fixed>
-          <Suspense  fallback={this.loading()}>
-            <DefaultHeader onLogout={e=>this.signOut(e)}/>
+  useEffect(() => {
+    if (!isAuthenticated) {
+      props.history.push("/login");
+    }
+  }, [isAuthenticated, props.history]);
+
+  useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+      console.log(currentUser);
+      console.log(navigation);
+
+      if (currentUser.role === "admin") {
+        const all = [...navigation.items, adminNavigation];
+        setNavigation({ ...navigation, items: all });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, currentUser]);
+
+  const adminNavigation = {
+    name: "Administration",
+    url: "/admin",
+    icon: "icon-settings",
+    children: [
+      {
+        name: "User",
+        url: "/admin/user",
+        icon: "icon-user"
+      },
+      {
+        name: "Pengumuman",
+        url: "/admin/announcement",
+        icon: "icon-bell"
+      },
+      {
+        name: "Informasi",
+        url: "/admin/information",
+        icon: "icon-book-open"
+      },
+      {
+        name: "Payslip",
+        url: "/admin/payslip",
+        icon: "icon-doc"
+      }
+    ]
+  };
+
+  return (
+    <div className="app">
+      <AppHeader fixed>
+        <Suspense fallback={loading()}>
+          <DefaultHeader onLogout={e => signOut(e)} />
+        </Suspense>
+      </AppHeader>
+      <div className="app-body">
+        <AppSidebar fixed display="lg">
+          <AppSidebarHeader />
+          <AppSidebarForm />
+          <Suspense>
+            <AppSidebarNav navConfig={navigation} {...props} router={router} />
           </Suspense>
-        </AppHeader>
-        <div className="app-body">
-          <AppSidebar fixed display="lg">
-            <AppSidebarHeader />
-            <AppSidebarForm />
-            <Suspense>
-            <AppSidebarNav navConfig={navigation} {...this.props} router={router}/>
+          <AppSidebarFooter />
+          <AppSidebarMinimizer />
+        </AppSidebar>
+        <main className="main">
+          <AppBreadcrumb appRoutes={routes} router={router} />
+          <Container fluid>
+            <Suspense fallback={loading()}>
+              <Switch>
+                {routes.map((route, idx) => {
+                  return route.component ? (
+                    <Route
+                      key={idx}
+                      path={route.path}
+                      exact={route.exact}
+                      name={route.name}
+                      render={props => <route.component {...props} />}
+                    />
+                  ) : null;
+                })}
+                <Redirect from="/" to="/dashboard" />
+              </Switch>
             </Suspense>
-            <AppSidebarFooter />
-            <AppSidebarMinimizer />
-          </AppSidebar>
-          <main className="main">
-            <AppBreadcrumb appRoutes={routes} router={router}/>
-            <Container fluid>
-              <Suspense fallback={this.loading()}>
-                <Switch>
-                  {routes.map((route, idx) => {
-                    return route.component ? (
-                      <Route
-                        key={idx}
-                        path={route.path}
-                        exact={route.exact}
-                        name={route.name}
-                        render={props => (
-                          <route.component {...props} />
-                        )} />
-                    ) : (null);
-                  })}
-                  <Redirect from="/" to="/dashboard" />
-                </Switch>
-              </Suspense>
-            </Container>
-          </main>
-          <AppAside fixed>
-            <Suspense fallback={this.loading()}>
-              <DefaultAside />
-            </Suspense>
-          </AppAside>
-        </div>
-        <AppFooter>
-          <Suspense fallback={this.loading()}>
-            <DefaultFooter />
+          </Container>
+        </main>
+        <AppAside fixed>
+          <Suspense fallback={loading()}>
+            <DefaultAside />
           </Suspense>
-        </AppFooter>
+        </AppAside>
       </div>
-    );
-  }
-}
+      <AppFooter>
+        <Suspense fallback={loading()}>
+          <DefaultFooter />
+        </Suspense>
+      </AppFooter>
+    </div>
+  );
+};
 
 export default DefaultLayout;
