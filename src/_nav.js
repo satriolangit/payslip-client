@@ -23,3 +23,33 @@ export default {
     }
   ]
 };
+
+const adminNavigation = {
+  name: "Administration",
+  url: "/admin",
+  icon: "icon-settings",
+  children: [
+    {
+      name: "User",
+      url: "/admin/user",
+      icon: "icon-user"
+    },
+    {
+      name: "Pengumuman",
+      url: "/admin/announcement",
+      icon: "icon-bell"
+    },
+    {
+      name: "Informasi",
+      url: "/admin/information",
+      icon: "icon-book-open"
+    },
+    {
+      name: "Payslip",
+      url: "/admin/payslip",
+      icon: "icon-doc"
+    }
+  ]
+};
+
+export { adminNavigation };

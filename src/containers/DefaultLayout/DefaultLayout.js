@@ -16,7 +16,7 @@ import {
   AppSidebarNav2 as AppSidebarNav
 } from "@coreui/react";
 // sidebar nav config
-import defaultNavigation from "../../_nav";
+import defaultNavigation, { adminNavigation } from "../../_nav";
 // routes config
 import routes from "../../routes";
 import AuthContext from "./../../context/auth/authContext";
@@ -65,34 +65,6 @@ const DefaultLayout = props => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, currentUser]);
-
-  const adminNavigation = {
-    name: "Administration",
-    url: "/admin",
-    icon: "icon-settings",
-    children: [
-      {
-        name: "User",
-        url: "/admin/user",
-        icon: "icon-user"
-      },
-      {
-        name: "Pengumuman",
-        url: "/admin/announcement",
-        icon: "icon-bell"
-      },
-      {
-        name: "Informasi",
-        url: "/admin/information",
-        icon: "icon-book-open"
-      },
-      {
-        name: "Payslip",
-        url: "/admin/payslip",
-        icon: "icon-doc"
-      }
-    ]
-  };
 
   return (
     <div className="app">

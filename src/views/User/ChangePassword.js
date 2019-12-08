@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Alert from "react-s-alert";
 
-import { ApiUrl, AlertOptions } from "./../../../setting";
-import AuthContext from "./../../../context/auth/authContext";
+import { ApiUrl, AlertOptions } from "./../../setting";
 
 import {
   Button,
@@ -22,11 +21,17 @@ import {
   Row
 } from "reactstrap";
 
-const ChangePassword = () => {
-  const [data, setData] = useState({ password: "", confirmPassword: "" });
-  const { password, confirmPassword } = data;
-  const authContext = useContext(AuthContext);
-  const { user } = authContext;
+const ChangePassword = ({ match, history }) => {
+  const [data, setData] = useState({
+    password: "",
+    confirmPassword: "",
+    userId: ""
+  });
+  const { password, confirmPassword, userId } = data;
+
+  useEffect(() => {
+    setData({ ...data, userId: match.params.id });
+  }, [match.params.id, data]);
 
   const onChange = e => setData({ ...data, [e.target.name]: e.target.value });
 
@@ -40,7 +45,7 @@ const ChangePassword = () => {
     } else {
       try {
         const formData = {
-          userId: user.user_id,
+          userId: userId,
           password,
           confirmPassword
         };

@@ -12,6 +12,17 @@ const Announcement = React.lazy(() =>
   import("./views/Pages/Announcement/Announcement")
 );
 const Payslip = React.lazy(() => import("./views/Pages/Payslip/Payslip"));
+const AnnouncementList = React.lazy(() => import("./views/Announcement/List"));
+const AnnouncementForm = React.lazy(() => import("./views/Announcement/Edit"));
+const InformationList = React.lazy(() => import("./views/Information/List"));
+const InformationForm = React.lazy(() => import("./views/Information/Edit"));
+const UserList = React.lazy(() => import("./views/User/List"));
+const UserForm = React.lazy(() => import("./views/User/Edit"));
+const UserChangePassword = React.lazy(() =>
+  import("./views/User/ChangePassword")
+);
+const PayslipList = React.lazy(() => import("./views/Payslip/List"));
+const PayslipUpload = React.lazy(() => import("./views/Payslip/Upload"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -47,7 +58,59 @@ const routes = [
     name: "Announcement",
     component: Announcement
   },
-  { path: "/pages/payslip/:employeeId", name: "Payslip", component: Payslip }
+  { path: "/pages/payslip/:employeeId", name: "Payslip", component: Payslip },
+  {
+    path: "/admin/announcement",
+    exact: true,
+    name: "Announcement",
+    component: AnnouncementList
+  },
+  {
+    path: "/admin/announcement/:id",
+    name: "Edit",
+    component: AnnouncementForm
+  },
+  {
+    path: "/admin/information",
+    exact: true,
+    name: "Information",
+    component: InformationList
+  },
+  {
+    path: "/admin/information/:id",
+    name: "Edit",
+    component: InformationForm
+  },
+  {
+    path: "/admin/user",
+    exact: true,
+    name: "User",
+    component: UserList
+  },
+  {
+    path: "/admin/user/cp/:id",
+    name: "Change Password",
+    exact: true,
+    component: UserChangePassword
+  },
+  {
+    path: "/admin/user/:id",
+    exact: true,
+    name: "Edit",
+    component: UserForm
+  },
+  {
+    path: "/admin/payslip",
+    exact: true,
+    name: "Payslip",
+    component: PayslipList
+  },
+  {
+    path: "/admin/payslip/upload",
+    exact: true,
+    name: "Upload",
+    component: PayslipUpload
+  }
 ];
 
 export default routes;
