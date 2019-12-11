@@ -16,6 +16,7 @@ import {
 import pagination from "../Pagination/pagination";
 import SearchBox from "../SearchBox/SearchBox";
 import { ApiUrl, JsonContentType } from "../../setting";
+import "./information.css";
 
 const List = () => {
   const [selected, setSelected] = useState([]);

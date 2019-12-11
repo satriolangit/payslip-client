@@ -145,6 +145,18 @@ const List = () => {
     return result;
   };
 
+  const renderSummaryLabel = () => {
+    const total = data.length;
+    const admin = data.filter(x => x.role === "admin").length;
+    const employee = total - admin;
+
+    return (
+      <p>
+        Employee : {employee}, Admin : {admin}, Total : {total}
+      </p>
+    );
+  };
+
   const selectRow = {
     mode: "checkbox",
     clickToSelect: true,
@@ -206,7 +218,7 @@ const List = () => {
     <div className="animated fadeIn">
       <Row>
         <Col lg="12" sm="12" xs="12">
-          <Uploader />
+          <Uploader onFinish={() => fetchData()} />
         </Col>
       </Row>
       <Row>
@@ -214,10 +226,13 @@ const List = () => {
           <Card>
             <CardHeader>
               <Row>
-                <Col lg="6" sm="6" xs="6">
+                <Col lg="4" sm="4" xs="4">
                   <SearchBox onSearch={handleSearch} />
                 </Col>
-                <Col lg="6" sm="6" xs="6" className="text-right">
+                <Col lg="4" sm="4" xs="4" className="text-center">
+                  {renderSummaryLabel()}
+                </Col>
+                <Col lg="4" sm="4" xs="4" className="text-right">
                   <Link
                     to="/admin/user/0"
                     className="btn btn-success btn-sm add-right-margin"

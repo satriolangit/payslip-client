@@ -159,7 +159,7 @@ const Edit = ({ match, history }) => {
       alt: { present: false, mandatory: false },
       defaultSize: {
         height: "auto",
-        width: "auto"
+        width: "100%"
       }
     }
   };

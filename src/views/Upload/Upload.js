@@ -76,14 +76,11 @@ class Upload extends Component {
       const formData = new FormData();
       formData.append("file", file, file.name);
       var url = ApiUrl + "/payslip/upload";
+      const { server } = this.props;
+      url = ApiUrl + server;
+
       req.open("POST", url);
       req.send(formData);
-
-      // axios.post('http://localhost:3001/api/payslip/uploadfile', formData, {
-      // 	headers: {
-      // 		'Content-Type': 'multipart/form-data',
-      // 	},
-      // });
     });
   }
 

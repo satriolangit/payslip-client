@@ -10,3 +10,11 @@ div.background {
 h1 {
   text-align: center;
 }
+
+.card {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.card-body {
+  color: white;
+}

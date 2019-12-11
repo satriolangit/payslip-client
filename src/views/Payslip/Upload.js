@@ -10,7 +10,7 @@ const Upload = () => {
           <div className="col-md-12">
             <div className="App">
               <div className="Card">
-                <UploadForm />
+                <UploadForm server="/payslip/upload" />
               </div>
             </div>
           </div>

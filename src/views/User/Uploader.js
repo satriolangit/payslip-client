@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Alert from "react-s-alert";
+import SimpleAlert from "./../../UI/Alert/SimpleAlert";
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Button,
-  Input,
-  Spinner
+  Input
 } from "reactstrap";
 
-import { ApiUrl, AlertOptions } from "../../setting";
+import { ApiUrl } from "../../setting";
 
-const Uploader = () => {
+const Uploader = ({ onFinish }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [logMessage, setLogMessage] = useState("");
@@ -36,19 +35,38 @@ const Uploader = () => {
       //const message = res.response.data.message;
       console.log(res.data);
       setLogMessage(res.data.message);
-      Alert.success("Successfully upload user", AlertOptions);
     } catch (error) {
       console.log(error);
       setLogMessage(error.response);
-      Alert.error(logMessage, AlertOptions);
     } finally {
       setLoading(false);
+      onFinish();
     }
+  };
+
+  const renderButton = () => {
+    let result = null;
+    if (loading) {
+      result = (
+        <Button className="pull-right" color="primary" onClick={handleUpload}>
+          <i className="fa fa-circle-o-notch fa-spin" /> Please wait...
+        </Button>
+      );
+    } else {
+      result = (
+        <Button className="pull-right" color="primary" onClick={handleUpload}>
+          <i className="icon-cloud-upload" /> Upload
+        </Button>
+      );
+    }
+
+    return result;
   };
 
   return (
     <Card>
       <CardHeader>
+        <SimpleAlert type="success" message={logMessage} />
         <h4>Select a file to upload (excel)</h4>
       </CardHeader>
       <CardBody>
@@ -59,15 +77,7 @@ const Uploader = () => {
           onChange={handleFileUploadChange}
         />
       </CardBody>
-      <CardFooter>
-        <Button className="btn btn-primary pull-right" onClick={handleUpload}>
-          {loading ? (
-            <Spinner color="secondary" />
-          ) : (
-            <i className="icon-cloud-upload"></i>
-          )}
-        </Button>
-      </CardFooter>
+      <CardFooter>{renderButton()}</CardFooter>
     </Card>
   );
 };

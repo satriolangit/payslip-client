@@ -75,11 +75,14 @@ const Payslip = () => {
           <td>{item.year}</td>
           <td>{item.month}</td>
           <td>
-            <a
+            {/* <a
               href={PayslipFileUrl + item.filename}
               target="_blank"
               rel="noopener noreferrer"
             >
+              {item.filename}
+            </a> */}
+            <a onClick={() => handleDownload(item.filename)} href="#!">
               {item.filename}
             </a>
           </td>
