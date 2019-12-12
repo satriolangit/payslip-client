@@ -48,6 +48,11 @@ const adminNavigation = {
       name: "Payslip",
       url: "/admin/payslip",
       icon: "icon-doc"
+    },
+    {
+      name: "Files",
+      url: "/admin/files",
+      icon: "fa fa-file"
     }
   ]
 };

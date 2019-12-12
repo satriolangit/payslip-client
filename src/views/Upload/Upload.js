@@ -73,6 +73,13 @@ class Upload extends Component {
         reject(req.response);
       });
 
+      req.addEventListener("readystatechange", function(e) {
+        if (req.readyState === 4 && req.status === 200) {
+          // the transfer has completed and the server closed the connection.
+          //console.log("onComplete event triggered :", req.response);
+        }
+      });
+
       const formData = new FormData();
       formData.append("file", file, file.name);
       var url = ApiUrl + "/payslip/upload";

@@ -23,6 +23,8 @@ const UserChangePassword = React.lazy(() =>
 );
 const PayslipList = React.lazy(() => import("./views/Payslip/List"));
 const PayslipUpload = React.lazy(() => import("./views/Payslip/Upload"));
+const FileList = React.lazy(() => import("./views/Files/List"));
+const FileUpload = React.lazy(() => import("./views/Files/Upload"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -110,6 +112,18 @@ const routes = [
     exact: true,
     name: "Upload",
     component: PayslipUpload
+  },
+  {
+    path: "/admin/files",
+    exact: true,
+    name: "Files",
+    component: FileList
+  },
+  {
+    path: "/admin/files/upload",
+    exact: true,
+    name: "Upload",
+    component: FileUpload
   }
 ];
 

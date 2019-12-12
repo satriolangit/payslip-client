@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
 import axios from "axios";
 
 import AuthContext from "../../../context/auth/authContext";
-import { ApiUrl, PayslipFileUrl } from "../../../setting";
+import { ApiUrl } from "../../../setting";
 
 const Payslip = () => {
   const [data, setData] = useState([]);

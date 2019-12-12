@@ -86,7 +86,7 @@ const Login = props => {
         <Row className="justify-content-center">
           <Col md="4">
             <CardGroup>
-              <Card className="p-4 transparent">
+              <Card className="p-4 login-box">
                 <CardBody>
                   <Form onSubmit={onSubmit}>
                     <h1>Login</h1>
