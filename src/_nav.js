@@ -52,7 +52,7 @@ const adminNavigation = {
     {
       name: "Files",
       url: "/admin/files",
-      icon: "fa fa-file"
+      icon: "icon-puzzle"
     }
   ]
 };
