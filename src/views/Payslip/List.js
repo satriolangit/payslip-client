@@ -59,11 +59,11 @@ const Index = () => {
       const url = ApiUrl + "/payslip/deletes";
       await axios.post(url, { ids: selected }, JsonContentType);
 
-      fetchData();
-
       setSelected([]);
     } catch (err) {
       console.log(err);
+    } finally {
+      fetchData();
     }
   };
 

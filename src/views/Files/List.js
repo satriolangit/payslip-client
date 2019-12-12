@@ -46,11 +46,11 @@ const List = () => {
       const url = ApiUrl + "/upload/bulkdelete";
       await axios.post(url, { ids: selected }, JsonContentType);
 
-      fetchData();
-
       setSelected([]);
     } catch (err) {
       console.log(err);
+    } finally {
+      fetchData();
     }
   };
 
