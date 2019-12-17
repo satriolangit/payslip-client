@@ -19,7 +19,8 @@ import {
   InputGroupText
 } from "reactstrap";
 import Alert from "react-s-alert";
-import { ApiUrl, JsonContentType, AlertOptions } from "../../setting";
+import { ApiUrl, AlertOptions } from "../../setting";
+import avatar from "./../../assets/img/users/no-image.jpg";
 
 const Edit = ({ match, history }) => {
   const [data, setData] = useState({
@@ -32,7 +33,7 @@ const Edit = ({ match, history }) => {
     phone: ""
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [photoFile, setPhotoFile] = useState(null);
 
   const [role, setRole] = useState("employee");
   const [status, setStatus] = useState(0);
@@ -57,8 +58,6 @@ const Edit = ({ match, history }) => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    setErrorMessage("");
-
     if (match.params.id !== "0") {
       await update();
     } else {
@@ -67,11 +66,10 @@ const Edit = ({ match, history }) => {
   };
 
   const add = async () => {
-    const formData = {
+    const user = {
       email,
       name,
       employeeId: employee_id,
-      photo,
       role,
       isActive: status,
       password,
@@ -80,37 +78,68 @@ const Edit = ({ match, history }) => {
     };
 
     try {
+      let formData = new FormData();
+      formData.append("photo", photoFile);
+      formData.append("data", JSON.stringify(user));
+
       const url = ApiUrl + "/users/add";
-      await axios.post(url, formData, JsonContentType);
-      history.push("/admin/user");
+      const result = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
+      //  console.log(result);
+
+      if (result.data.result === "FAIL") {
+        Alert.error(result.data.message, AlertOptions);
+      } else {
+        history.push("/admin/user");
+      }
     } catch (err) {
-      const errorResponse = err.response.data.errors.join();
-      setErrorMessage(errorResponse);
-      Alert.error(errorMessage, AlertOptions);
+      console.log(err.response);
+      //const errorResponse = err.response.data.errors.join();
+      //setErrorMessage(errorResponse);
+      Alert.error(err.response.data.message, AlertOptions);
     }
   };
 
   const update = async () => {
-    const formData = {
+    const user = {
       email,
       name,
       employeeId: employee_id,
-      photo,
       role,
       isActive: status,
       userId: match.params.id,
-      phone
+      phone,
+      photo
     };
 
     try {
       const url = ApiUrl + "/users/update";
-      await axios.post(url, formData, JsonContentType);
-      history.push("/admin/user");
+      let formData = new FormData();
+      formData.append("photo", photoFile);
+      formData.append("data", JSON.stringify(user));
+
+      const result = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+
+      //  console.log(result);
+
+      if (result.data.result === "FAIL") {
+        Alert.error(result.data.message, AlertOptions);
+      } else {
+        history.push("/admin/user");
+      }
     } catch (err) {
-      console.log("error: ", err.response.data.errors);
-      const errorResponse = err.response.data.errors.join();
-      setErrorMessage(errorResponse);
-      Alert.error(errorMessage, AlertOptions);
+      console.log("error: ", err.response);
+      //const errorResponse = err.response.data.errors.join();
+      //setErrorMessage(errorResponse);
+      Alert.error(err.response.data.message, AlertOptions);
     }
   };
 
@@ -136,6 +165,10 @@ const Edit = ({ match, history }) => {
     setRole(e.target.value);
   };
 
+  const handlePhotoChange = e => {
+    setPhotoFile(e.target.files[0]);
+  };
+
   const handleClearForm = e => {
     setData({
       email: "",
@@ -146,6 +179,22 @@ const Edit = ({ match, history }) => {
       confirmPassword: "",
       phone: ""
     });
+  };
+
+  const renderPhoto = () => {
+    if (photo) {
+      return (
+        <img src={photo} alt={name} className="img-thumbnail profile-picture" />
+      );
+    } else {
+      return (
+        <img
+          src={avatar}
+          alt={name}
+          className="img-thumbnail profile-picture"
+        />
+      );
+    }
   };
 
   const renderPasswordForm = () => {
@@ -304,7 +353,7 @@ const Edit = ({ match, history }) => {
                 </FormGroup>
                 <FormGroup row>
                   <Col md="3">
-                    <Label>No. Telp</Label>
+                    <Label>Role</Label>
                   </Col>
                   <Col xs="12" md="9">
                     <FormGroup check inline>
@@ -352,6 +401,19 @@ const Edit = ({ match, history }) => {
                       </Label>
                     </FormGroup>
                     <FormText color="muted">Status user</FormText>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md="3">Photo</Col>
+                  <Col xs="12" md="9">
+                    {renderPhoto()}
+                    <div>
+                      <input
+                        type="file"
+                        onChange={handlePhotoChange}
+                        accept="image/*|MIME_type"
+                      />
+                    </div>
                   </Col>
                 </FormGroup>
               </CardBody>
