@@ -73,7 +73,7 @@ const DashboardPanel = () => {
     <Col xs="12" sm="6" lg="6">
       <Card>
         <CardHeader>
-          <strong>Information</strong>
+          <strong>Informasi</strong>
           <div className="card-header-actions">
             <Link to="/pages/information/" className="card-header-action btn">
               <i className="fa fa-bookmark"></i>

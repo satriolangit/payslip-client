@@ -24,6 +24,21 @@ class DefaultHeader extends Component {
   render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+    const { user } = this.props;
+
+    const renderAvatar = () => {
+      if (user.photo) {
+        return <img src={user.photo} className="img-avatar" alt={user.name} />;
+      } else {
+        return (
+          <img
+            src={"../../assets/img/avatars/6.jpg"}
+            className="img-avatar"
+            alt=""
+          />
+        );
+      }
+    };
 
     return (
       <React.Fragment>
@@ -41,20 +56,21 @@ class DefaultHeader extends Component {
 
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <NavLink to="/home" className="nav-link">
+            <NavLink to="/dashboard" className="nav-link">
               Dashboard
             </NavLink>
           </NavItem>
         </Nav>
+
+        <Nav className="d-md-down-none" navbar>
+          <NavItem className="px-3">
+            <i className="hello-text">Hello, {user.name} !</i>
+          </NavItem>
+        </Nav>
+
         <Nav className="ml-auto" navbar>
           <UncontrolledDropdown nav direction="down">
-            <DropdownToggle nav>
-              <img
-                src={"../../assets/img/avatars/6.jpg"}
-                className="img-avatar"
-                alt="admin@bootstrapmaster.com"
-              />
-            </DropdownToggle>
+            <DropdownToggle nav>{renderAvatar()}</DropdownToggle>
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center">
                 <strong>Account</strong>
@@ -64,11 +80,11 @@ class DefaultHeader extends Component {
                   <i className="fa fa-user"></i> Profile
                 </Link>
               </DropdownItem>
-              <DropdownItem>
+              {/* <DropdownItem>
                 <Link to="/changepwd" style={{ textDecoration: "none" }}>
                   <i className="fa fa-lock"></i> Change Password
                 </Link>
-              </DropdownItem>
+              </DropdownItem> */}
               <DropdownItem onClick={e => this.props.onLogout(e)}>
                 <i className="fa fa-unlock-alt"></i> Logout
               </DropdownItem>

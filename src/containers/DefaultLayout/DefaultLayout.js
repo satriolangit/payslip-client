@@ -56,7 +56,7 @@ const DefaultLayout = props => {
     if (user) {
       setCurrentUser(user);
       console.log(currentUser);
-      console.log(navigation);
+      //console.log(navigation);
 
       if (currentUser.role === "admin") {
         const all = [...navigation.items, adminNavigation];
@@ -70,7 +70,7 @@ const DefaultLayout = props => {
     <div className="app">
       <AppHeader fixed>
         <Suspense fallback={loading()}>
-          <DefaultHeader onLogout={e => signOut(e)} />
+          <DefaultHeader onLogout={e => signOut(e)} user={currentUser} />
         </Suspense>
       </AppHeader>
       <div className="app-body">
