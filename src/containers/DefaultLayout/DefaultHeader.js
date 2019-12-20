@@ -62,13 +62,10 @@ class DefaultHeader extends Component {
           </NavItem>
         </Nav>
 
-        <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
+        <Nav className="ml-auto" navbar>
+          <NavItem className="d-md-down-none">
             <i className="hello-text">Hello, {user.name} !</i>
           </NavItem>
-        </Nav>
-
-        <Nav className="ml-auto" navbar>
           <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav>{renderAvatar()}</DropdownToggle>
             <DropdownMenu right>
