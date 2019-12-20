@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Editor } from "react-draft-wysiwyg";
-import {
-  EditorState,
-  convertToRaw,
-  ContentState,
-  convertFromHTML
-} from "draft-js";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 import {
   Row,
   Col,
@@ -101,11 +97,16 @@ const Edit = ({ match, history }) => {
         setData(information);
 
         const text = information.text;
-        const state = EditorState.createWithContent(
-          ContentState.createFromBlockArray(convertFromHTML(text))
-        );
+        const contentBlock = htmlToDraft(text);
 
-        setEditorState(state);
+        if (contentBlock) {
+          const contentState = ContentState.createFromBlockArray(
+            contentBlock.contentBlocks
+          );
+          const editorState = EditorState.createWithContent(contentState);
+
+          setEditorState(editorState);
+        }
       } catch (err) {
         console.log(err);
         Alert.error(err, AlertOptions);
