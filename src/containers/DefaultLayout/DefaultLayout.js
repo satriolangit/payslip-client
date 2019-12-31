@@ -46,6 +46,17 @@ const DefaultLayout = props => {
     logout();
   };
 
+  const logoutNav = {
+    name: "Logout",
+    url: "/logout",
+    icon: "icon-lock-open",
+    attributes: {
+      onClick: e => {
+        logout();
+      }
+    }
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
       props.history.push("/login");
@@ -55,11 +66,17 @@ const DefaultLayout = props => {
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
-      console.log(currentUser);
+      //console.log(currentUser);
       //console.log(navigation);
 
       if (currentUser.role === "admin") {
-        const all = [...navigation.items, adminNavigation];
+        const adminNav = [...navigation.items, adminNavigation];
+        const all = [...adminNav, logoutNav];
+        setNavigation({ ...navigation, items: all });
+      }
+
+      if (currentUser.role === "employee") {
+        const all = [...navigation.items, logoutNav];
         setNavigation({ ...navigation, items: all });
       }
     }
