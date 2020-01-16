@@ -58,10 +58,10 @@ const DefaultLayout = props => {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && props.location.pathname !== "/privacy-policy") {
       props.history.push("/login");
     }
-  }, [isAuthenticated, props.history]);
+  }, [isAuthenticated, props.history, props.location]);
 
   useEffect(() => {
     if (user) {

@@ -25,6 +25,9 @@ const PayslipList = React.lazy(() => import("./views/Payslip/List"));
 const PayslipUpload = React.lazy(() => import("./views/Payslip/Upload"));
 const FileList = React.lazy(() => import("./views/Files/List"));
 const FileUpload = React.lazy(() => import("./views/Files/Upload"));
+const PrivacyPolicy = React.lazy(() =>
+  import("./views/Pages/PrivacyPolicy/PrivacyPolicy")
+);
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -61,6 +64,12 @@ const routes = [
     component: Announcement
   },
   { path: "/pages/payslip/:employeeId", name: "Payslip", component: Payslip },
+  {
+    path: "/privacy-policy",
+    exact: true,
+    name: "PrivacyPolicy",
+    component: PrivacyPolicy
+  },
   {
     path: "/admin/announcement",
     exact: true,
