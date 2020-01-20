@@ -1,32 +1,53 @@
 import React from "react";
+import retry from "./retry";
 
-const Profile = React.lazy(() => import("./views/Pages/Profile/Profile"));
-const ChangePassword = React.lazy(() =>
-  import("./views/Pages/ChangePassword/ChangePassword")
+const Profile = React.lazy(() =>
+  retry(() => import("./views/Pages/Profile/Profile"))
 );
-const Home = React.lazy(() => import("./views/Pages/Dashboard/Dashboard"));
+const ChangePassword = React.lazy(() =>
+  retry(() => import("./views/Pages/ChangePassword/ChangePassword"))
+);
+const Home = React.lazy(() =>
+  retry(() => import("./views/Pages/Dashboard/Dashboard"))
+);
 const Information = React.lazy(() =>
-  import("./views/Pages/Information/Information")
+  retry(() => import("./views/Pages/Information/Information"))
 );
 const Announcement = React.lazy(() =>
-  import("./views/Pages/Announcement/Announcement")
+  retry(() => import("./views/Pages/Announcement/Announcement"))
 );
-const Payslip = React.lazy(() => import("./views/Pages/Payslip/Payslip"));
-const AnnouncementList = React.lazy(() => import("./views/Announcement/List"));
-const AnnouncementForm = React.lazy(() => import("./views/Announcement/Edit"));
-const InformationList = React.lazy(() => import("./views/Information/List"));
-const InformationForm = React.lazy(() => import("./views/Information/Edit"));
-const UserList = React.lazy(() => import("./views/User/List"));
-const UserForm = React.lazy(() => import("./views/User/Edit"));
+const Payslip = React.lazy(() =>
+  retry(() => import("./views/Pages/Payslip/Payslip"))
+);
+const AnnouncementList = React.lazy(() =>
+  retry(() => import("./views/Announcement/List"))
+);
+const AnnouncementForm = React.lazy(() =>
+  retry(() => import("./views/Announcement/Edit"))
+);
+const InformationList = React.lazy(() =>
+  retry(() => import("./views/Information/List"))
+);
+const InformationForm = React.lazy(() =>
+  retry(() => import("./views/Information/Edit"))
+);
+const UserList = React.lazy(() => retry(() => import("./views/User/List")));
+const UserForm = React.lazy(() => retry(() => import("./views/User/Edit")));
 const UserChangePassword = React.lazy(() =>
-  import("./views/User/ChangePassword")
+  retry(() => import("./views/User/ChangePassword"))
 );
-const PayslipList = React.lazy(() => import("./views/Payslip/List"));
-const PayslipUpload = React.lazy(() => import("./views/Payslip/Upload"));
-const FileList = React.lazy(() => import("./views/Files/List"));
-const FileUpload = React.lazy(() => import("./views/Files/Upload"));
+const PayslipList = React.lazy(() =>
+  retry(() => import("./views/Payslip/List"))
+);
+const PayslipUpload = React.lazy(() =>
+  retry(() => import("./views/Payslip/Upload"))
+);
+const FileList = React.lazy(() => retry(() => import("./views/Files/List")));
+const FileUpload = React.lazy(() =>
+  retry(() => import("./views/Files/Upload"))
+);
 const PrivacyPolicy = React.lazy(() =>
-  import("./views/Pages/PrivacyPolicy/PrivacyPolicy")
+  retry(() => import("./views/Pages/PrivacyPolicy/PrivacyPolicy"))
 );
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
