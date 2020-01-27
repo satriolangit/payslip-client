@@ -118,6 +118,31 @@ const Index = () => {
     }
   };
 
+  const handleLinkClick = async filename => {
+    try {
+      const url = ApiUrl + "/payslip/download2/" + filename;
+      axios(url, {
+        method: "GET"
+      })
+        .then(response => {
+          //Create a Blob from the PDF Stream
+          const fileUrl = response.data.url;
+          console.log(fileUrl);
+          const link = document.createElement("a");
+          link.href = fileUrl;
+          link.setAttribute("download", filename);
+          //link.target = "_blank";
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const searchData = async keywords => {
     try {
       const url = ApiUrl + "/payslip/search";
@@ -146,6 +171,14 @@ const Index = () => {
 
   const datetimeFormatter = (cell, row) => {
     if (cell) return moment(cell).format("DD MMM YYYY hh:mm");
+  };
+
+  const linkFormatter = (cell, row) => {
+    return (
+      <Button color="link" onClick={() => handleLinkClick(cell)}>
+        {cell}
+      </Button>
+    );
   };
 
   const selectRow = {
@@ -180,7 +213,8 @@ const Index = () => {
     {
       dataField: "filename",
       text: "File",
-      sort: true
+      sort: true,
+      formatter: linkFormatter
     },
     {
       dataField: "download_count",
