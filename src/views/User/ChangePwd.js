@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Alert from "react-s-alert";
+import { Link } from "react-router-dom";
 
-import { ApiUrl, AlertOptions } from "./../../setting";
+import { ApiUrl, AlertOptions } from "../../setting";
 
 import {
   Button,
@@ -24,17 +25,20 @@ import {
 const ChangePassword = ({ match, history }) => {
   const [data, setData] = useState({
     password: "",
-    confirmPassword: "",
-    userId: ""
+    confirmPassword: ""
   });
-  const { password, confirmPassword, userId } = data;
+
+  const [currentUserId, setCurrentUserId] = useState("");
+  const { password, confirmPassword} = data;
 
   useEffect(() => {
-    setData({ ...data, userId: match.params.id });
-  }, [match.params.id, data]);
+    setCurrentUserId(match.params.id);        
+  }, [match.params.id])
 
-  const onChange = e => setData({ ...data, [e.target.name]: e.target.value });
-  
+  const onChange = e => {
+    setData({ ...data, [e.target.name]: e.target.value });        
+  }
+
   const handleSubmit = async e => {
     e.preventDefault();
 
@@ -45,7 +49,7 @@ const ChangePassword = ({ match, history }) => {
     } else {
       try {
         const formData = {
-          userId: userId,
+          userId: currentUserId,
           password,
           confirmPassword
         };
@@ -70,8 +74,7 @@ const ChangePassword = ({ match, history }) => {
   const handleReset = () => {
     setData({
       password: "",
-      confirmPassword: "",
-      userId: ""
+      confirmPassword: ""
     });
   };
 
@@ -82,6 +85,12 @@ const ChangePassword = ({ match, history }) => {
           <Card>
             <CardHeader>
               <strong>Change Password</strong>
+              <Link
+                  to="/admin/user"
+                  className="btn btn-secondary btn-sm float-right"
+                >
+                  <span className="icon-close"></span> Close
+                </Link>
             </CardHeader>
             <Form onSubmit={handleSubmit}>
               <CardBody>
@@ -95,8 +104,8 @@ const ChangePassword = ({ match, history }) => {
                     <Input
                       type="text"
                       name="password"
-                      value={password}
-                      onChange={() => console.log('onchange')}
+                      value={password}     
+                      onChange={onChange}                
                     />
                   </InputGroup>
                   <FormText className="help-block">New Password</FormText>
@@ -111,8 +120,8 @@ const ChangePassword = ({ match, history }) => {
                     <Input
                       type="text"
                       name="confirmPassword"
-                      value={confirmPassword}
-                      onChange={onChange}
+                      value={confirmPassword} 
+                      onChange={onChange}                         
                     />
                   </InputGroup>
                   <FormText className="help-block">

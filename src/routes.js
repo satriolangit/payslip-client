@@ -50,6 +50,10 @@ const PrivacyPolicy = React.lazy(() =>
   retry(() => import("./views/Pages/PrivacyPolicy/PrivacyPolicy"))
 );
 
+// DEBUG
+const UserChangePassword_DEV = React.lazy(() =>
+  retry(() => import("./views/User/ChangePwd"))
+);
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -124,6 +128,12 @@ const routes = [
     name: "Change Password",
     exact: true,
     component: UserChangePassword
+  },
+  {
+    path: "/admin/user/cp_dev/:id",
+    name: "Change Password",
+    exact: true,
+    component: UserChangePassword_DEV
   },
   {
     path: "/admin/user/:id",
