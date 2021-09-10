@@ -123,8 +123,8 @@ const List = () => {
         </Link>
         <Button color="danger" onClick={id => handleDelete(row.user_id)}>
           <i className="icon-trash" />
-        </Button>
-        <Link className="btn btn-info" to={"/admin/user/cp/" + row.user_id}>
+        </Button>       
+        <Link className="btn btn-info" to={"/admin/user/cp_dev/" + row.user_id}>
           <span>
             <i className="fa fa-lock"></i>
           </span>
