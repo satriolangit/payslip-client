@@ -49,7 +49,12 @@ const FileUpload = React.lazy(() =>
 const PrivacyPolicy = React.lazy(() =>
   retry(() => import("./views/Pages/PrivacyPolicy/PrivacyPolicy"))
 );
-
+const Survey = React.lazy(() =>
+  retry(() => import("./views/Survey/SurveyForm"))
+);
+const SurveyReport = React.lazy(() =>
+  retry(() => import("./views/Survey/Report"))
+);
 // DEBUG
 const UserChangePassword_DEV = React.lazy(() =>
   retry(() => import("./views/User/ChangePwd"))
@@ -57,6 +62,7 @@ const UserChangePassword_DEV = React.lazy(() =>
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", exact: true, name: "Home" },
+  {path: "/welcome", exact: true, name : "Welcome"},
   { path: "/dashboard", name: "Dashboard", component: Home },
   { path: "/profile", exact: true, name: "Profile", component: Profile },
   {
@@ -164,7 +170,20 @@ const routes = [
     exact: true,
     name: "Upload",
     component: FileUpload
-  }
+  },
+  {
+    path: "/survey",
+    exact: true,
+    name: "Survey",
+    component: Survey
+  },
+  {
+    path: "/admin/survey/report",
+    exact: true,
+    name: "SurveyReport",
+    component: SurveyReport
+  },
+  
 ];
 
 export default routes;

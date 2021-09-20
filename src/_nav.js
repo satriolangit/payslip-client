@@ -19,6 +19,11 @@ export default {
       icon: "icon-bell"
     },
     {
+      name: "Survey",
+      url: "/survey",
+      icon: "icon-bell"
+    },
+    {
       divider: true
     }
   ]
@@ -52,6 +57,11 @@ const adminNavigation = {
     {
       name: "Files",
       url: "/admin/files",
+      icon: "icon-puzzle"
+    },
+    {
+      name: "Report Survey",
+      url: "/admin/survey/report",
       icon: "icon-puzzle"
     }
   ]

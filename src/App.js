@@ -28,6 +28,7 @@ const Login = React.lazy(() => import("./views/Pages/Account/Login"));
 const Register = React.lazy(() => import("./views/Pages/Register"));
 const Page404 = React.lazy(() => import("./views/Pages/Page404"));
 const Page500 = React.lazy(() => import("./views/Pages/Page500"));
+const Welcome = React.lazy(() => import("./views/Pages/Welcome"));
 
 const App = () => {
   return (
@@ -36,12 +37,18 @@ const App = () => {
         <Alert stack={{ limit: 10 }} />
         <React.Suspense fallback={loading()}>
           <Switch>
+          <Route
+              exact
+              path="/welcome"
+              name="Welcome Page"
+              render={props => <Welcome {...props} />}
+            />
             <Route
               exact
               path="/login"
               name="Login Page"
               render={props => <Login {...props} />}
-            />
+            />            
             <Route
               exact
               path="/register"

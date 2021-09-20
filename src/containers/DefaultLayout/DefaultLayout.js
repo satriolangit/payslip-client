@@ -57,10 +57,21 @@ const DefaultLayout = props => {
     }
   };
 
+  
   useEffect(() => {
-    if (!isAuthenticated && props.location.pathname !== "/privacy-policy") {
+    // if(props.location.pathname === "/" && !isAuthenticated) {
+    //   props.history.push("/welcome")
+    // } 
+    // else if(!isAuthenticated && (props.location.pathname !== "/privacy-policy" || props.location.pathname !== "/welcome")) 
+    // {
+    //   props.history.push("/login");
+    // }    
+
+    if(!isAuthenticated) 
+    {
       props.history.push("/login");
-    }
+    }    
+
   }, [isAuthenticated, props.history, props.location]);
 
   useEffect(() => {
@@ -70,7 +81,7 @@ const DefaultLayout = props => {
       //console.log(navigation);
 
       if (currentUser.role === "admin") {
-        const adminNav = [...navigation.items, adminNavigation];
+        const adminNav = [...navigation.items, adminNavigation]; 
         const all = [...adminNav, logoutNav];
         setNavigation({ ...navigation, items: all });
       }
