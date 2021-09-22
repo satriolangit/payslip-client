@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import Alert from "react-s-alert";
 import AuthContext from "../../context/auth/authContext";
-import { ApiUrl, JsonContentType, AlertOptions } from "../../setting";
+import { ApiUrl, AlertOptions } from "../../setting";
 import logo from "../../assets/img/logo_catering.png";
 
 import {
@@ -27,7 +27,7 @@ const SurveyForm = ({match, history}) => {
     
     const[data, setData] = useState({        
         reason: "",
-        submittedBy: user.employee_id,
+        submittedBy: "",
         result:""
     });
     const {reason, submittedBy, result} = data;
@@ -71,7 +71,7 @@ const SurveyForm = ({match, history}) => {
         e.preventDefault();
 
         const survey = {
-            submittedBy: submittedBy,
+            submittedBy: user.employee_id,
             result: result,
             reason: reason
         };

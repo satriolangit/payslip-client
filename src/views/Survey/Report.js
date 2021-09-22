@@ -9,11 +9,10 @@ import {
   CardHeader,
   CardBody,
   Button,
-  Modal, ModalHeader, ModalBody, ModalFooter
+  Modal, ModalHeader, ModalBody
 } from "reactstrap";
 
 import pagination from "../Pagination/pagination";
-import SearchBox from "../SearchBox/SearchBox";
 import { ApiUrl, JsonContentType, SurveyPhotoUrl } from "../../setting";
 
 const Report = () => {

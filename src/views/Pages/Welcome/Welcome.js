@@ -1,26 +1,37 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import LogoPayslip from '../../../assets/img/brand/logo_payslip.png';
+import LogoSurvey from '../../../assets/img/logo_catering.png';
+import SiteContext from '../../../context/site/siteContext';
 
-export default function Welcome() {
+export default function Welcome(props) {
+
+    const siteContext = useContext(SiteContext);
+    const {gotoPayslip, gotoSurvey, gotoIdeaBox} = siteContext;
 
     const handleSurveyClick = () => {
-        console.log("survey clicked");
+        gotoSurvey();
+        props.history.push("/login");        
+        
     }
 
-    const handlePayslipClick = () => {
-        console.log("payslip clicked");
+    const handlePayslipClick = () => {        
+        gotoPayslip()
+        props.history.push("/login");        
     }
 
-    const handleIdeaBoxClick = () => {
-        console.log("idea box clicked");
+    const handleIdeaBoxClick = () => {        
+        gotoIdeaBox();
+        props.history.push("/login");        
     }
 
     return (
-        <div className="row">
-            <div className="col-md-12">
-                <a href="!#" onClick={handleSurveyClick}>Survey Catering</a>
-                <a href="!#" onClick={handlePayslipClick}>Payslip</a>
-                <a href="!#" onClick={handleIdeaBoxClick}>Idea Box</a>
+        <div class="row vh-100">
+            <div class="col-md-12 my-auto">
+                <div class="w-25 mx-auto">
+                <img src={LogoSurvey} onClick={handleSurveyClick} alt="survey" style={{width: "150px", height:"auto"}}></img>
+                    <img src={LogoPayslip} onClick={handlePayslipClick} alt="payslip" style={{maxWidth: "200px", height:"auto"}}></img>
+                </div>
             </div>
-        </div>
+        </div>                
     )
 }
