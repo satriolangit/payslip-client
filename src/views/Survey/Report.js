@@ -59,11 +59,11 @@ const Report = () => {
 
   
   const columns = [
-    {
-      dataField: "no",
-      text: "No",
-      sort: true
-    },
+    // {
+    //   dataField: "no",
+    //   text: "No",
+    //   sort: true
+    // },
     {
       dataField: "bulan",
       text: "Bulan",

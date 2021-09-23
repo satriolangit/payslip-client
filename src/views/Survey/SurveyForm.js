@@ -66,7 +66,15 @@ const SurveyForm = ({match, history}) => {
         setPreview([...preview, filesCollection]);        
     }
 
-    
+    const isValidForm = () => {
+        if(result === "tidak_puas" && files.length <= 0) {
+            Alert.warning("Silahkan melampirkan foto.", AlertOptions);    
+            return false;                    
+        } else {
+            return true;
+        }
+    }
+
     const handleSubmit = async e => {
         e.preventDefault();
 
@@ -89,19 +97,21 @@ const SurveyForm = ({match, history}) => {
                   
             const url = ApiUrl + "/survey/submit";
             
-            const result = await axios.post(url, formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data"
-                }
-              });
+            if(isValidForm()) {
 
-      
-            console.log(result);
-      
-            if (result.data.result === "FAIL") {
-              Alert.error(result.data.message, AlertOptions);
-            } else {
-              Alert.info("Survey sudah terkirim");
+                const result = await axios.post(url, formData, {
+                    headers: {
+                    "Content-Type": "multipart/form-data"
+                    }
+                });
+        
+                console.log(result);
+        
+                if (result.data.result === "FAIL") {
+                    Alert.error(result.data.message, AlertOptions);
+                } else {
+                    Alert.info("Survey sudah terkirim", AlertOptions);
+                }
             }
 
           } catch (err) {
@@ -133,7 +143,7 @@ const SurveyForm = ({match, history}) => {
 
     const renderPhoto = () => {        
         return ((preview).map((res, index) => (
-            <img key={index} src={res} alt="..." className="img-thumbnail profile-picture"/>                        
+            <img key={index} src={res} alt="..." className="img-thumbnail survey-attachment"/>                        
         )));
     }
 

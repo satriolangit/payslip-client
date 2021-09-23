@@ -76,11 +76,6 @@ const adminNavigation = {
           name: "Files",
           url: "/admin/files",
           icon: "icon-puzzle"
-        },
-        {
-          name: "Report Survey",
-          url: "/admin/survey/report",
-          icon: "icon-puzzle"
         }
       ]
     }

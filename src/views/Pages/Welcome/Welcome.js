@@ -26,8 +26,8 @@ export default function Welcome(props) {
 
     return (
         <div class="row vh-100">
-            <div class="col-md-12 my-auto">
-                <div class="w-25 mx-auto">
+            <div class="col-sm-12 my-auto">
+                <div class="mx-auto text-center">
                 <img src={LogoSurvey} onClick={handleSurveyClick} alt="survey" style={{width: "150px", height:"auto"}}></img>
                     <img src={LogoPayslip} onClick={handlePayslipClick} alt="payslip" style={{maxWidth: "200px", height:"auto"}}></img>
                 </div>
