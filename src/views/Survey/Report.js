@@ -173,7 +173,7 @@ const Report = () => {
       <Modal isOpen={modal} toggle={toggle} size="lg">
         <ModalHeader toggle={toggle}>{photo.name}</ModalHeader>
         <ModalBody>
-            <img src={photo.url} alt="photoSurvey" style={{maxWidth: "100%"}}/>
+            <img src={photo.url} alt="photoSurvey" style={{minWidth: "400px", height: "auto"}}/>
         </ModalBody>        
       </Modal>
     </div>

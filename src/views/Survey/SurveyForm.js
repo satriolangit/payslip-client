@@ -28,9 +28,10 @@ const SurveyForm = ({match, history}) => {
     const[data, setData] = useState({        
         reason: "",
         submittedBy: "",
-        result:""
+        result:"",
+        department:""
     });
-    const {reason, submittedBy, result} = data;
+    const {reason, result, department} = data;
     const [files, uploadFiles] = useState([]);
     const [preview, setPreview] = useState([]);
 
@@ -49,8 +50,9 @@ const SurveyForm = ({match, history}) => {
       };
 
     const handleChange = e => setData({ ...data, [e.target.name]: e.target.value });
+    
     const handleClearForm = () => {
-        setData({reason: "", submittedBy: "", result:""});
+        setData({reason: "", submittedBy: "", result:"", department: ""});
         filesArray = [];
         filesCollection = [];
         uploadFiles([]);
@@ -70,7 +72,19 @@ const SurveyForm = ({match, history}) => {
         if(result === "tidak_puas" && files.length <= 0) {
             Alert.warning("Silahkan melampirkan foto.", AlertOptions);    
             return false;                    
-        } else {
+        } 
+        else if(reason === "")
+        {
+            Alert.warning("Alasan harus diisi.", AlertOptions);    
+            return false;     
+        }
+        else if(department === "")
+        {
+            Alert.warning("Departemen harus diisi.", AlertOptions);    
+            return false;     
+        } 
+        else 
+        {
             return true;
         }
     }
@@ -111,6 +125,7 @@ const SurveyForm = ({match, history}) => {
                     Alert.error(result.data.message, AlertOptions);
                 } else {
                     Alert.info("Survey sudah terkirim", AlertOptions);
+                    handleClearForm();
                 }
             }
 
@@ -119,7 +134,7 @@ const SurveyForm = ({match, history}) => {
             Alert.error(err.response.data.message, AlertOptions);
           }        
 
-        console.log("form submit", data);
+        
     }
 
     const renderUploadFile = () => {
@@ -207,6 +222,14 @@ const SurveyForm = ({match, history}) => {
                                         <textarea name="reason" className="form-control" row="5" value={reason} onChange={handleChange}>
 
                                         </textarea>
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup row>
+                                    <Col md="4">
+                                        <Label>Departemen</Label>
+                                    </Col>
+                                    <Col md="8">
+                                        <input type="text" name="department" className="form-control" value={department} onChange={handleChange}/>
                                     </Col>
                                 </FormGroup>
                                 {renderUploadFile()}
