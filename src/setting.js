@@ -1,4 +1,4 @@
-const ApiUrl = "https://hrinformationsystem.com:3001/api";
+const ApiUrl = "http://localhost:3001/api";
 const PayslipFileUrl = "https://hrinformationsystem.com:3001/payslip/";
 const SurveyPhotoUrl = "https://hrinformationsystem.com:3001/survey/";
 const AlertOptions = {
