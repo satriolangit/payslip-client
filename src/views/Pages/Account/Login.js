@@ -16,16 +16,28 @@ import {
 } from "reactstrap";
 
 import AuthContext from "./../../../context/auth/authContext";
+import SiteContext from "../../../context/site/siteContext";
+
 import { AlertOptions } from "./../../../setting";
 import "./Login.css";
 
 const Login = props => {
   const authContext = useContext(AuthContext);
   const { login, error, clearErrors, isAuthenticated } = authContext;
+  const siteContext = useContext(SiteContext);
+  const {siteName} = siteContext;
 
   useEffect(() => {
+
+    console.log("siteName : ", siteName);
+
     if (isAuthenticated) {
-      props.history.push("/");
+      if(siteName === "PAYSLIP") {
+        props.history.push("/");
+      } else {
+        props.history.push("/survey");
+      }
+      
     }
 
     if (error === "Invalid credentials") {
