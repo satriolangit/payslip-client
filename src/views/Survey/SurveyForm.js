@@ -95,7 +95,8 @@ const SurveyForm = ({match, history}) => {
         const survey = {
             submittedBy: user.employee_id,
             result: result,
-            reason: reason
+            reason: reason,
+            department: department
         };
 
         try {
