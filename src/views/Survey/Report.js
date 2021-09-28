@@ -11,6 +11,7 @@ import {
   Button,
   Modal, ModalHeader, ModalBody
 } from "reactstrap";
+import ReactExport from "react-data-export";
 
 import pagination from "../Pagination/pagination";
 import { ApiUrl, JsonContentType, SurveyPhotoUrl } from "../../setting";
@@ -135,6 +136,10 @@ const Report = () => {
     }
   };
 
+  const ExcelFile = ReactExport.ExcelFile;
+  const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+  const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
   return (
     <div className="animated fadeIn">
       <Row>
@@ -146,6 +151,20 @@ const Report = () => {
                     <h4>Report Survey</h4>
                 </Col>
                 <Col lg="6" sm="6" xs="6" className="text-right">
+                <ExcelFile element={<button className="btn btn-sm btn-success" filename="ReportSurvey">
+                  <i className="icon-printer" /> Export</button>}>
+                <ExcelSheet data={data} name="ReportCatering">
+                    <ExcelColumn label="Bulan" value="bulan"/>
+                    <ExcelColumn label="Tahun" value="tahun"/>
+                    <ExcelColumn label="Tanggal Submit" value="submittedAt"/>
+                    <ExcelColumn label="NIK" value="nik"/>
+                    <ExcelColumn label="Nama" value="nama"/>
+                    <ExcelColumn label="Departemen" value="department"/>
+                    <ExcelColumn label="Penilaian" value="result"/>
+                    <ExcelColumn label="Alasan" value="reason"/>
+                    <ExcelColumn label="Photo" value="photos"/>
+                </ExcelSheet>                
+            </ExcelFile>
                   <Button
                     color="info"
                     onClick={handleRefresh}

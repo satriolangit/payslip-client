@@ -37,6 +37,7 @@
     "react-bootstrap-table2-paginator": "^2.1.0",
     "react-chartjs-2": "^2.7.6",
     "react-copy-to-clipboard": "^5.0.2",
+    "react-data-export": "^0.6.0",
     "react-data-table-component": "^4.0.2",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.14.7",
@@ -47,7 +48,8 @@
     "react-test-renderer": "^16.8.6",
     "reactstrap": "^8.0.0",
     "simple-line-icons": "^2.4.1",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "xlsx": "^0.17.2"
   },
   "devDependencies": {
     "react-scripts": "^3.0.1"

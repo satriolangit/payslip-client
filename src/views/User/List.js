@@ -208,6 +208,11 @@ const List = () => {
       sort: true
     },
     {
+      dataField: "site_name",
+      text: "Site",
+      sort: true
+    },
+    {
       text: "Option",
       isDummy: true,
       formatter: optionFormatter

@@ -30,7 +30,8 @@ const Edit = ({ match, history }) => {
     photo: "",
     password: "",
     confirmPassword: "",
-    phone: ""
+    phone: "",
+    siteName: ""
   });
 
   const [photoFile, setPhotoFile] = useState(null);
@@ -45,7 +46,8 @@ const Edit = ({ match, history }) => {
     photo,
     password,
     confirmPassword,
-    phone
+    phone,
+    site_name:siteName
   } = data;
 
   useEffect(() => {
@@ -74,7 +76,8 @@ const Edit = ({ match, history }) => {
       isActive: status,
       password,
       phone,
-      confirmPassword
+      confirmPassword,
+      siteName
     };
 
     try {
@@ -113,9 +116,12 @@ const Edit = ({ match, history }) => {
       isActive: status,
       userId: match.params.id,
       phone,
-      photo
+      photo,
+      siteName
     };
 
+    console.log(user);
+    
     try {
       const url = ApiUrl + "/users/update";
       let formData = new FormData();
@@ -153,6 +159,9 @@ const Edit = ({ match, history }) => {
         setData(record);
         setRole(record.role);
         setStatus(record.is_active);
+        
+        console.log("data:", data);
+
       } catch (err) {
         console.log(err);
       }
@@ -164,6 +173,7 @@ const Edit = ({ match, history }) => {
   const onRoleChange = e => {
     setRole(e.target.value);
   };
+  const onSiteChange = e => setData({ ...data, site_name: e.target.value });
 
   const handlePhotoChange = e => {
     setPhotoFile(e.target.files[0]);
@@ -401,6 +411,66 @@ const Edit = ({ match, history }) => {
                       </Label>
                     </FormGroup>
                     <FormText color="muted">Status user</FormText>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>Site</Label>
+                  </Col>
+                  <Col xs="12" md="9">
+                    <FormGroup check inline>
+                      <Input
+                        className="form-check-input"
+                        type="radio"
+                        name="radioSite"
+                        onChange={onSiteChange}
+                        value="PAYSLIP"
+                        checked={siteName === "PAYSLIP"}
+                      />
+                      <Label className="form-check-label" check>
+                        Payslip
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Input
+                        className="form-check-input"
+                        type="radio"
+                        name="radioSite"
+                        onChange={onSiteChange}
+                        value="SURVEY"
+                        checked={siteName === "SURVEY"}
+                      />
+                      <Label className="form-check-label" check>
+                        Catering
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Input
+                        className="form-check-input"
+                        type="radio"
+                        name="radioSite"
+                        onChange={onSiteChange}
+                        value="IDEABOX"
+                        checked={siteName === "IDEABOX"}
+                      />
+                      <Label className="form-check-label" check>
+                        Idea Box
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline>
+                      <Input
+                        className="form-check-input"
+                        type="radio"
+                        name="radioSite"
+                        onChange={onSiteChange}
+                        value="ALL"
+                        checked={siteName === "ALL"}
+                      />
+                      <Label className="form-check-label" check>
+                        ALL
+                      </Label>
+                    </FormGroup>
+                    <FormText color="muted">Site</FormText>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
