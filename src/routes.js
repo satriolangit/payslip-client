@@ -32,7 +32,9 @@ const InformationForm = React.lazy(() =>
   retry(() => import("./views/Information/Edit"))
 );
 const UserList = React.lazy(() => retry(() => import("./views/User/List")));
+const UserListBySite = React.lazy(() => retry(() => import("./views/User/ListBySite")));
 const UserForm = React.lazy(() => retry(() => import("./views/User/Edit")));
+
 const UserChangePassword = React.lazy(() =>
   retry(() => import("./views/User/ChangePassword"))
 );
@@ -128,6 +130,12 @@ const routes = [
     exact: true,
     name: "User",
     component: UserList
+  },
+  {
+    path: "/admin/user_by_site",
+    exact: true,
+    name: "User",
+    component: UserListBySite
   },
   {
     path: "/admin/user/cp/:id",

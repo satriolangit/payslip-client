@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, Link } from "react-router-dom";
 import * as router from "react-router-dom";
 import { Container } from "reactstrap";
 
@@ -60,16 +60,7 @@ const DefaultLayout = props => {
     }
   };
 
-  useEffect(() => {
-    // if(!isAuthenticated && props.location.pathname === "/")
-    // {
-    //   props.history.push("/welcome")
-    // } 
-    // else if(!isAuthenticated && props.location.pathname !== "/welcome") 
-    // {
-    //   props.history.push("/login");
-    // }    
-
+  useEffect(() => {    
     if(!isAuthenticated && props.location.pathname !== "/login") {
       props.history.push("/welcome");
     }
@@ -111,11 +102,19 @@ const DefaultLayout = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, currentUser]);
 
+  const renderBreadcrumb = () => {
+    if(siteName === "PAYSLIP") {
+      return (
+        <AppBreadcrumb appRoutes={routes} router={router} />
+      );
+    } 
+  } 
+
   return (
     <div className="app">
       <AppHeader fixed>
         <Suspense fallback={loading()}>
-          <DefaultHeader onLogout={e => signOut(e)} user={currentUser} />
+          <DefaultHeader onLogout={e => signOut(e)} user={currentUser} siteName={siteName}/>
         </Suspense>
       </AppHeader>
       <div className="app-body">
@@ -129,7 +128,7 @@ const DefaultLayout = props => {
           <AppSidebarMinimizer />
         </AppSidebar>
         <main className="main">
-          <AppBreadcrumb appRoutes={routes} router={router} />
+          {renderBreadcrumb()}
           <Container fluid>
             <Suspense fallback={loading()}>
               <Switch>

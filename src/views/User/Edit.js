@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {
@@ -21,6 +21,7 @@ import {
 import Alert from "react-s-alert";
 import { ApiUrl, AlertOptions } from "../../setting";
 import avatar from "./../../assets/img/users/no-image.jpg";
+import SiteContext from "../../context/site/siteContext";
 
 const Edit = ({ match, history }) => {
   const [data, setData] = useState({
@@ -35,9 +36,12 @@ const Edit = ({ match, history }) => {
   });
 
   const [photoFile, setPhotoFile] = useState(null);
-
   const [role, setRole] = useState("employee");
   const [status, setStatus] = useState(0);
+  const siteContext = useContext(SiteContext);
+  const {siteName: currentSite} = siteContext;
+
+
 
   const {
     email,
@@ -101,8 +105,6 @@ const Edit = ({ match, history }) => {
       }
     } catch (err) {
       console.log(err.response);
-      //const errorResponse = err.response.data.errors.join();
-      //setErrorMessage(errorResponse);
       Alert.error(err.response.data.message, AlertOptions);
     }
   };
@@ -139,12 +141,14 @@ const Edit = ({ match, history }) => {
       if (result.data.result === "FAIL") {
         Alert.error(result.data.message, AlertOptions);
       } else {
-        history.push("/admin/user");
+        if(currentSite === "PAYSLIP") {
+          history.push("/admin/user");
+        } else {
+          history.push("/admin/user_by_site");
+        }
       }
     } catch (err) {
       console.log("error: ", err.response);
-      //const errorResponse = err.response.data.errors.join();
-      //setErrorMessage(errorResponse);
       Alert.error(err.response.data.message, AlertOptions);
     }
   };
@@ -260,6 +264,18 @@ const Edit = ({ match, history }) => {
     }
   };
 
+  const renderBackButton = () => {
+    let url = "/admin/user";
+    if(currentSite !== "PAYSLIP") {
+      url = "/admin/user_by_site/"
+    } 
+    return(      
+        <Link to={url} className="btn btn-secondary btn-sm float-right">
+          <span className="icon-close"></span> Close
+        </Link>      
+    );
+  };
+
   return (
     <div className="animated fadeIn">
       <Row>
@@ -268,12 +284,7 @@ const Edit = ({ match, history }) => {
             <Card>
               <CardHeader>
                 <strong>{match.params.id === "0" ? "Add" : "Edit"}</strong> User
-                <Link
-                  to="/admin/user"
-                  className="btn btn-secondary btn-sm float-right"
-                >
-                  <span className="icon-close"></span> Close
-                </Link>
+                {renderBackButton()}
               </CardHeader>
               <CardBody>
                 <FormGroup row>

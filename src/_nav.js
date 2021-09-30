@@ -105,7 +105,12 @@ const adminNavigationSurvey = {
       url: "/admin",
       icon: "icon-settings",
       children: [
-            {
+        {
+          name: "User",
+          url: "/admin/user_by_site",
+          icon: "icon-user"
+        },
+        {
           name: "Report Survey",
           url: "/admin/survey/report",
           icon: "icon-puzzle"

@@ -163,100 +163,117 @@ const SurveyForm = ({match, history}) => {
         )));
     }
 
+    const renderBreadcrumb = () => {
+        return (
+          <div>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="active breadcrumb-item" aria-current="page">Survey</li>
+              </ol>
+            </nav>
+          </div>
+        )    
+    }
 
     return (
-        <div className = "animated fadeIn">
-            <Row>
-                <Col md="12">
-                    <Form onSubmit={handleSubmit}>
-                        <Card>
-                            <CardHeader>
-                                <div>
-                                    <img src={logo} style={{maxWidth: "100px", maxHeight: "auto", float: "left", marginRight: "5px"}} alt="logo_survey"/>
-                                    <div style={{height: "100px", verticalAlign: "center"}}>
+        <div>
+            {renderBreadcrumb()}
+            <div className = "animated fadeIn">
+                <Row>
+                    <Col md="12">
+                        <Form onSubmit={handleSubmit}>
+                            <Card>
+                                <CardHeader>
+                                    <div className="row">
+                                        <img src={logo} style={{maxWidth: "100px", maxHeight: "auto", float: "left", marginRight: "5px"}} alt="logo_survey"/>                                        
+                                    </div>                         
+                                    <div className="row">
+                                        <div className="col-md-12">
                                         <h6>                                        
-                                            Lapor catering adalah media control terbaru untuk kualitas catering yang lebih baik<br></br>
-                                            Silahkan sampaikan apa saja yang menjadi keluhan ketidakpuasan anda atau kepuasan anda.
-                                        </h6>    
-                                    </div>                                    
-                                </div>                                
-                            </CardHeader>
-                            <CardBody>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label>Penilaian Catering</Label>
-                                    </Col>
-                                    <Col md="8">
-                                    <FormGroup check inline>
-                                        <Input
-                                            className="form-check-input"
-                                            type="radio"
-                                            name="radioResult1"
-                                            onChange={handleResultChange}
-                                            value= "puas"
-                                            checked={result ==="puas"}
-                                        />
-                                        <Label className="form-check-label" check>
-                                            Puas
-                                        </Label>
-                                        </FormGroup>
+                                                Lapor catering adalah media control terbaru untuk kualitas catering yang lebih baik<br></br>
+                                                Silahkan sampaikan apa saja yang menjadi keluhan ketidakpuasan anda atau kepuasan anda.
+                                            </h6>    
+                                        </div>  
+                                    </div>       
+                                </CardHeader>
+                                <CardBody>
+                                    <FormGroup row>
+                                        <Col md="4">
+                                            <Label>Penilaian Catering</Label>
+                                        </Col>
+                                        <Col md="8">
                                         <FormGroup check inline>
-                                        <Input
-                                            className="form-check-input"
-                                            type="radio"
-                                            name="radioResult2"
-                                            onChange={handleResultChange}
-                                            value="tidak_puas"
-                                            checked={result === "tidak_puas"}
-                                        />
-                                        <Label className="form-check-label" check>
-                                            Tidak Puas
-                                        </Label>
-                                        </FormGroup>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label>Alasan</Label>
-                                    </Col>
-                                    <Col md="8">
-                                        <textarea name="reason" className="form-control" row="5" value={reason} onChange={handleChange}>
+                                            <Input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="radioResult1"
+                                                onChange={handleResultChange}
+                                                value= "puas"
+                                                checked={result ==="puas"}
+                                            />
+                                            <Label className="form-check-label" check>
+                                                Puas
+                                            </Label>
+                                            </FormGroup>
+                                            <FormGroup check inline>
+                                            <Input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="radioResult2"
+                                                onChange={handleResultChange}
+                                                value="tidak_puas"
+                                                checked={result === "tidak_puas"}
+                                            />
+                                            <Label className="form-check-label" check>
+                                                Tidak Puas
+                                            </Label>
+                                            </FormGroup>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="4">
+                                            <Label>Alasan</Label>
+                                        </Col>
+                                        <Col md="8">
+                                            <textarea name="reason" className="form-control" row="5" value={reason} onChange={handleChange}>
 
-                                        </textarea>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Col md="4">
-                                        <Label>Departemen</Label>
-                                    </Col>
-                                    <Col md="8">
-                                        <input type="text" name="department" className="form-control" value={department} onChange={handleChange}/>
-                                    </Col>
-                                </FormGroup>
-                                {renderUploadFile()}
-                                <FormGroup row>
-                                    <Col md="12">
-                                        {renderPhoto()}
-                                    </Col>
-                                </FormGroup>
-                            </CardBody>
-                            <CardFooter>
-                            <Button type="submit" size="sm" color="primary">
-                                <i className="fa fa-dot-circle-o"></i> Send
-                            </Button>
-                            <Button
-                                type="reset"
-                                size="sm"
-                                color="danger"
-                                 onClick={handleClearForm}
-                            >
-                            <i className="fa fa-ban"></i> Cancel
-                            </Button>
-                            </CardFooter>
-                        </Card>
-                    </Form>
-                </Col>
-            </Row>
+                                            </textarea>
+                                        </Col>
+                                    </FormGroup>
+                                    <FormGroup row>
+                                        <Col md="4">
+                                            <Label>Departemen</Label>
+                                        </Col>
+                                        <Col md="8">
+                                            <input type="text" name="department" className="form-control" value={department} onChange={handleChange}/>
+                                        </Col>
+                                    </FormGroup>
+                                    {renderUploadFile()}
+                                    <FormGroup row>
+                                        <Col md="12">
+                                            {renderPhoto()}
+                                        </Col>
+                                    </FormGroup>
+                                </CardBody>
+                                <CardFooter>
+                                <Button type="submit" size="sm" color="primary">
+                                    <i className="fa fa-dot-circle-o"></i> Send
+                                </Button>
+                                <Button
+                                    type="reset"
+                                    size="sm"
+                                    color="danger"
+                                    onClick={handleClearForm}
+                                >
+                                <i className="fa fa-ban"></i> Cancel
+                                </Button>
+                                </CardFooter>
+                            </Card>
+                        </Form>
+                    </Col>
+                </Row>
+            </div>
         </div>
     )
 }
