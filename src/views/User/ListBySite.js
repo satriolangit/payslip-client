@@ -18,7 +18,7 @@ import SiteContext from "../../context/site/siteContext";
 import pagination from "../Pagination/pagination";
 import SearchBox from "../SearchBox/SearchBox";
 import { ApiUrl, JsonContentType } from "../../setting";
-import Uploader from "./Uploader";
+
 
 const List = () => {
   const [data, setData] = useState([]);
@@ -46,38 +46,7 @@ const List = () => {
     }
   };
 
-  const handleDelete = async id => {
-    const formData = {
-      userId: id
-    };
-
-    try {
-      const url = ApiUrl + "/users/delete";
-      await axios.post(url, formData, JsonContentType);
-
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleDeleteItems = async () => {
-    const formData = {
-      ids: selected
-    };
-
-    try {
-      if (selected.length > 0) {
-        const url = ApiUrl + "/users/deletes";
-        await axios.post(url, formData, JsonContentType);
-      }
-    } catch (err) {
-      console.log(err.response);
-    } finally {
-      fetchData();
-    }
-  };
-
+  
   const handleOnSelect = (row, isSelect) => {
     if (isSelect) {
       setSelected([...selected, row.user_id]);
@@ -120,19 +89,11 @@ const List = () => {
   const optionFormatter = (cell, row) => {
     return (
       <ButtonGroup>
-        <Link className="btn btn-success" to={"/admin/user/" + row.user_id}>
+        <Link className="btn btn-success" to={"/admin/user/site/" + row.user_id}>
           <span>
             <i className="icon-pencil"></i>
           </span>
-        </Link>
-        <Button color="danger" onClick={id => handleDelete(row.user_id)}>
-          <i className="icon-trash" />
-        </Button>       
-        <Link className="btn btn-info" to={"/admin/user/cp_dev/" + row.user_id}>
-          <span>
-            <i className="fa fa-lock"></i>
-          </span>
-        </Link>
+        </Link>        
       </ButtonGroup>
     );
   };
@@ -242,11 +203,6 @@ const List = () => {
       <div className="animated fadeIn">
         <Row>
           <Col lg="12" sm="12" xs="12">
-            <Uploader onFinish={() => fetchData()} />
-          </Col>
-        </Row>
-        <Row>
-          <Col lg="12" sm="12" xs="12">
             <Card>
               <CardHeader>
                 <Row>
@@ -257,26 +213,13 @@ const List = () => {
                     {renderSummaryLabel()}
                   </Col>
                   <Col lg="4" sm="4" xs="4" className="text-right">
-                    <Link
-                      to="/admin/user/0"
-                      className="btn btn-success btn-sm add-right-margin"
-                    >
-                      <span className="icon-plus"></span> New
-                    </Link>
                     <Button
                       color="info"
                       onClick={handleRefresh}
                       className="btn btn-sm"
                     >
                       <i className="icon-refresh" /> Refresh
-                    </Button>
-                    <Button
-                      color="danger"
-                      onClick={handleDeleteItems}
-                      className="btn btn-sm"
-                    >
-                      <i className="icon-trash" /> Delete
-                    </Button>
+                    </Button>                    
                   </Col>
                 </Row>
               </CardHeader>

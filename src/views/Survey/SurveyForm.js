@@ -186,7 +186,9 @@ const SurveyForm = ({match, history}) => {
                             <Card>
                                 <CardHeader>
                                     <div className="row">
-                                        <img src={logo} style={{maxWidth: "100px", maxHeight: "auto", float: "left", marginRight: "5px"}} alt="logo_survey"/>                                        
+                                        <div className="col-md-12 center-text">
+                                            <img src={logo} style={{maxWidth: "150px", maxHeight: "auto"}} alt="logo_survey"/>                                        
+                                        </div>                                        
                                     </div>                         
                                     <div className="row">
                                         <div className="col-md-12">
