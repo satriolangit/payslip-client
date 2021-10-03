@@ -191,7 +191,7 @@ const SurveyForm = ({match, history}) => {
                                         </div>                                        
                                     </div>                         
                                     <div className="row">
-                                        <div className="col-md-12">
+                                        <div className="col-md-12 center-text">
                                         <h6>                                        
                                                 Lapor catering adalah media control terbaru untuk kualitas catering yang lebih baik<br></br>
                                                 Silahkan sampaikan apa saja yang menjadi keluhan ketidakpuasan anda atau kepuasan anda.

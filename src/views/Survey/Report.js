@@ -49,7 +49,7 @@ const Report = () => {
       if(!cell) {
           return "-";
       } else { 
-            const photos = cell.split(';');
+            const photos = cell.split(',');
             return (
                 photos.map((photo, index) => (
                     <Link name={photo} to="#" onClick={toggle} style={{marginRight: "2px"}}>{photo}</Link>
@@ -207,7 +207,7 @@ const Report = () => {
         <Modal isOpen={modal} toggle={toggle} size="lg">
           <ModalHeader toggle={toggle}>{photo.name}</ModalHeader>
           <ModalBody>
-              <img src={photo.url} alt="photoSurvey" style={{minWidth: "400px", height: "auto"}}/>
+              <img src={photo.url} alt="photoSurvey" style={{width: "100%", height: "auto"}}/>
           </ModalBody>        
         </Modal>
       </div>
