@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {
@@ -9,14 +11,19 @@ import {
   CardHeader,
   CardBody,
   Button,
-  Modal, ModalHeader, ModalBody
+  Modal, ModalHeader, ModalBody,ButtonGroup
 } from "reactstrap";
 import ReactExport from "react-data-export";
 
+import AuthContext from "../../context/auth/authContext";
 import pagination from "../Pagination/pagination";
 import { ApiUrl, JsonContentType, SurveyPhotoUrl } from "../../setting";
 
 const Report = () => {
+
+  const authContext = useContext(AuthContext);
+  const { role } = authContext;
+
   const [data, setData] = useState([]); 
   const [photo, setPhoto] = useState({
       photo: "",
@@ -44,6 +51,34 @@ const Report = () => {
       console.log(photoUrl);
   }
 
+  const fetchData = async () => {
+    try {
+      const url = ApiUrl + "/survey/report";
+      const res = await axios.get(url);
+      const list = res.data.data;
+
+      setData(list);
+      console.log(list);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDelete = async id => {
+    const formData = {
+      surveyId: id
+    };
+
+    try {
+      const url = ApiUrl + "/survey/delete";
+      await axios.post(url, formData, JsonContentType); 
+
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   const photoFormatter = (cell, row) => {
       if(!cell) {
@@ -58,22 +93,22 @@ const Report = () => {
         }
   }
 
+  const optionFormatter = (cell, row) => {
+    return (
+      <ButtonGroup>
+        <Button color="danger" onClick={id => handleDelete(cell)}>
+          <i className="icon-trash" />
+        </Button>               
+      </ButtonGroup>
+    );
+  };
+
   
-  const columns = [
-    // {
-    //   dataField: "no",
-    //   text: "No",
-    //   sort: true
-    // },
+  const columns = [ 
     {
-      dataField: "bulan",
-      text: "Bulan",
-      sort: true
-    },
-    {
-        dataField: "tahun",
-        text: "Tahun",      
-        sort: true
+      dataField: "id",
+      text: "id",      
+      hidden: true
     },
     {
       dataField: "submittedAt",
@@ -83,58 +118,48 @@ const Report = () => {
     {
         dataField: "nik",
         text: "NIK",      
-        sort: true
+        sort: true,
+        filter: textFilter()
     },
     {
         dataField: "nama",
         text: "Nama",      
-        sort: true
+        sort: true,
+        filter: textFilter()
     },
     {
         dataField: "department",
         text: "Department",      
-        sort: true
+        sort: true,
+        filter: textFilter()
     },
     {
         dataField: "result",
         text: "Penilaian",      
-        sort: true
+        sort: true,
+        filter: textFilter()
     },
     {
         dataField: "reason",
         text: "Alasan",      
-        sort: true
-      },
+        sort: true,
+        filter: textFilter()
+    },
     {
       dataField: "photos",  
       text: "Photo Attachment",
       formatter: photoFormatter      
+    },
+    {
+      dataField: "id",
+      text: "Option",      
+      hidden: role === "admin" ? false : true,
+      formatter: optionFormatter
     }
   ];
 
   
-  const fetchData = async () => {
-    try {
-      const url = ApiUrl + "/survey/report";
-      const res = await axios.get(url);
-      const list = res.data.data;
-
-      setData(list);
-      console.log(list);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const searchData = async keywords => {
-    try {
-      const url = ApiUrl + "/information/search";
-      const res = await axios.post(url, { keywords }, JsonContentType);
-      setData(res.data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  
 
   const ExcelFile = ReactExport.ExcelFile;
   const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -199,6 +224,7 @@ const Report = () => {
                   pagination={pagination}
                   wrapperClasses="table-responsive"
                   striped
+                  filter={ filterFactory() }
                 />
               </CardBody>
             </Card>

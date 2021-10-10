@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import Alert from "react-s-alert";
 import AuthContext from "../../context/auth/authContext";
@@ -31,12 +31,33 @@ const SurveyForm = ({match, history}) => {
         result:"",
         department:""
     });
+
     const {reason, result, department} = data;
     const [files, uploadFiles] = useState([]);
     const [preview, setPreview] = useState([]);
+    const [departmentList, setDepartmentList] = useState([]);
 
     let filesArray = [];
     let filesCollection = [];    
+
+    useEffect(() => {
+        fetchData();
+      }, []);    
+
+
+      
+  const fetchData = async () => {
+    try {
+      const url = ApiUrl + "/survey/department";
+      const res = await axios.get(url);
+      const list = res.data.data;
+
+      setDepartmentList(list);
+      console.log(list);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
     const handleResultChange = e => {
         setData({...data, result: e.target.value});
@@ -163,6 +184,14 @@ const SurveyForm = ({match, history}) => {
         )));
     }
 
+    const renderDepartmentOptions = () => { 
+        return(
+            departmentList.map((e)=> (
+                <option value={e.department_code}>{e.department_name}</option>
+            ))
+        );
+    }
+
     const renderBreadcrumb = () => {
         return (
           <div>
@@ -248,7 +277,9 @@ const SurveyForm = ({match, history}) => {
                                             <Label>Departemen</Label>
                                         </Col>
                                         <Col md="8">
-                                            <input type="text" name="department" className="form-control" value={department} onChange={handleChange}/>
+                                            <select name="department" className="form-control" onChange={handleChange}>
+                                                {renderDepartmentOptions()}
+                                            </select>                                            
                                         </Col>
                                     </FormGroup>
                                     {renderUploadFile()}
