@@ -14,6 +14,8 @@ import {
   Modal, ModalHeader, ModalBody,ButtonGroup
 } from "reactstrap";
 import ReactExport from "react-data-export";
+import DatePicker from 'react-date-picker';
+
 
 import AuthContext from "../../context/auth/authContext";
 import pagination from "../Pagination/pagination";
@@ -22,13 +24,17 @@ import { ApiUrl, JsonContentType, SurveyPhotoUrl } from "../../setting";
 const Report = () => {
 
   const authContext = useContext(AuthContext);
-  const { role } = authContext;
+  const { user } = authContext;
 
   const [data, setData] = useState([]); 
   const [photo, setPhoto] = useState({
       photo: "",
       url:""
-  });
+  }); 
+
+  const [modal, setModal] = useState(false);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
 
   useEffect(() => {
     fetchData();
@@ -37,8 +43,6 @@ const Report = () => {
   const handleRefresh = () => {
     fetchData();
   };
-
-  const [modal, setModal] = useState(false);
 
   const toggle = (e) => {
       const photoUrl = SurveyPhotoUrl + e.target.name;
@@ -65,9 +69,12 @@ const Report = () => {
   };
 
   const handleDelete = async id => {
+    
     const formData = {
       surveyId: id
     };
+
+    console.log(formData);
 
     try {
       const url = ApiUrl + "/survey/delete";
@@ -78,6 +85,10 @@ const Report = () => {
       console.log(err);
     }
   };
+
+  const handleDateFilter = async () => {
+    console.log(startDate, endDate);
+  }
 
 
   const photoFormatter = (cell, row) => {
@@ -153,12 +164,10 @@ const Report = () => {
     {
       dataField: "id",
       text: "Option",      
-      hidden: role === "admin" ? false : true,
+      hidden: user.role === "admin" ? false : true,
       formatter: optionFormatter
     }
-  ];
-
-  
+  ];  
   
 
   const ExcelFile = ReactExport.ExcelFile;
@@ -183,28 +192,41 @@ const Report = () => {
       {renderBreadcrumb()}
       <div className="animated fadeIn">
         <Row>
-          <Col lg="12" sm="12" xs="12">
+          <Col md="12">
             <Card>
               <CardHeader>
               <Row>
-                  <Col lg="6" sm="6" xs="6">
+                  <Col md="4">
                       <h4>Report Survey</h4>
                   </Col>
-                  <Col lg="6" sm="6" xs="6" className="text-right">
-                  <ExcelFile element={<button className="btn btn-sm btn-success" filename="ReportSurvey">
-                    <i className="icon-printer" /> Export</button>}>
-                  <ExcelSheet data={data} name="ReportCatering">
-                      <ExcelColumn label="Bulan" value="bulan"/>
-                      <ExcelColumn label="Tahun" value="tahun"/>
-                      <ExcelColumn label="Tanggal Submit" value="submittedAt"/>
-                      <ExcelColumn label="NIK" value="nik"/>
-                      <ExcelColumn label="Nama" value="nama"/>
-                      <ExcelColumn label="Departemen" value="department"/>
-                      <ExcelColumn label="Penilaian" value="result"/>
-                      <ExcelColumn label="Alasan" value="reason"/>
-                      <ExcelColumn label="Photo" value="photos"/>
-                  </ExcelSheet>                
-              </ExcelFile>
+                  <Col md="4" className="text-right">
+                      {/* <label>Tanggal Submit :</label>
+                      <DatePicker
+                        selectsRange={true}
+                        startDate={startDate}
+                        endDate={endDate}
+                        onChange={(update) => {
+                          setDateRange(update);
+                        }}
+                        isClearable={true}
+                      />
+                      <Button color="info" className="btn btn-sm" onClick={handleDateFilter}>Filter</Button> */}
+                  </Col>
+                  <Col md="4" className="text-right">
+                    <ExcelFile element={<button className="btn btn-sm btn-success" filename="ReportSurvey">
+                      <i className="icon-printer" /> Export</button>}>
+                      <ExcelSheet data={data} name="ReportCatering">
+                          <ExcelColumn label="Bulan" value="bulan"/>
+                          <ExcelColumn label="Tahun" value="tahun"/>
+                          <ExcelColumn label="Tanggal Submit" value="submittedAt"/>
+                          <ExcelColumn label="NIK" value="nik"/>
+                          <ExcelColumn label="Nama" value="nama"/>
+                          <ExcelColumn label="Departemen" value="department"/>
+                          <ExcelColumn label="Penilaian" value="result"/>
+                          <ExcelColumn label="Alasan" value="reason"/>
+                          <ExcelColumn label="Photo" value="photos"/>
+                      </ExcelSheet>                
+                    </ExcelFile>
                     <Button
                       color="info"
                       onClick={handleRefresh}
