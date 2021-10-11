@@ -70,20 +70,24 @@ const Report = () => {
 
   const handleDelete = async id => {
     
+    const confirm = window.confirm("Apakah anda yakin menghapus survey ini ?");
+
     const formData = {
       surveyId: id
     };
 
-    console.log(formData);
 
-    try {
-      const url = ApiUrl + "/survey/delete";
-      await axios.post(url, formData, JsonContentType); 
-
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
+    if(confirm === true) {
+      try {
+        const url = ApiUrl + "/survey/delete";
+        await axios.post(url, formData, JsonContentType); 
+  
+        fetchData();
+      } catch (err) {
+        console.log(err);
+      }
+    } 
+    
   };
 
   const handleDateFilter = async () => {
