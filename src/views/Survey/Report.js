@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import ReactExport from "react-data-export";
 import DatePicker from 'react-date-picker';
+import {confirm} from 'react-bootstrap-confirmation';
 
 
 import AuthContext from "../../context/auth/authContext";
@@ -70,14 +71,13 @@ const Report = () => {
 
   const handleDelete = async id => {
     
-    const confirm = window.confirm("Apakah anda yakin menghapus survey ini ?");
-
     const formData = {
       surveyId: id
     };
 
-
-    if(confirm === true) {
+    const result = await confirm('Apakah anda yakin menghapus survey ini ?');
+  
+    if(result === true) {
       try {
         const url = ApiUrl + "/survey/delete";
         await axios.post(url, formData, JsonContentType); 
