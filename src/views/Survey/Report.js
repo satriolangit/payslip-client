@@ -32,6 +32,7 @@ const Report = () => {
       photo: "",
       url:""
   }); 
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const [modal, setModal] = useState(false);
   const [dateRange, setDateRange] = useState([null, null]);
@@ -90,8 +91,31 @@ const Report = () => {
     
   };
 
+  const handleDeleteRow = () => {
+      console.log(selectedRows);
+
+      if(selectedRows.length > 0) {
+        selectedRows.map(async item => {
+
+            const formData = {
+              surveyId: item.id
+            };
+
+            try {
+              const url = ApiUrl + "/survey/delete";
+              await axios.post(url, formData, JsonContentType);        
+             
+            } catch (err) {
+              console.log(err);
+            }            
+        }); 
+
+        fetchData();
+      }
+  }
+
   const handleDateFilter = async () => {
-    console.log(startDate, endDate);
+      console.log(startDate, endDate);     
   }
 
 
@@ -118,6 +142,19 @@ const Report = () => {
     );
   };
 
+  const renderButtonDelete = () => {
+    if(user.role === "admin") {
+      return ( 
+        <Button
+            color="danger"
+            onClick={handleDeleteRow}
+            className="btn btn-sm"
+          >
+          <i className="icon-trash" /> Delete
+        </Button>   
+      );
+    }
+  }
   
   const columns = [ 
     {
@@ -172,7 +209,27 @@ const Report = () => {
       formatter: optionFormatter
     }
   ];  
-  
+
+  const selectRow = {
+    mode: 'checkbox',
+    onSelectAll: (isSelect, rows, e) => {
+      if(isSelect) {
+        setSelectedRows(rows);
+      } else {
+        setSelectedRows([]);
+      }
+    },
+    onSelect: (row, isSelect, rowIndex, e) => {
+      if(isSelect) {
+        setSelectedRows([...selectedRows, row]);
+      } 
+      else {
+        var filtered = selectedRows.filter(item => item.id !== row.id);
+        setSelectedRows(filtered);
+      }
+
+    } 
+  };   
 
   const ExcelFile = ReactExport.ExcelFile;
   const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -237,7 +294,8 @@ const Report = () => {
                       className="btn btn-sm"
                     >
                       <i className="icon-refresh" /> Refresh
-                    </Button>                 
+                    </Button>
+                    {renderButtonDelete()}              
                   </Col>
                 </Row>
               </CardHeader>
@@ -251,6 +309,7 @@ const Report = () => {
                   wrapperClasses="table-responsive"
                   striped
                   filter={ filterFactory() }
+                  selectRow={selectRow}
                 />
               </CardBody>
             </Card>
