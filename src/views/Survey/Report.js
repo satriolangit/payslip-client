@@ -14,9 +14,9 @@ import {
   Modal, ModalHeader, ModalBody,ButtonGroup
 } from "reactstrap";
 import ReactExport from "react-data-export";
-import DatePicker from 'react-date-picker';
 import {confirm} from 'react-bootstrap-confirmation';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import AuthContext from "../../context/auth/authContext";
 import pagination from "../Pagination/pagination";
@@ -33,10 +33,9 @@ const Report = () => {
       url:""
   }); 
   const [selectedRows, setSelectedRows] = useState([]);
-
   const [modal, setModal] = useState(false);
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
     fetchData();
@@ -114,8 +113,24 @@ const Report = () => {
       }
   }
 
-  const handleDateFilter = async () => {
+  const handleFilter = async () => {
       console.log(startDate, endDate);     
+
+      const formData = {
+        startDate,
+        endDate
+      };
+
+      try {
+        const url = ApiUrl + "/survey/report/filter";
+        const res = await axios.post(url, formData, JsonContentType);
+        const list = res.data.data;
+  
+        setData(list);
+        console.log(list);
+      } catch (err) {
+        console.log(err);
+      }
   }
 
 
@@ -154,6 +169,48 @@ const Report = () => {
         </Button>   
       );
     }
+  }
+
+  const renderBreadcrumb = () => {
+    return (
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="active breadcrumb-item" aria-current="page">Report Survey</li>
+          </ol>
+        </nav>
+      </div>
+    )    
+  }
+
+  const renderDateFilter = () => {
+    const child = {
+      display: "inline-block",
+      verticalAlign: "middle",
+      marginRight: "2px"
+    }
+
+    return (     
+      <Col md="6">   
+        <Row>
+          <div>
+              <div style={child}><label>Tanggal Submit : </label></div>  
+              <div style={child}><DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /></div>
+              <div style={child}><DatePicker selected={endDate} onChange={(date) => setEndDate(date)} /></div>
+              <div style={child}><button class="btn btn-sm btn-info" onClick={handleFilter}><i className="fa fa-search"></i>Filter</button></div>
+          </div>
+        </Row>   
+        {/* <Row>        
+          <Col md="2"><label>Tanggal Submit :</label></Col>
+          <Col md="4"><DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /></Col>
+          <Col md="4"><DatePicker selected={endDate} onChange={(date) => setEndDate(date)} /></Col>
+          <Col md="2">
+            <button class="btn btn-sm btn-info" onClick={handleFilter}><i className="fa fa-search"></i>Filter</button>
+          </Col>
+        </Row> */}
+      </Col>      
+    )
   }
   
   const columns = [ 
@@ -235,18 +292,7 @@ const Report = () => {
   const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
   const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
-  const renderBreadcrumb = () => {
-    return (
-      <div>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">Home</li>
-            <li class="active breadcrumb-item" aria-current="page">Report Survey</li>
-          </ol>
-        </nav>
-      </div>
-    )    
-}
+
 
   return (
     <div>
@@ -256,24 +302,9 @@ const Report = () => {
           <Col md="12">
             <Card>
               <CardHeader>
-              <Row>
-                  <Col md="4">
-                      <h4>Report Survey</h4>
-                  </Col>
-                  <Col md="4" className="text-right">
-                      {/* <label>Tanggal Submit :</label>
-                      <DatePicker
-                        selectsRange={true}
-                        startDate={startDate}
-                        endDate={endDate}
-                        onChange={(update) => {
-                          setDateRange(update);
-                        }}
-                        isClearable={true}
-                      />
-                      <Button color="info" className="btn btn-sm" onClick={handleDateFilter}>Filter</Button> */}
-                  </Col>
-                  <Col md="4" className="text-right">
+              <Row>                  
+                  {renderDateFilter()}                 
+                  <Col md="6" className="text-right">
                     <ExcelFile element={<button className="btn btn-sm btn-success" filename="ReportSurvey">
                       <i className="icon-printer" /> Export</button>}>
                       <ExcelSheet data={data} name="ReportCatering">
