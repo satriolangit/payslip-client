@@ -62,7 +62,7 @@ const Login = props => {
     password: ""
   });
 
-  const { nik, password } = user;
+  const { nik, password} = user;
 
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
 
@@ -88,7 +88,8 @@ const Login = props => {
     } else {
       login({
         nik,
-        password
+        password,
+        siteName
       });
     }
   };

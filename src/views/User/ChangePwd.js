@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Alert from "react-s-alert";
 import { Link } from "react-router-dom";
 
 import { ApiUrl, AlertOptions } from "../../setting";
-
+import SiteContext from "../../context/site/siteContext";
 import {
   Button,
   Card,
@@ -30,6 +30,10 @@ const ChangePassword = ({ match, history }) => {
 
   const [currentUserId, setCurrentUserId] = useState("");
   const { password, confirmPassword} = data;
+
+  const siteContext = useContext(SiteContext);
+  const {siteName: currentSite} = siteContext;
+
 
   useEffect(() => {
     setCurrentUserId(match.params.id);        
@@ -78,6 +82,19 @@ const ChangePassword = ({ match, history }) => {
     });
   };
 
+  const renderBackButton = () => {
+    let url = "/admin/user/";
+    if(currentSite !== "PAYSLIP") {
+      url = "/admin/user_by_site";
+    }
+
+    return (
+      <Link to={url} className="btn btn-secondary btn-sm float-right">
+            <span className="icon-close"></span> Close
+      </Link>
+    );
+  }
+
   return (
     <div className="animated fadeIn">
       <Row>
@@ -85,12 +102,7 @@ const ChangePassword = ({ match, history }) => {
           <Card>
             <CardHeader>
               <strong>Change Password</strong>
-              <Link
-                  to="/admin/user"
-                  className="btn btn-secondary btn-sm float-right"
-                >
-                  <span className="icon-close"></span> Close
-                </Link>
+              {renderBackButton()}
             </CardHeader>
             <Form onSubmit={handleSubmit}>
               <CardBody>
@@ -102,7 +114,7 @@ const ChangePassword = ({ match, history }) => {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      type="text"
+                      type="password"
                       name="password"
                       value={password}     
                       onChange={onChange}                
@@ -118,7 +130,7 @@ const ChangePassword = ({ match, history }) => {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      type="text"
+                      type="password"
                       name="confirmPassword"
                       value={confirmPassword} 
                       onChange={onChange}                         

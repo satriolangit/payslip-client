@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {
@@ -21,7 +21,7 @@ import {
 import Alert from "react-s-alert";
 import { ApiUrl, AlertOptions } from "../../setting";
 import avatar from "./../../assets/img/users/no-image.jpg";
-
+import SiteContext from "../../context/site/siteContext";
 
 const Edit = ({ match, history }) => {
   const [data, setData] = useState({
@@ -38,8 +38,8 @@ const Edit = ({ match, history }) => {
   const [photoFile, setPhotoFile] = useState(null);
   const [role, setRole] = useState("employee");
   const [status, setStatus] = useState(0);
-  
-
+  const siteContext = useContext(SiteContext);
+  const {siteName: currentSite} = siteContext;
 
   const {
     email,
@@ -117,7 +117,7 @@ const Edit = ({ match, history }) => {
       userId: match.params.id,
       phone,
       photo,
-      siteName
+      siteName:currentSite
     };
 
     console.log(user);
@@ -134,12 +134,10 @@ const Edit = ({ match, history }) => {
         }
       });
 
-      //  console.log(result);
-
       if (result.data.result === "FAIL") {
         Alert.error(result.data.message, AlertOptions);
       } else {
-          history.push("/admin/user");        
+          history.push("/admin/user_by_site");        
       }
     } catch (err) {
       console.log("error: ", err.response);
@@ -156,10 +154,7 @@ const Edit = ({ match, history }) => {
 
         setData(record);
         setRole(record.role);
-        setStatus(record.is_active);
-        
-        console.log("data:", data);
-
+        setStatus(record.is_active);        
       } catch (err) {
         console.log(err);
       }
@@ -171,7 +166,6 @@ const Edit = ({ match, history }) => {
   const onRoleChange = e => {
     setRole(e.target.value);
   };
-  const onSiteChange = e => setData({ ...data, site_name: e.target.value });
 
   const handlePhotoChange = e => {
     setPhotoFile(e.target.files[0]);
@@ -185,7 +179,8 @@ const Edit = ({ match, history }) => {
       photo: "",
       password: "",
       confirmPassword: "",
-      phone: ""
+      phone: "",
+      site_name: currentSite
     });
   };
 
@@ -260,6 +255,9 @@ const Edit = ({ match, history }) => {
 
   const renderBackButton = () => {
     let url = "/admin/user";
+    if(currentSite !== "PAYSLIP") {
+      url = "/admin/user_by_site/"
+    } 
     return(      
         <Link to={url} className="btn btn-secondary btn-sm float-right">
           <span className="icon-close"></span> Close
@@ -413,66 +411,6 @@ const Edit = ({ match, history }) => {
                       </Label>
                     </FormGroup>
                     <FormText color="muted">Status user</FormText>
-                  </Col>
-                </FormGroup>
-                <FormGroup row>
-                  <Col md="3">
-                    <Label>Site</Label>
-                  </Col>
-                  <Col xs="12" md="9">
-                    <FormGroup check inline>
-                      <Input
-                        className="form-check-input"
-                        type="radio"
-                        name="radioSite"
-                        onChange={onSiteChange}
-                        value="PAYSLIP"
-                        checked={siteName === "PAYSLIP"}
-                      />
-                      <Label className="form-check-label" check>
-                        Payslip
-                      </Label>
-                    </FormGroup>
-                    <FormGroup check inline>
-                      <Input
-                        className="form-check-input"
-                        type="radio"
-                        name="radioSite"
-                        onChange={onSiteChange}
-                        value="SURVEY"
-                        checked={siteName === "SURVEY"}
-                      />
-                      <Label className="form-check-label" check>
-                        Catering
-                      </Label>
-                    </FormGroup>
-                    <FormGroup check inline>
-                      <Input
-                        className="form-check-input"
-                        type="radio"
-                        name="radioSite"
-                        onChange={onSiteChange}
-                        value="IDEABOX"
-                        checked={siteName === "IDEABOX"}
-                      />
-                      <Label className="form-check-label" check>
-                        Idea Box
-                      </Label>
-                    </FormGroup>
-                    <FormGroup check inline>
-                      <Input
-                        className="form-check-input"
-                        type="radio"
-                        name="radioSite"
-                        onChange={onSiteChange}
-                        value="ALL"
-                        checked={siteName === "ALL"}
-                      />
-                      <Label className="form-check-label" check>
-                        ALL
-                      </Label>
-                    </FormGroup>
-                    <FormText color="muted">Site</FormText>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
