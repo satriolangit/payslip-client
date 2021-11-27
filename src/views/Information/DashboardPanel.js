@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { Col, Card, CardHeader, CardBody } from "reactstrap";
+import ReactHtmlParser from "react-html-parser";
 
 import { ApiUrl } from "./../../setting";
 
@@ -25,7 +26,7 @@ const DashboardPanel = () => {
   };
 
   const renderItems = () => {
-    return data.map(item => (
+    return data.map((item) => (
       <Fragment key={item.id}>
         <h6>
           <Link to={"/pages/information/" + item.id}>{item.title}</Link>
@@ -47,7 +48,7 @@ const DashboardPanel = () => {
     if (clearedText.length > 100) {
       return (
         <Fragment>
-          {clearedText.substr(0, 100) + "..."}
+          {ReactHtmlParser(clearedText.substr(0, 100) + "...")}
 
           <Link to={"/pages/information/" + id}>
             <span className="label label-warning">more</span>
@@ -59,7 +60,7 @@ const DashboardPanel = () => {
     } else {
       return (
         <Fragment>
-          {clearedText} <br />
+          {ReactHtmlParser(clearedText)} <br />
         </Fragment>
       );
     }

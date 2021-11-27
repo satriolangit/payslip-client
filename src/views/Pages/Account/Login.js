@@ -16,16 +16,28 @@ import {
 } from "reactstrap";
 
 import AuthContext from "./../../../context/auth/authContext";
+import SiteContext from "../../../context/site/siteContext";
+
 import { AlertOptions } from "./../../../setting";
 import "./Login.css";
 
 const Login = props => {
   const authContext = useContext(AuthContext);
   const { login, error, clearErrors, isAuthenticated } = authContext;
+  const siteContext = useContext(SiteContext);
+  const {siteName} = siteContext;
 
   useEffect(() => {
+
+    console.log("siteName : ", siteName);
+
     if (isAuthenticated) {
-      props.history.push("/");
+      if(siteName === "PAYSLIP") {
+        props.history.push("/");
+      } else {
+        props.history.push("/survey");
+      }
+      
     }
 
     if (error === "Invalid credentials") {
@@ -50,7 +62,7 @@ const Login = props => {
     password: ""
   });
 
-  const { nik, password } = user;
+  const { nik, password} = user;
 
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
 
@@ -76,7 +88,8 @@ const Login = props => {
     } else {
       login({
         nik,
-        password
+        password,
+        siteName
       });
     }
   };

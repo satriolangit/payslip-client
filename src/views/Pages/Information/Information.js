@@ -17,6 +17,8 @@ const Information = props => {
 
   const handleRefresh = () => {
     loadData();
+
+    pdf();
   };
 
   const loadData = async () => {
@@ -28,6 +30,17 @@ const Information = props => {
 
       const res = await axios.get(url);
       setData(res.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const pdf = async () => {
+    try {
+      let url = ApiUrl + "/payslip/open/201905_1001_YENNY.pdf";
+
+      const res = await axios.get(url);
+      console.log(res.data.response);
     } catch (err) {
       console.log(err);
     }

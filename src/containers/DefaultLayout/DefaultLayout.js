@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, Link } from "react-router-dom";
 import * as router from "react-router-dom";
 import { Container } from "reactstrap";
 
@@ -16,10 +16,11 @@ import {
   AppSidebarNav2 as AppSidebarNav
 } from "@coreui/react";
 // sidebar nav config
-import defaultNavigation, { adminNavigation } from "../../_nav";
+import defaultNavigation, { adminNavigation, userNavigationSurvey, adminNavigationSurvey } from "../../_nav";
 // routes config
 import routes from "../../routes";
 import AuthContext from "./../../context/auth/authContext";
+import SiteContext from "../../context/site/siteContext";
 
 const DefaultAside = React.lazy(() => import("./DefaultAside"));
 const DefaultFooter = React.lazy(() => import("./DefaultFooter"));
@@ -28,6 +29,8 @@ const DefaultHeader = React.lazy(() => import("./DefaultHeader"));
 const DefaultLayout = props => {
   const authContext = useContext(AuthContext);
   const { logout, isAuthenticated, user } = authContext;
+  const siteContext  = useContext(SiteContext);
+  const { siteName } = siteContext;
   const [navigation, setNavigation] = useState(defaultNavigation);
   const [currentUser, setCurrentUser] = useState({
     id: "",
@@ -57,10 +60,11 @@ const DefaultLayout = props => {
     }
   };
 
-  useEffect(() => {
-    if (!isAuthenticated && props.location.pathname !== "/privacy-policy") {
-      props.history.push("/login");
+  useEffect(() => {    
+    if(!isAuthenticated && props.location.pathname !== "/login") {
+      props.history.push("/welcome");
     }
+
   }, [isAuthenticated, props.history, props.location]);
 
   useEffect(() => {
@@ -69,25 +73,48 @@ const DefaultLayout = props => {
       //console.log(currentUser);
       //console.log(navigation);
 
-      if (currentUser.role === "admin") {
-        const adminNav = [...navigation.items, adminNavigation];
-        const all = [...adminNav, logoutNav];
-        setNavigation({ ...navigation, items: all });
+      if(siteName === "PAYSLIP") {
+        if (currentUser.role === "admin") {
+          const all = [...adminNavigation.items, logoutNav];
+          setNavigation({ ...navigation, items: all });
+        }
+  
+        if (currentUser.role === "employee") {
+          const all = [...defaultNavigation.items, logoutNav];
+          setNavigation({ ...navigation, items: all });
+        }
+      } else if(siteName === "SURVEY") {
+        if (currentUser.role === "admin") {
+          const all = [...adminNavigationSurvey.items, logoutNav];
+          setNavigation({ ...navigation, items: all });
+        }
+  
+        if (currentUser.role === "employee") {
+          const all = [...userNavigationSurvey.items, logoutNav];
+          setNavigation({ ...navigation, items: all });
+        }
+      } else {
+        //ideabox
       }
 
-      if (currentUser.role === "employee") {
-        const all = [...navigation.items, logoutNav];
-        setNavigation({ ...navigation, items: all });
-      }
+      
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, currentUser]);
+
+  const renderBreadcrumb = () => {
+    if(siteName === "PAYSLIP") {
+      return (
+        <AppBreadcrumb appRoutes={routes} router={router} />
+      );
+    } 
+  } 
 
   return (
     <div className="app">
       <AppHeader fixed>
         <Suspense fallback={loading()}>
-          <DefaultHeader onLogout={e => signOut(e)} user={currentUser} />
+          <DefaultHeader onLogout={e => signOut(e)} user={currentUser} siteName={siteName}/>
         </Suspense>
       </AppHeader>
       <div className="app-body">
@@ -101,7 +128,7 @@ const DefaultLayout = props => {
           <AppSidebarMinimizer />
         </AppSidebar>
         <main className="main">
-          <AppBreadcrumb appRoutes={routes} router={router} />
+          {renderBreadcrumb()}
           <Container fluid>
             <Suspense fallback={loading()}>
               <Switch>

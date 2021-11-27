@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Alert from "react-s-alert";
+import { Link } from "react-router-dom";
 
-import { ApiUrl, AlertOptions } from "./../../setting";
-
+import { ApiUrl, AlertOptions } from "../../setting";
+import SiteContext from "../../context/site/siteContext";
 import {
   Button,
   Card,
@@ -24,17 +25,24 @@ import {
 const ChangePassword = ({ match, history }) => {
   const [data, setData] = useState({
     password: "",
-    confirmPassword: "",
-    userId: ""
+    confirmPassword: ""
   });
-  const { password, confirmPassword, userId } = data;
+
+  const [currentUserId, setCurrentUserId] = useState("");
+  const { password, confirmPassword} = data;
+
+  const siteContext = useContext(SiteContext);
+  const {siteName: currentSite} = siteContext;
+
 
   useEffect(() => {
-    setData({ ...data, userId: match.params.id });
-  }, [match.params.id, data]);
+    setCurrentUserId(match.params.id);        
+  }, [match.params.id])
 
-  const onChange = e => setData({ ...data, [e.target.name]: e.target.value });
-  
+  const onChange = e => {
+    setData({ ...data, [e.target.name]: e.target.value });        
+  }
+
   const handleSubmit = async e => {
     e.preventDefault();
 
@@ -45,7 +53,7 @@ const ChangePassword = ({ match, history }) => {
     } else {
       try {
         const formData = {
-          userId: userId,
+          userId: currentUserId,
           password,
           confirmPassword
         };
@@ -70,10 +78,22 @@ const ChangePassword = ({ match, history }) => {
   const handleReset = () => {
     setData({
       password: "",
-      confirmPassword: "",
-      userId: ""
+      confirmPassword: ""
     });
   };
+
+  const renderBackButton = () => {
+    let url = "/admin/user/";
+    if(currentSite !== "PAYSLIP") {
+      url = "/admin/user_by_site";
+    }
+
+    return (
+      <Link to={url} className="btn btn-secondary btn-sm float-right">
+            <span className="icon-close"></span> Close
+      </Link>
+    );
+  }
 
   return (
     <div className="animated fadeIn">
@@ -82,6 +102,7 @@ const ChangePassword = ({ match, history }) => {
           <Card>
             <CardHeader>
               <strong>Change Password</strong>
+              {renderBackButton()}
             </CardHeader>
             <Form onSubmit={handleSubmit}>
               <CardBody>
@@ -93,10 +114,10 @@ const ChangePassword = ({ match, history }) => {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      type="text"
+                      type="password"
                       name="password"
-                      value={password}
-                      onChange={() => console.log('onchange')}
+                      value={password}     
+                      onChange={onChange}                
                     />
                   </InputGroup>
                   <FormText className="help-block">New Password</FormText>
@@ -109,10 +130,10 @@ const ChangePassword = ({ match, history }) => {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      type="text"
+                      type="password"
                       name="confirmPassword"
-                      value={confirmPassword}
-                      onChange={onChange}
+                      value={confirmPassword} 
+                      onChange={onChange}                         
                     />
                   </InputGroup>
                   <FormText className="help-block">

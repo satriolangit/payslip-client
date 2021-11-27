@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Card, CardBody, CardHeader, Col, Row, Table } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Table,
+  Button
+} from "reactstrap";
 import axios from "axios";
 
 import AuthContext from "../../../context/auth/authContext";
@@ -35,34 +43,59 @@ const Payslip = () => {
     }
   };
 
-  const handleDownload = async filename => {
-    console.log("download :", filename);
+  // const handleDownload = async filename => {
+  //   console.log("download :", filename);
 
+  //   try {
+  //     const url = ApiUrl + "/payslip/download/" + filename;
+  //     axios(url, {
+  //       method: "GET",
+  //       responseType: "blob"
+  //       //Force to receive data in a Blob Format
+  //     })
+  //       .then(response => {
+  //         //Create a Blob from the PDF Stream
+  //         const file = new Blob([response.data], {
+  //           type: "application/pdf"
+  //         });
+
+  //         const url = window.URL.createObjectURL(file);
+  //         const link = document.createElement("a");
+  //         link.href = url;
+  //         link.setAttribute("download", filename);
+  //         document.body.appendChild(link);
+  //         link.click();
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //       });
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const handleLinkClick = async filename => {
     try {
-      const url = ApiUrl + "/payslip/download/" + filename;
+      const url = ApiUrl + "/payslip/download2/" + filename;
       axios(url, {
-        method: "GET",
-        responseType: "blob"
-        //Force to receive data in a Blob Format
+        method: "GET"
       })
         .then(response => {
           //Create a Blob from the PDF Stream
-          const file = new Blob([response.data], {
-            type: "application/pdf"
-          });
-
-          const url = window.URL.createObjectURL(file);
+          const fileUrl = response.data.url;
+          console.log(fileUrl);
           const link = document.createElement("a");
-          link.href = url;
+          link.href = fileUrl;
           link.setAttribute("download", filename);
+          //link.target = "_blank";
           document.body.appendChild(link);
           link.click();
         })
         .catch(error => {
           console.log(error);
         });
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -75,21 +108,14 @@ const Payslip = () => {
           <td>{item.year}</td>
           <td>{item.month}</td>
           <td>
-            {/* <a
-              href={PayslipFileUrl + item.filename}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Button color="link" onClick={() => handleLinkClick(item.filename)}>
               {item.filename}
-            </a> */}
-            <a onClick={() => handleDownload(item.filename)} href="#!">
-              {item.filename}
-            </a>
+            </Button>
           </td>
           <td>
             <button
               className="btn btn-rounded"
-              onClick={() => handleDownload(item.filename)}
+              onClick={() => handleLinkClick(item.filename)}
             >
               <i className="fa fa-cloud-download"></i>
             </button>

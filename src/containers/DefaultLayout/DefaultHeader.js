@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
 import sygnet from "../../assets/img/brand/sygnet.svg";
 import logo2 from "./../../assets/img/brand/logo_payslip.png";
+import logo_survey from "./../../assets/img/brand/logo_kantin.png";
 
 const propTypes = {
   children: PropTypes.node
@@ -24,7 +25,7 @@ class DefaultHeader extends Component {
   render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
-    const { user } = this.props;
+    const { user, siteName } = this.props;
 
     const renderAvatar = () => {
       if (user.photo) {
@@ -40,10 +41,23 @@ class DefaultHeader extends Component {
       }
     };
 
-    return (
-      <React.Fragment>
-        <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        <AppNavbarBrand
+    const renderHomeNav = () => {
+      if(siteName === "PAYSLIP") {
+        return(
+          <Nav className="d-md-down-none" navbar>
+            <NavItem className="px-3">
+              <NavLink to="/dashboard" className="nav-link">
+                Dashboard
+              </NavLink>
+            </NavItem>
+          </Nav>
+        );
+      } 
+    }
+
+    const renderLogo = () => {
+      if(siteName === "PAYSLIP") {
+        return ( <AppNavbarBrand
           full={{ src: logo2, width: 120, height: 35, alt: "payslip Logo" }}
           minimized={{
             src: sygnet,
@@ -51,17 +65,30 @@ class DefaultHeader extends Component {
             height: 30,
             alt: "Shindengen Logo"
           }}
+        />);
+      } else {
+        return (
+          <AppNavbarBrand
+          full={{ src: logo_survey, width: 120, height: 35, alt: "kantin Logo" }}
+          minimized={{
+            src: sygnet,
+            width: 30,
+            height: 30,
+            alt: "Shindengen Logo"
+          }}
         />
+        );
+      }
+    }
+
+    return (
+      <React.Fragment>
+        <AppSidebarToggler className="d-lg-none" display="md" mobile />
+        {renderLogo()}
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
-        <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
-            <NavLink to="/dashboard" className="nav-link">
-              Dashboard
-            </NavLink>
-          </NavItem>
-        </Nav>
-
+        {renderHomeNav()}
+        
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
             <i className="hello-text">Hello, {user.name} !</i>

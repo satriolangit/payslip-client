@@ -25,36 +25,100 @@ export default {
 };
 
 const adminNavigation = {
-  name: "Administration",
-  url: "/admin",
-  icon: "icon-settings",
-  children: [
+  items: [
     {
-      name: "User",
-      url: "/admin/user",
-      icon: "icon-user"
-    },
-    {
-      name: "Pengumuman",
-      url: "/admin/announcement",
-      icon: "icon-bell"
+      name: "Dashboard",
+      url: "/dashboard",
+      icon: "icon-speedometer",
+      badge: {
+        variant: "info"
+      }
     },
     {
       name: "Informasi",
-      url: "/admin/information",
+      url: "/pages/information",
       icon: "icon-book-open"
     },
     {
-      name: "Payslip",
-      url: "/admin/payslip",
-      icon: "icon-doc"
+      name: "Pengumuman",
+      url: "/pages/announcement",
+      icon: "icon-bell"
     },
     {
-      name: "Files",
-      url: "/admin/files",
-      icon: "icon-puzzle"
+      divider: true
+    },
+    {
+      name: "Administration",
+      url: "/admin",
+      icon: "icon-settings",
+      children: [
+        {
+          name: "User",
+          url: "/admin/user",
+          icon: "icon-user"
+        },
+        {
+          name: "Pengumuman",
+          url: "/admin/announcement",
+          icon: "icon-bell"
+        },
+        {
+          name: "Informasi",
+          url: "/admin/information",
+          icon: "icon-book-open"
+        },
+        {
+          name: "Payslip",
+          url: "/admin/payslip",
+          icon: "icon-doc"
+        },
+        {
+          name: "Files",
+          url: "/admin/files",
+          icon: "icon-puzzle"
+        }
+      ]
     }
   ]
 };
 
-export { adminNavigation };
+const userNavigationSurvey = {
+  items: [
+    {
+      name: "Survey",
+      url: "/survey",
+      icon: "icon-bell"
+    }
+  ]
+};
+
+
+const adminNavigationSurvey = {
+  items:[
+    {
+      name: "Survey",
+      url: "/survey",
+      icon: "icon-bell"
+    },
+    {
+      name: "Administration",
+      url: "/admin",
+      icon: "icon-settings",
+      children: [
+        {
+          name: "User",
+          url: "/admin/user_by_site",
+          icon: "icon-user"
+        },
+        {
+          name: "Report Survey",
+          url: "/admin/survey/report",
+          icon: "icon-puzzle"
+        }
+      ]    
+    }  
+  ]  
+};
+
+
+export { adminNavigation, userNavigationSurvey, adminNavigationSurvey };

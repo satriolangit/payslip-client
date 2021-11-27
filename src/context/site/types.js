@@ -1,0 +1,1 @@
+export const SET_SITE_NAME = "SET_SITE_NAME";
