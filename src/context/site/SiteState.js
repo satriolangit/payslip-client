@@ -27,7 +27,7 @@ const SiteState = props => {
     const gotoIdeaBox = () => {
         dispatch({
             type: SET_SITE_NAME,
-            payload: "IDEA_BOX"
+            payload: "IDEABOX"
         });
     };
 
