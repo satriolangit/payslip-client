@@ -62,6 +62,33 @@ const SurveyReport = React.lazy(() =>
 const UserChangePassword_DEV = React.lazy(() =>
   retry(() => import("./views/User/ChangePwd"))
 );
+
+//ideabox routes
+const IdeaboxDashboard = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Dashboard/Dashboard"))
+); 
+
+const IdeaboxApprovalList = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Approval/ApprovalMappingList"))
+);
+
+const IdeaboxSubmitForm = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Form/SubmitForm"))
+);
+
+const IdeaboxViewForm = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Form/ViewForm"))
+);
+
+const IdeaboxEditForm = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Form/EditForm"))
+);
+
+const IdeaboxNotification = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Notification/NotificationMappingList"))
+); 
+
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -198,7 +225,37 @@ const routes = [
     name: "SurveyReport",
     component: SurveyReport
   },
-  
+  {
+    path: "/ideabox/dashboard",
+    exact: true,
+    name: "IdeaboxDashboard",
+    component: IdeaboxDashboard
+  },
+  {
+    path: "/ideabox/approval",
+    exact: true,
+    name: "IdeaboxApprovalList",
+    component: IdeaboxApprovalList
+  },
+  {
+    path: "/ideabox/submit",
+    exact: true,
+    name: "IdeaboxSubmit",
+    component: IdeaboxSubmitForm
+  },
+  {
+    path: "/ideabox/view/:id",
+    exact: true,
+    name: "IdeaboxView",
+    component: IdeaboxViewForm
+  },
+  {
+    path: "/ideabox/edit/:id",
+    exact: true,
+    name: "IdeaboxEdit",
+    component: IdeaboxEditForm
+  },
+
 ];
 
 export default routes;
