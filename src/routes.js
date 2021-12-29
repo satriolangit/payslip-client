@@ -255,6 +255,12 @@ const routes = [
     name: "IdeaboxEdit",
     component: IdeaboxEditForm
   },
+  {
+    path: "/ideabox/notification",
+    exact: true,
+    name: "IdeaboxNotification",
+    component: IdeaboxNotification
+  },
 
 ];
 
