@@ -88,6 +88,11 @@ const IdeaboxNotification = React.lazy(() =>
   retry(() => import("./views/Ideabox/Notification/NotificationMappingList"))
 ); 
 
+const IdeaboxNotificationReport = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Notification/Report"))
+); 
+
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -261,6 +266,12 @@ const routes = [
     name: "IdeaboxNotification",
     component: IdeaboxNotification
   },
+  {
+    path: "/ideabox/notification-report",
+    exact: true,
+    name: "IdeaboxNotificationReport",
+    component: IdeaboxNotificationReport
+  }
 
 ];
 
