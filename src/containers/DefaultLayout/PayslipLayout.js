@@ -72,7 +72,11 @@ const DefaultLayout = props => {
     if (user) {
       setCurrentUser(user);
       const isAdmin = currentUser.role === "admin";
-      const navigationData = defaultNavigation.items.filter(item => item.site === siteName && item.isAdmin === isAdmin);
+      let navigationData = defaultNavigation.items.filter(item => item.site === siteName);
+
+      if(!isAdmin) {
+         navigationData = defaultNavigation.items.filter(item => item.site === siteName && item.isAdmin === false);
+      }      
 
       setNavigation({...navigation, items: navigationData});    
 
