@@ -40,6 +40,7 @@ const DefaultLayout = props => {
     photo: "",
     employee_id: ""
   });
+  const [homeRoute, setHomeRoute] = useState("/home");
 
   const loading = () => (
     <div className="animated fadeIn pt-1 text-center">Loading...</div>
@@ -71,6 +72,7 @@ const DefaultLayout = props => {
   useEffect(() => {
     if (user) {
       setCurrentUser(user);
+
       const isAdmin = currentUser.role === "admin";
       let navigationData = defaultNavigation.items.filter(item => item.site === siteName);
 
@@ -78,21 +80,33 @@ const DefaultLayout = props => {
          navigationData = defaultNavigation.items.filter(item => item.site === siteName && item.isAdmin === false);
       }      
 
-      setNavigation({...navigation, items: navigationData});    
+      setNavigation({...navigation, items: navigationData});        
 
-      console.log(navigation);
+      let homeRoute = "";
+      switch (siteName) {
+        case "IDEABOX": homeRoute = "/ideabox/dashboard"          
+          break;
+        case "SURVEY": homeRoute = "/survey";
+          break;
+        default: homeRoute = "/home";
+          break;
+      }
+      
+      setHomeRoute(homeRoute);
       
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, currentUser]);
 
   const renderBreadcrumb = () => {
-    if(siteName === "PAYSLIP") {
+    //if(siteName === "PAYSLIP") {
       return (
         <AppBreadcrumb appRoutes={routes} router={router} />
       );
-    } 
+    //} 
   } 
+
+  console.log(navigation);
 
   return (
     <div className="app">
@@ -127,7 +141,7 @@ const DefaultLayout = props => {
                     />
                   ) : null;
                 })}
-                <Redirect from="/" to="/dashboard" />
+                <Redirect from="/" to={homeRoute} />
               </Switch>
             </Suspense>
           </Container>

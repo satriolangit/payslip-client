@@ -95,6 +95,7 @@ const DefaultLayout = props => {
         }
       } else {
         //ideabox
+        console.log("still load default layout");
       }
 
       

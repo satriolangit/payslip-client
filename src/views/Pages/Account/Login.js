@@ -37,6 +37,15 @@ const Login = props => {
       } else {
         props.history.push("/survey");
       }
+
+      switch (siteName) {
+        case "IDEABOX": props.history.push("/ideabox/dashboard");
+          break;
+        case "SURVEY": props.history.push("/");
+          break;        
+        default: props.history.push("/");
+          break;
+      }
       
     }
 

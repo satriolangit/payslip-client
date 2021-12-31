@@ -233,43 +233,43 @@ const routes = [
   {
     path: "/ideabox/dashboard",
     exact: true,
-    name: "IdeaboxDashboard",
+    name: "Dashboard",
     component: IdeaboxDashboard
   },
   {
     path: "/ideabox/approval",
     exact: true,
-    name: "IdeaboxApprovalList",
+    name: "Approval",
     component: IdeaboxApprovalList
   },
   {
     path: "/ideabox/submit",
     exact: true,
-    name: "IdeaboxSubmit",
+    name: "Submit Ideabox",
     component: IdeaboxSubmitForm
   },
   {
     path: "/ideabox/view/:id",
     exact: true,
-    name: "IdeaboxView",
+    name: "Ideabox Detail",
     component: IdeaboxViewForm
   },
   {
     path: "/ideabox/edit/:id",
     exact: true,
-    name: "IdeaboxEdit",
+    name: "Edit Ideabox",
     component: IdeaboxEditForm
   },
   {
     path: "/ideabox/notification",
     exact: true,
-    name: "IdeaboxNotification",
+    name: "Notification Setting",
     component: IdeaboxNotification
   },
   {
     path: "/ideabox/notification-report",
     exact: true,
-    name: "IdeaboxNotificationReport",
+    name: "Notification Report",
     component: IdeaboxNotificationReport
   }
 

@@ -102,35 +102,35 @@ export default {
             ]    
           },
           {
-              name: "idbx-dashboard",
+              name: "Dashboard",
               url: "/ideabox/dashboard",
               icon: "icon-speedometer",
               site: "IDEABOX",
               isAdmin: false
           },
           {
-            name: "idbx-administration",
+            name: "Administration",
             url: "/ideabox/admin",
             icon: "icon-settings",
             site: "IDEABOX",
             isAdmin: true,
             children: [
               {
-                name: "approval-role",
+                name: "Approval Role",
                 url: "/ideabox/approval",
                 icon: "icon-user",
                 site: "IDEABOX",
                 isAdmin: true
               },
               {
-                name: "notification",
+                name: "Notification",
                 url: "/ideabox/notification",
                 icon: "icon-puzzle",
                 site: "IDEABOX",
                 isAdmin: true
               },
               {
-                name: "notification-report",
+                name: "Report Notification",
                 url: "/ideabox/notification-report",
                 icon: "icon-puzzle",
                 site: "IDEABOX",
