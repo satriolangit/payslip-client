@@ -1,6 +1,7 @@
 const ApiUrl = "http://localhost:3001/api";
 const PayslipFileUrl = "http://localhost:3001/payslip/";
 const SurveyPhotoUrl = "http://localhost:3001/survey/";
+const IdeaboxFileUrl = "http://localhost:3001/ideabox/";
 
 const AlertOptions = {
   position: "bottom-right",
@@ -14,4 +15,4 @@ const JsonContentType = {
   }
 };
 
-export { ApiUrl, PayslipFileUrl, AlertOptions, JsonContentType, SurveyPhotoUrl };
+export { ApiUrl, PayslipFileUrl, AlertOptions, JsonContentType, SurveyPhotoUrl, IdeaboxFileUrl };
