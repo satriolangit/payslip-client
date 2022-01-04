@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext, Fragment } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import moment from "moment";
 import {
@@ -13,9 +12,12 @@ import {
   Badge,
 } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
+import ReactExport from "react-data-export";
+import { confirm } from "react-bootstrap-confirmation";
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 
 import pagination from "../../Pagination/pagination";
-import SearchBox from "../../SearchBox/SearchBox";
 import { ApiUrl, JsonContentType } from "../../../setting";
 import AuthContext from "./../../../context/auth/authContext";
 import {
@@ -26,7 +28,7 @@ import {
   SectionManagerButtonGroup,
 } from "./ButtonGroup";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
 
@@ -57,12 +59,17 @@ const Dashboard = () => {
     }
   };
 
-  const handleSearch = (keywords) => {
-    console.log("handle search");
-  };
+  const handleDeleteItems = async () => {
+    const result = await confirm("Apakah anda yakin menghapus item ini ?");
 
-  const handleDeleteItems = () => {
-    console.log("handle delete items");
+    if (result === true) {
+      try {
+        const url = ApiUrl + "/ideabox/delete";
+        fetchData();
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const handleOnSelect = (row, isSelect) => {
@@ -82,12 +89,30 @@ const Dashboard = () => {
     }
   };
 
-  const handleAccept = () => {
-    alert("handle accept");
-  };
+  const handleAccept = async () => {
+    if (selected.length <= 0) return;
 
-  const handleExport = () => {
-    alert("handle export");
+    const result = await confirm("Apakah anda yakin untuk melakukan approve?");
+
+    if (result === true) {
+      try {
+        const url = ApiUrl + "/ideabox/approve";
+
+        selected.map(async (id) => {
+          const formData = {
+            employeeId: user.employee_id,
+            ideaboxId: id,
+          };
+
+          const res = await axios.post(url, formData, JsonContentType);
+          console.log(res.data);
+        });
+
+        fetchData();
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const handleEdit = () => {
@@ -96,48 +121,56 @@ const Dashboard = () => {
 
   const handleSubmit = () => {
     alert("handle submit");
+    props.history.push("/ideabox/submit");
   };
 
-  const handleApprove = () => {
-    alert("handle approve");
+  const handleApprove = async () => {
+    if (selected.length <= 0) return;
 
-    console.log(selected);
+    const result = await confirm("Apakah anda yakin untuk melakukan approve ?");
 
-    try {
-      const url = ApiUrl + "/ideabox/approve";
+    if (result === true) {
+      try {
+        const url = ApiUrl + "/ideabox/approve";
 
-      selected.map(async (id) => {
-        const formData = {
-          employeeId: user.employee_id,
-          ideaboxId: id,
-        };
+        selected.map(async (id) => {
+          const formData = {
+            employeeId: user.employee_id,
+            ideaboxId: id,
+          };
 
-        const res = await axios.post(url, formData, JsonContentType);
-        console.log(res.data);
-      });
-    } catch (err) {
-      console.log(err);
+          const res = await axios.post(url, formData, JsonContentType);
+          console.log(res.data);
+        });
+
+        fetchData();
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
-  const handleReject = () => {
-    alert("handle reject");
-    console.log(selected);
+  const handleReject = async () => {
+    if (selected.length <= 0) return;
 
-    try {
-      const url = ApiUrl + "/ideabox/reject";
+    const result = await confirm("Apakah anda yakin untuk mereject ?");
 
-      selected.map(async (id) => {
-        const formData = {
-          employeeId: user.employee_id,
-          ideaboxId: id,
-        };
+    if (result === true) {
+      try {
+        const url = ApiUrl + "/ideabox/reject";
 
-        const res = await axios.post(url, formData, JsonContentType);
-        console.log(res.data);
-      });
-    } catch (err) {
-      console.log(err);
+        selected.map(async (id) => {
+          const formData = {
+            employeeId: user.employee_id,
+            ideaboxId: id,
+          };
+
+          const res = await axios.post(url, formData, JsonContentType);
+          console.log(res.data);
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -148,18 +181,13 @@ const Dashboard = () => {
 
     if (approvalRole === "KOMITE_IDEABOX") {
       return (
-        <KomiteButtonGroup
-          onAccept={handleAccept}
-          onExport={handleExport}
-          onRefresh={handleRefresh}
-        />
+        <KomiteButtonGroup onAccept={handleAccept} onRefresh={handleRefresh} />
       );
     } else if (approvalRole === "SECTION_MANAGER") {
       return (
         <SectionManagerButtonGroup
           onApprove={handleApprove}
           onEdit={handleEdit}
-          onExport={handleExport}
           onRefresh={handleRefresh}
           onReject={handleReject}
         />
@@ -169,16 +197,13 @@ const Dashboard = () => {
         <DeparmentManagerButtonGroup
           onApprove={handleApprove}
           onEdit={handleEdit}
-          onExport={handleExport}
           onRefresh={handleRefresh}
           onReject={handleReject}
         />
       );
     } else {
       if (role === "administrator") {
-        return (
-          <AdminButtonGroup onExport={handleExport} onRefresh={handleRefresh} />
-        );
+        return <AdminButtonGroup onRefresh={handleRefresh} />;
       } else {
         return (
           <EmployeeButtonGroup
@@ -248,7 +273,7 @@ const Dashboard = () => {
     },
     {
       dataField: "submittedBy",
-      text: "NIK",
+      text: "NIK Pembuat Ide",
       sort: true,
     },
     {
@@ -313,6 +338,10 @@ const Dashboard = () => {
     },
   ];
 
+  const ExcelFile = ReactExport.ExcelFile;
+  const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+  const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
   return (
     <div className="animated fadeIn">
       <Row>
@@ -320,11 +349,63 @@ const Dashboard = () => {
           <Card>
             <CardHeader>
               <Row>
-                <Col md="4">
-                  <SearchBox onSearch={handleSearch} />
-                </Col>
-                <Col md="8" className="text-right">
+                <Col md="12" className="text-right">
                   {renderButton()}
+                  <ExcelFile
+                    element={
+                      <button
+                        className="btn btn-sm btn-warning"
+                        filename="ReportSurvey"
+                      >
+                        <i className="icon-printer" /> Export
+                      </button>
+                    }
+                  >
+                    <ExcelSheet data={data} name="ReportIdeabox">
+                      <ExcelColumn label="NOMOR URUT" value="ideaNumber" />
+                      <ExcelColumn label="JENIS IDE" value="ideaboxType" />
+                      <ExcelColumn
+                        label="NAMA PEMBUAT IDE"
+                        value="submitterName"
+                      />
+                      <ExcelColumn
+                        label="NIK PEMBUAT IDE"
+                        value="submittedBy"
+                      />
+                      <ExcelColumn
+                        label="DEPT PEMBUAT IDE"
+                        value="departmentName"
+                      />
+                      <ExcelColumn
+                        label="PELAKSANAAN IDE"
+                        value="isIdeasheet"
+                      />
+                      <ExcelColumn label="NILAI RUPIAH" value="amount" />
+                      <ExcelColumn label="TANGGAL SUBMIT" value="submitDate" />
+                      <ExcelColumn
+                        label="NAMA PEMERIKSA"
+                        value="reviewerName"
+                      />
+                      <ExcelColumn
+                        label="TANGGAL APPROVAL"
+                        value="reviewDate"
+                      />
+                      <ExcelColumn
+                        label="NAMA PENYETUJU"
+                        value="approverName"
+                      />
+                      <ExcelColumn
+                        label="TANGGAL APPROVAL"
+                        value="approvalDate"
+                      />
+                      <ExcelColumn label="NAMA PENERIMA" value="receiverName" />
+                      <ExcelColumn
+                        label="TANGGAL DITERIMA"
+                        value="acceptedDate"
+                      />
+                      <ExcelColumn label="STATUS" value="status" />
+                    </ExcelSheet>
+                  </ExcelFile>
                 </Col>
               </Row>
             </CardHeader>
