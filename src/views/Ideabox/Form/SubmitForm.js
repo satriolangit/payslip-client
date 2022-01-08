@@ -15,7 +15,7 @@ import {
 import moment from "moment";
 import axios from "axios";
 
-import IdeaboxCounter from "./IdeaboxCounter";
+import IdeaboxCounter from "./Components/IdeaboxCounter";
 import SignBox from "./SignBox";
 import AuthContext from "./../../../context/auth/authContext";
 import IdeasheetCheckbox from "./Components/IdeasheetCheckbox";
@@ -52,10 +52,14 @@ const SubmitForm = () => {
     afterSummary: "",
     afterImage: "",
     afterRank: 0,
+    beforeImageFile: null,
+    afterImageFile: null,
   });
 
   const [formComment, setFormComment] = useState("");
   const [formType, setFormType] = useState("UMUM");
+  const [previewBeforeImage, setPreviewBeforeImage] = useState(null);
+  const [previewAfterImage, setPreviewAfterImage] = useState(null);
 
   React.useEffect(() => {
     fetchNumber();
@@ -97,6 +101,36 @@ const SubmitForm = () => {
     setFormComment(e.target.value);
   };
 
+  const handleUploadBeforeImage = (e) => {
+    const file = e.target.files[0];
+    const imageFile = URL.createObjectURL(file);
+
+    console.log(imageFile);
+    console.log(file);
+
+    setDetailFormData({
+      ...detailFormData,
+      beforeImage: file.name,
+      beforeImageFile: file,
+    });
+    setPreviewBeforeImage(imageFile);
+  };
+
+  const handleUploadAfterImage = (e) => {
+    const file = e.target.files[0];
+    const imageFile = URL.createObjectURL(file);
+
+    console.log(imageFile);
+    console.log(file);
+
+    setDetailFormData({
+      ...detailFormData,
+      afterImage: file.name,
+      afterImageFile: file,
+    });
+    setPreviewAfterImage(imageFile);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData, detailFormData, formComment);
@@ -107,6 +141,30 @@ const SubmitForm = () => {
       return renderDetailUmum();
     } else {
       return renderDetailKyt();
+    }
+  };
+
+  const showBeforeImage = () => {
+    if (previewBeforeImage !== null) {
+      return (
+        <img
+          src={previewBeforeImage}
+          className="img-thumbnail survey-attachment"
+          alt="beforeImage"
+        />
+      );
+    }
+  };
+
+  const showAfterImage = () => {
+    if (previewAfterImage !== null) {
+      return (
+        <img
+          src={previewAfterImage}
+          className="img-thumbnail survey-attachment"
+          alt="afterImage"
+        />
+      );
     }
   };
 
@@ -148,9 +206,10 @@ const SubmitForm = () => {
                 <Input
                   name="beforeImage"
                   type="file"
-                  onChange={handleDetailFormChange}
-                  value={detailFormData.beforeImage}
+                  accept="image/*|MIME_type"
+                  onChange={handleUploadBeforeImage}
                 />
+                {showBeforeImage()}
               </FormGroup>
             </Col>
             <Col md="6">
@@ -159,9 +218,10 @@ const SubmitForm = () => {
                 <Input
                   name="afterImage"
                   type="file"
-                  onChange={handleDetailFormChange}
-                  value={detailFormData.afterImage}
+                  accept="image/*|MIME_type"
+                  onChange={handleUploadAfterImage}
                 />
+                {showAfterImage()}
               </FormGroup>
             </Col>
           </Row>
@@ -248,7 +308,8 @@ const SubmitForm = () => {
                 <Input
                   name="beforeImage"
                   type="file"
-                  onChange={handleDetailFormChange}
+                  accept="image/*|MIME_type"
+                  onChange={handleUploadBeforeImage}
                   value={detailFormData.beforeImage}
                 />
               </FormGroup>
@@ -268,7 +329,8 @@ const SubmitForm = () => {
                 <Input
                   name="afterImage"
                   type="file"
-                  onChange={handleDetailFormChange}
+                  accept="image/*|MIME_type"
+                  onChange={handleUploadAfterImage}
                   value={detailFormData.afterImage}
                 />
               </FormGroup>
@@ -316,10 +378,10 @@ const SubmitForm = () => {
     <div className="animated fadeIn">
       <Row>
         <Col md="12">
+          <IdeaboxCounter value={25} />
           <Form onSubmit={handleSubmit}>
             <Card>
               <CardHeader>
-                <IdeaboxCounter value={25} />
                 <Link
                   to="/ideabox/dashboard"
                   className="btn btn-secondary btn-sm float-right"
@@ -434,6 +496,7 @@ const SubmitForm = () => {
                         name="ideaNumber"
                         value={formData.ideaNumber}
                         onChange={handleFormChange}
+                        readOnly
                       />
                     </FormGroup>
                   </Col>
@@ -488,16 +551,16 @@ const SubmitForm = () => {
             </Card>
             <Row>
               <Col md="3">
-                <SignBox title="Dibuat" value={user.name} />
-              </Col>
-              <Col md="3">
-                <SignBox title="Diperiksa" value="" />
+                <SignBox title="Diterima" value="" />
               </Col>
               <Col md="3">
                 <SignBox title="Disetujui" value="" />
               </Col>
               <Col md="3">
-                <SignBox title="Diterima" value="" />
+                <SignBox title="Diperiksa" value="" />
+              </Col>
+              <Col md="3">
+                <SignBox title="Dibuat" value={user.name} />
               </Col>
             </Row>
             <Card>
