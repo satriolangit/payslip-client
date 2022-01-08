@@ -13,11 +13,14 @@ import {
   Button,
 } from "reactstrap";
 import moment from "moment";
+import axios from "axios";
 
 import IdeaboxCounter from "./IdeaboxCounter";
 import SignBox from "./SignBox";
 import AuthContext from "./../../../context/auth/authContext";
 import IdeasheetCheckbox from "./Components/IdeasheetCheckbox";
+import ImpactCheckbox from "./Components/ImpactCheckbox";
+import { ApiUrl, JsonContentType } from "../../../setting";
 
 const SubmitForm = () => {
   const authContext = useContext(AuthContext);
@@ -34,6 +37,7 @@ const SubmitForm = () => {
     isIdeasheet: 0,
     kaizenAmount: "",
     departmentId: 0,
+    impact: [],
   });
 
   const [detailFormData, setDetailFormData] = useState({
@@ -51,13 +55,26 @@ const SubmitForm = () => {
   });
 
   const [formComment, setFormComment] = useState("");
-  const [impact, setImpact] = useState([]);
   const [formType, setFormType] = useState("UMUM");
 
+  React.useEffect(() => {
+    fetchNumber();
+  }, []);
+
+  const fetchNumber = async () => {
+    try {
+      const url = ApiUrl + "/ideabox/number";
+      const res = await axios.get(url);
+      const number = res.data.data;
+
+      setFormData({ ...formData, ideaNumber: number });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleFormChange = (e) => {
-    console.log(e.target.name, e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
   };
 
   const handleDetailFormChange = (e) =>
@@ -73,12 +90,7 @@ const SubmitForm = () => {
   };
 
   const handleImpactChange = (e) => {
-    const checked = e.target.checked;
-    if (checked) {
-      setImpact([...impact, e.target.value]);
-    } else {
-      setImpact(impact.filter((i) => i !== e.target.value));
-    }
+    setFormData({ ...formData, impact: e });
   };
 
   const handleCommentChange = (e) => {
@@ -268,7 +280,6 @@ const SubmitForm = () => {
                     type="radio"
                     value="1"
                     onChange={handleDetailFormChange}
-                    checked={detailFormData.afterRank === 1}
                   />
                   {"Rank 1"}
                   <Label check>Frekuensi Bertambah</Label>
@@ -279,7 +290,6 @@ const SubmitForm = () => {
                     type="radio"
                     value="2"
                     onChange={handleDetailFormChange}
-                    checked={detailFormData.afterRank === 2}
                   />
                   {"Rank 2"}
                   <Label check>Terjadi Sewaktu-waktu</Label>
@@ -290,7 +300,6 @@ const SubmitForm = () => {
                     type="radio"
                     value="3"
                     onChange={handleDetailFormChange}
-                    checked={detailFormData.afterRank === 3}
                   />
                   {"Rank 3"}
                   <Label check>Jarang Terjadi</Label>
@@ -301,41 +310,6 @@ const SubmitForm = () => {
         </CardBody>
       </Card>
     );
-  };
-
-  const masterImpact = [
-    {
-      id: 1,
-      description: "Internal Control, Efisiensi Waktu Kerja dan Cost Down",
-    },
-    { id: 2, description: "Efisiensi Waktu (Penyederhanaan proses kerja)" },
-    {
-      id: 3,
-      description:
-        "Efisiensi Biaya (Cost Down) (General / Administrative / Labour cost / FOH)",
-    },
-    {
-      id: 4,
-      description: "Internal Control namun tidak ada efisiensi waktu dan biaya",
-    },
-    { id: 5, description: "Tidak Ada" },
-  ];
-
-  const renderImpactCheckboxes = () => {
-    return masterImpact.map((item, i) => {
-      return (
-        <FormGroup check key={i}>
-          <Input
-            type="checkbox"
-            name="ideaboxImpact"
-            value={item.id}
-            onChange={handleImpactChange}
-            checked={impact.filter((x) => x === item.id).length > 0}
-          />{" "}
-          <Label check>{item.description}</Label>
-        </FormGroup>
-      );
-    });
   };
 
   return (
@@ -481,7 +455,10 @@ const SubmitForm = () => {
                 </FormGroup>
                 <FormGroup tag="fieldset">
                   <legend>Isi pengaruhnya (Kalau ada)</legend>
-                  {renderImpactCheckboxes()}
+                  <ImpactCheckbox
+                    value={formData.impact}
+                    onChange={handleImpactChange}
+                  />
                 </FormGroup>
               </CardBody>
             </Card>
