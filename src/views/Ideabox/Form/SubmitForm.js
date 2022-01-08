@@ -12,10 +12,12 @@ import {
   FormGroup,
   Button,
 } from "reactstrap";
+import moment from "moment";
 
 import IdeaboxCounter from "./IdeaboxCounter";
 import SignBox from "./SignBox";
 import AuthContext from "./../../../context/auth/authContext";
+import IdeasheetCheckbox from "./Components/IdeasheetCheckbox";
 
 const SubmitForm = () => {
   const authContext = useContext(AuthContext);
@@ -25,7 +27,8 @@ const SubmitForm = () => {
     ideaType: "UMUM",
     ideaNumber: "",
     submittedBy: user.employee_id,
-    submittedAt: Date.now(),
+    submitterName: user.name,
+    submittedAt: moment().format("YYYY-MM-DD"),
     tema: "",
     kaizenArea: "",
     isIdeasheet: 0,
@@ -49,18 +52,24 @@ const SubmitForm = () => {
 
   const [formComment, setFormComment] = useState("");
   const [impact, setImpact] = useState([]);
-  const [formType, setFormType] = useState("");
+  const [formType, setFormType] = useState("UMUM");
 
-  const handleFormChange = (e) =>
+  const handleFormChange = (e) => {
+    console.log(e.target.name, e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log(formData);
+  };
 
   const handleDetailFormChange = (e) =>
-    setFormData({ ...detailFormData, [e.target.name]: e.target.value });
+    setDetailFormData({ ...detailFormData, [e.target.name]: e.target.value });
 
   const handleFormTypeChange = (e) => {
-    console.log(e.target.value);
     setFormType(e.target.value);
     renderDetail();
+  };
+
+  const handleIdeasheetCheckChange = (e) => {
+    setFormData({ ...formData, isIdeasheet: e });
   };
 
   const handleImpactChange = (e) => {
@@ -72,8 +81,13 @@ const SubmitForm = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    alert("handle submit");
+  const handleCommentChange = (e) => {
+    setFormComment(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData, detailFormData, formComment);
   };
 
   const renderDetail = () => {
@@ -99,6 +113,7 @@ const SubmitForm = () => {
                   name="beforeSummary"
                   type="textarea"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeSummary}
                 />
               </FormGroup>
             </Col>
@@ -109,6 +124,7 @@ const SubmitForm = () => {
                   name="afterSummary"
                   type="textarea"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.afterSummary}
                 />
               </FormGroup>
             </Col>
@@ -121,6 +137,7 @@ const SubmitForm = () => {
                   name="beforeImage"
                   type="file"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeImage}
                 />
               </FormGroup>
             </Col>
@@ -131,6 +148,7 @@ const SubmitForm = () => {
                   name="afterImage"
                   type="file"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.afterImage}
                 />
               </FormGroup>
             </Col>
@@ -157,6 +175,7 @@ const SubmitForm = () => {
                   name="beforeSummary"
                   type="textarea"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeSummary}
                 />
               </FormGroup>
               <FormGroup>
@@ -165,6 +184,7 @@ const SubmitForm = () => {
                   name="beforeKapan"
                   type="text"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeKapan}
                 />
               </FormGroup>
               <FormGroup>
@@ -173,6 +193,7 @@ const SubmitForm = () => {
                   name="beforeDimana"
                   type="text"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeDimana}
                 />
               </FormGroup>
               <FormGroup>
@@ -181,6 +202,7 @@ const SubmitForm = () => {
                   name="beforeSiapa"
                   type="text"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeSiapa}
                 />
               </FormGroup>
               <FormGroup>
@@ -189,6 +211,7 @@ const SubmitForm = () => {
                   name="beforeBagaimana"
                   type="text"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeBagaimana}
                 />
               </FormGroup>
               <FormGroup>
@@ -197,6 +220,7 @@ const SubmitForm = () => {
                   name="beforeIncident"
                   type="text"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeIncident}
                 />
               </FormGroup>
               <FormGroup>
@@ -205,6 +229,7 @@ const SubmitForm = () => {
                   name="beforeSituation"
                   type="text"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeSituation}
                 />
               </FormGroup>
               <FormGroup>
@@ -212,6 +237,7 @@ const SubmitForm = () => {
                   name="beforeImage"
                   type="file"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.beforeImage}
                 />
               </FormGroup>
             </Col>
@@ -222,6 +248,7 @@ const SubmitForm = () => {
                   name="afterSummary"
                   type="textarea"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.afterSummary}
                 />
               </FormGroup>
               <FormGroup>
@@ -230,6 +257,7 @@ const SubmitForm = () => {
                   name="afterImage"
                   type="file"
                   onChange={handleDetailFormChange}
+                  value={detailFormData.afterImage}
                 />
               </FormGroup>
               <FormGroup tag="fieldset">
@@ -240,6 +268,7 @@ const SubmitForm = () => {
                     type="radio"
                     value="1"
                     onChange={handleDetailFormChange}
+                    checked={detailFormData.afterRank === 1}
                   />
                   {"Rank 1"}
                   <Label check>Frekuensi Bertambah</Label>
@@ -250,6 +279,7 @@ const SubmitForm = () => {
                     type="radio"
                     value="2"
                     onChange={handleDetailFormChange}
+                    checked={detailFormData.afterRank === 2}
                   />
                   {"Rank 2"}
                   <Label check>Terjadi Sewaktu-waktu</Label>
@@ -260,6 +290,7 @@ const SubmitForm = () => {
                     type="radio"
                     value="3"
                     onChange={handleDetailFormChange}
+                    checked={detailFormData.afterRank === 3}
                   />
                   {"Rank 3"}
                   <Label check>Jarang Terjadi</Label>
@@ -299,6 +330,7 @@ const SubmitForm = () => {
             name="ideaboxImpact"
             value={item.id}
             onChange={handleImpactChange}
+            checked={impact.filter((x) => x === item.id).length > 0}
           />{" "}
           <Label check>{item.description}</Label>
         </FormGroup>
@@ -321,7 +353,7 @@ const SubmitForm = () => {
                   <span className="icon-close"></span> Close
                 </Link>
                 <Button type="submit" size="sm" color="primary float-right">
-                  <i className="fa fa-dot-circle-o"></i> Send
+                  <i className="fa fa-dot-circle-o"></i> Save
                 </Button>
               </CardHeader>
               <CardBody>
@@ -329,13 +361,23 @@ const SubmitForm = () => {
                   <Col md="6">
                     <FormGroup>
                       <Label>Nama</Label>
-                      <Input type="text" name="submitterName" />
+                      <Input
+                        type="text"
+                        name="submitterName"
+                        value={formData.submitterName}
+                        onChange={handleFormChange}
+                      />
                     </FormGroup>
                   </Col>
                   <Col md="6">
                     <FormGroup>
                       <Label>NIK</Label>
-                      <Input type="text" name="submittedBy" />
+                      <Input
+                        type="text"
+                        name="submittedBy"
+                        value={formData.submittedBy}
+                        onChange={handleFormChange}
+                      />
                     </FormGroup>
                   </Col>
                 </Row>
@@ -343,22 +385,32 @@ const SubmitForm = () => {
                   <Col md="6">
                     <FormGroup>
                       <Label>Departemen</Label>
-                      <Input name="department" type="select">
-                        <option value="HR">HR</option>
-                        <option value="GA">GA</option>
-                        <option value="PC">PC</option>
-                        <option value="SAL">SAL</option>
-                        <option value="FA">FA</option>
-                        <option value="QA">QA</option>
-                        <option value="IT">IT</option>
-                        <option value="TEC">TEC</option>
+                      <Input
+                        name="department"
+                        type="select"
+                        onChange={handleFormChange}
+                      >
+                        <option value="1">HR</option>
+                        <option value="2">GA</option>
+                        <option value="3">PC</option>
+                        <option value="4">SAL</option>
+                        <option value="5">FA</option>
+                        <option value="6">QA</option>
+                        <option value="7">IT</option>
+                        <option value="8">PROD</option>
+                        <option value="9">TEC</option>
                       </Input>
                     </FormGroup>
                   </Col>
                   <Col md="6">
                     <FormGroup>
                       <Label>Area Kaizen</Label>
-                      <Input type="text" name="kaizenArea" />
+                      <Input
+                        type="text"
+                        name="kaizenArea"
+                        value={formData.kaizenArea}
+                        onChange={handleFormChange}
+                      />
                     </FormGroup>
                   </Col>
                 </Row>
@@ -366,7 +418,12 @@ const SubmitForm = () => {
                   <Col md="6">
                     <FormGroup>
                       <Label>Tanggal</Label>
-                      <Input name="submitDate" type="text" />
+                      <Input
+                        name="submitDate"
+                        type="text"
+                        value={formData.submittedAt}
+                        onChange={handleFormChange}
+                      />
                     </FormGroup>
                   </Col>
                   <Col md="6">
@@ -387,13 +444,23 @@ const SubmitForm = () => {
                   <Col md="6">
                     <FormGroup>
                       <Label>Tema</Label>
-                      <Input type="text" name="tema" />
+                      <Input
+                        type="text"
+                        name="tema"
+                        value={formData.tema}
+                        onChange={handleFormChange}
+                      />
                     </FormGroup>
                   </Col>
                   <Col md="6">
                     <FormGroup>
                       <Label>No. Urut</Label>
-                      <Input type="text" name="ideaNumber" />
+                      <Input
+                        type="text"
+                        name="ideaNumber"
+                        value={formData.ideaNumber}
+                        onChange={handleFormChange}
+                      />
                     </FormGroup>
                   </Col>
                 </Row>
@@ -407,14 +474,10 @@ const SubmitForm = () => {
               <CardBody>
                 <FormGroup tag="fieldset">
                   <legend>Pelaksanaan Ideasheet</legend>
-                  <FormGroup check>
-                    <Input type="checkbox" name="isIdeasheet" />{" "}
-                    <Label check>Sudah</Label>
-                  </FormGroup>
-                  <FormGroup check>
-                    <Input type="checkbox" name="isIdeasheet" />{" "}
-                    <Label check>Belum</Label>
-                  </FormGroup>
+                  <IdeasheetCheckbox
+                    value={formData.isIdeasheet}
+                    onChange={handleIdeasheetCheckChange}
+                  />
                 </FormGroup>
                 <FormGroup tag="fieldset">
                   <legend>Isi pengaruhnya (Kalau ada)</legend>
@@ -426,23 +489,53 @@ const SubmitForm = () => {
               <CardBody>
                 <FormGroup>
                   <Label>Nilai Kaizen Jika dirupiahkan</Label>
-                  <Input type="text" name="kaizenAmount" />
+                  <Input
+                    type="text"
+                    name="kaizenAmount"
+                    value={formData.kaizenAmount}
+                    onChange={handleFormChange}
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label>
                     Permintaan atau komentar dari pimpinan kerja pembuat
                     ideasheet
                   </Label>
-                  <Input type="textarea" name="ideboxComment" />
+                  <Input
+                    type="textarea"
+                    name="ideboxComment"
+                    onChange={handleCommentChange}
+                  />
                 </FormGroup>
               </CardBody>
             </Card>
-            <Col md="3">
-              <SignBox title="Dibuat" value={user.name} />
-              <SignBox title="Diperiksa" value="" />
-              <SignBox title="Disetujui" value="" />
-              <SignBox title="Diterima" value="" />
-            </Col>
+            <Row>
+              <Col md="3">
+                <SignBox title="Dibuat" value={user.name} />
+              </Col>
+              <Col md="3">
+                <SignBox title="Diperiksa" value="" />
+              </Col>
+              <Col md="3">
+                <SignBox title="Disetujui" value="" />
+              </Col>
+              <Col md="3">
+                <SignBox title="Diterima" value="" />
+              </Col>
+            </Row>
+            <Card>
+              <CardHeader>
+                <Link
+                  to="/ideabox/dashboard"
+                  className="btn btn-secondary btn-sm float-right"
+                >
+                  <span className="icon-close"></span> Close
+                </Link>
+                <Button type="submit" size="sm" color="primary float-right">
+                  <i className="fa fa-dot-circle-o"></i> Save
+                </Button>
+              </CardHeader>
+            </Card>
           </Form>
         </Col>
       </Row>

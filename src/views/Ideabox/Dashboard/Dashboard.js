@@ -120,7 +120,6 @@ const Dashboard = (props) => {
   };
 
   const handleSubmit = () => {
-    alert("handle submit");
     props.history.push("/ideabox/submit");
   };
 
