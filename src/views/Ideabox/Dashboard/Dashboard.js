@@ -16,6 +16,7 @@ import ReactExport from "react-data-export";
 import { confirm } from "react-bootstrap-confirmation";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
+import { Link } from "react-router-dom";
 
 import pagination from "../../Pagination/pagination";
 import { ApiUrl, JsonContentType } from "../../../setting";
@@ -253,6 +254,17 @@ const Dashboard = (props) => {
     );
   };
 
+  const previewFormatter = (cell, row) => {
+    const route = `/ideabox/view/${row.ideaboxId}`;
+    return (
+      <ButtonGroup>
+        <Link to={route} className="btn btn-info btn-sm">
+          Preview
+        </Link>
+      </ButtonGroup>
+    );
+  };
+
   const columns = [
     {
       dataField: "ideaNumber",
@@ -333,7 +345,7 @@ const Dashboard = (props) => {
     {
       text: "File",
       dataField: "ideaboxId",
-      formatter: pdfFormatter,
+      formatter: previewFormatter,
     },
   ];
 

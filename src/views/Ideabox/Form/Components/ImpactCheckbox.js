@@ -28,6 +28,7 @@ const Checkboxes = ({ onChange, value }) => {
     // this one is your didupdate method for count variable
     if (values !== prevValues) {
       onChange(values);
+      console.log(values);
     }
   }, [values]);
 
@@ -49,7 +50,7 @@ const Checkboxes = ({ onChange, value }) => {
           onChange={(e, index, value) =>
             handleImpactChange(e.target.checked, item.id)
           }
-          checked={values.filter((x) => x === item.id).length > 0}
+          checked={value.filter((x) => x === item.id).length > 0}
         />{" "}
         <Label check>{item.description}</Label>
       </FormGroup>
