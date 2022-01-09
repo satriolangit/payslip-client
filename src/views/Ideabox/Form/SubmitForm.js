@@ -14,15 +14,16 @@ import {
 } from "reactstrap";
 import moment from "moment";
 import axios from "axios";
+import Alert from "react-s-alert";
 
 import IdeaboxCounter from "./Components/IdeaboxCounter";
 import SignBox from "./SignBox";
 import AuthContext from "./../../../context/auth/authContext";
 import IdeasheetCheckbox from "./Components/IdeasheetCheckbox";
 import ImpactCheckbox from "./Components/ImpactCheckbox";
-import { ApiUrl, JsonContentType } from "../../../setting";
+import { ApiUrl, JsonContentType, AlertOptions } from "../../../setting";
 
-const SubmitForm = () => {
+const SubmitForm = (props) => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
 
@@ -38,6 +39,7 @@ const SubmitForm = () => {
     kaizenAmount: "",
     departmentId: 0,
     impact: [],
+    approvalRole: user.approval_role,
   });
 
   const [detailFormData, setDetailFormData] = useState({
@@ -46,6 +48,7 @@ const SubmitForm = () => {
     beforeKapan: "",
     beforeDimana: "",
     beforeSiapa: "",
+    beforeApa: "",
     beforeBagaimana: "",
     beforeIncident: "",
     beforeSituation: "",
@@ -56,14 +59,33 @@ const SubmitForm = () => {
     afterImageFile: null,
   });
 
-  const [formComment, setFormComment] = useState("");
+  const [formComment, setFormComment] = useState({
+    value: "",
+    createdBy: user.employee_id,
+  });
+
   const [formType, setFormType] = useState("UMUM");
   const [previewBeforeImage, setPreviewBeforeImage] = useState(null);
   const [previewAfterImage, setPreviewAfterImage] = useState(null);
+  const [totalIdeasheet, setTotalIdeasheet] = useState(0);
 
   React.useEffect(() => {
     fetchNumber();
+    fetchTotalIdeasheet();
   }, []);
+
+  const fetchTotalIdeasheet = async () => {
+    try {
+      const url =
+        ApiUrl + "/ideabox/closedIdeaCount/" + moment().format("YYYY");
+      const res = await axios.get(url);
+      const result = res.data.data;
+
+      setTotalIdeasheet(result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchNumber = async () => {
     try {
@@ -86,6 +108,7 @@ const SubmitForm = () => {
 
   const handleFormTypeChange = (e) => {
     setFormType(e.target.value);
+    setFormData({ ...formData, ideaType: e.target.value });
     renderDetail();
   };
 
@@ -98,15 +121,12 @@ const SubmitForm = () => {
   };
 
   const handleCommentChange = (e) => {
-    setFormComment(e.target.value);
+    setFormComment({ ...formComment, value: e.target.value });
   };
 
   const handleUploadBeforeImage = (e) => {
     const file = e.target.files[0];
     const imageFile = URL.createObjectURL(file);
-
-    console.log(imageFile);
-    console.log(file);
 
     setDetailFormData({
       ...detailFormData,
@@ -120,9 +140,6 @@ const SubmitForm = () => {
     const file = e.target.files[0];
     const imageFile = URL.createObjectURL(file);
 
-    console.log(imageFile);
-    console.log(file);
-
     setDetailFormData({
       ...detailFormData,
       afterImage: file.name,
@@ -131,9 +148,168 @@ const SubmitForm = () => {
     setPreviewAfterImage(imageFile);
   };
 
+  const isValidForm = () => {
+    let result = true;
+    const { submitterName, tema, departmentId, ideaType } = formData;
+    const {
+      beforeSummary,
+      beforeKapan,
+      beforeDimana,
+      beforeSiapa,
+      beforeApa,
+      beforeBagaimana,
+      beforeIncident,
+      beforeSituation,
+      afterSummary,
+      afterRank,
+      beforeImageFile,
+      afterImageFile,
+    } = detailFormData;
+
+    if (submitterName.trim().length === 0) {
+      Alert.warning("Nama pemberi ide harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (departmentId === 0) {
+      Alert.warning("Departmen harus dipilih.", AlertOptions);
+      result = false;
+    }
+
+    if (tema.trim().length === 0) {
+      Alert.warning("Tema ide harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeSummary.trim().length <= 0 || afterSummary.trim().length <= 0) {
+      Alert.warning("Sebelum dan sesudah harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeKapan.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Kapan harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeDimana.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Dimana harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeSiapa.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Siapa harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeApa.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Apa harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeBagaimana.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Bagaimana harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeIncident.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Apa yang terjadi harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeSituation.trim().length <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Situasi harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (afterRank <= 0 && ideaType !== "UMUM") {
+      Alert.warning("Rank harus diisi.", AlertOptions);
+      result = false;
+    }
+
+    if (beforeImageFile === null || afterImageFile === null) {
+      Alert.warning("Gambar ide harus dilampirkan.", AlertOptions);
+      result = false;
+    }
+
+    return result;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     console.log(formData, detailFormData, formComment);
+
+    const url = ApiUrl + "/ideabox/submit";
+    const ideasheet = {
+      master: formData,
+      detail: detailFormData,
+      comment: formComment,
+    };
+
+    try {
+      let form = new FormData();
+      form.append("data", JSON.stringify(ideasheet));
+      form.append("beforeImage", detailFormData.beforeImageFile);
+      form.append("afterImage", detailFormData.afterImageFile);
+
+      if (isValidForm()) {
+        const result = await axios.post(url, form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        console.log(result);
+
+        if (result.data.result === "FAIL") {
+          Alert.error(result.data.message, AlertOptions);
+        } else {
+          Alert.info("Ideasheet sudah terkirim", AlertOptions);
+          //handleClearForm();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.error(error.response.data.message, AlertOptions);
+    }
+  };
+
+  const handleClearForm = () => {
+    setFormData(...formData, {
+      ideaType: "UMUM",
+      ideaNumber: "",
+      submittedBy: user.employee_id,
+      submitterName: user.name,
+      submittedAt: moment().format("YYYY-MM-DD"),
+      tema: "",
+      kaizenArea: "",
+      isIdeasheet: 0,
+      kaizenAmount: "",
+      departmentId: 0,
+      impact: [],
+    });
+
+    setDetailFormData(...detailFormData, {
+      beforeSummary: "",
+      beforeImage: "",
+      beforeKapan: "",
+      beforeDimana: "",
+      beforeSiapa: "",
+      beforeApa: "",
+      beforeBagaimana: "",
+      beforeIncident: "",
+      beforeSituation: "",
+      afterSummary: "",
+      afterImage: "",
+      afterRank: 0,
+      beforeImageFile: null,
+      afterImageFile: null,
+    });
+
+    setFormComment(...formComment, {
+      value: "",
+      createdBy: user.employee_id,
+    });
   };
 
   const renderDetail = () => {
@@ -278,6 +454,15 @@ const SubmitForm = () => {
                 />
               </FormGroup>
               <FormGroup>
+                <Label>Apa</Label>
+                <Input
+                  name="beforeApa"
+                  type="text"
+                  onChange={handleDetailFormChange}
+                  value={detailFormData.beforeApa}
+                />
+              </FormGroup>
+              <FormGroup>
                 <Label>Bagaimana</Label>
                 <Input
                   name="beforeBagaimana"
@@ -310,8 +495,8 @@ const SubmitForm = () => {
                   type="file"
                   accept="image/*|MIME_type"
                   onChange={handleUploadBeforeImage}
-                  value={detailFormData.beforeImage}
                 />
+                {showBeforeImage()}
               </FormGroup>
             </Col>
             <Col md="6">
@@ -331,8 +516,8 @@ const SubmitForm = () => {
                   type="file"
                   accept="image/*|MIME_type"
                   onChange={handleUploadAfterImage}
-                  value={detailFormData.afterImage}
                 />
+                {showAfterImage()}
               </FormGroup>
               <FormGroup tag="fieldset">
                 <legend>Rank</legend>
@@ -378,7 +563,7 @@ const SubmitForm = () => {
     <div className="animated fadeIn">
       <Row>
         <Col md="12">
-          <IdeaboxCounter value={25} />
+          <IdeaboxCounter value={totalIdeasheet} />
           <Form onSubmit={handleSubmit}>
             <Card>
               <CardHeader>
@@ -413,6 +598,7 @@ const SubmitForm = () => {
                         name="submittedBy"
                         value={formData.submittedBy}
                         onChange={handleFormChange}
+                        readOnly
                       />
                     </FormGroup>
                   </Col>
@@ -422,7 +608,7 @@ const SubmitForm = () => {
                     <FormGroup>
                       <Label>Departemen</Label>
                       <Input
-                        name="department"
+                        name="departmentId"
                         type="select"
                         onChange={handleFormChange}
                       >
