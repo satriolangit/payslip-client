@@ -117,7 +117,10 @@ const Dashboard = (props) => {
   };
 
   const handleEdit = () => {
-    alert("handleEdit");
+    if (selected.length > 0) {
+      const ideaboxId = selected[0];
+      props.history.push("/ideabox/edit/" + ideaboxId);
+    }
   };
 
   const handleSubmit = () => {
