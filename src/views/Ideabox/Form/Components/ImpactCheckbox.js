@@ -41,20 +41,36 @@ const Checkboxes = ({ onChange, value }) => {
   };
 
   return data.map((item, i) => {
-    return (
-      <FormGroup check key={i}>
-        <Input
-          type="checkbox"
-          name="ideaboxImpact"
-          value={item.id}
-          onChange={(e, index, value) =>
-            handleImpactChange(e.target.checked, item.id)
-          }
-          checked={value.filter((x) => x === item.id).length > 0}
-        />{" "}
-        <Label check>{item.description}</Label>
-      </FormGroup>
-    );
+    if (value) {
+      return (
+        <FormGroup check key={i}>
+          <Input
+            type="checkbox"
+            name="ideaboxImpact"
+            value={item.id}
+            onChange={(e, index, value) =>
+              handleImpactChange(e.target.checked, item.id)
+            }
+            checked={value.filter((x) => x === item.id).length > 0}
+          />{" "}
+          <Label check>{item.description}</Label>
+        </FormGroup>
+      );
+    } else {
+      return (
+        <FormGroup check key={i}>
+          <Input
+            type="checkbox"
+            name="ideaboxImpact"
+            value={item.id}
+            onChange={(e, index, value) =>
+              handleImpactChange(e.target.checked, item.id)
+            }
+          />{" "}
+          <Label check>{item.description}</Label>
+        </FormGroup>
+      );
+    }
   });
 };
 

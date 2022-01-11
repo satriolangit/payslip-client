@@ -85,16 +85,17 @@ const EditForm = ({ match, history }) => {
   const fetchData = async () => {
     try {
       const id = match.params.id;
-      const url = `${ApiUrl}/ideabox/edit/${id}`;
+      const url = `${ApiUrl}/ideabox/edit/${id}?employee=${user.employee_id}`;
 
       const res = await axios.get(url);
       const result = res.data.data;
 
       const { master, detail, comment, impacts } = result;
+      console.log(result);
 
       setImpactData(impacts);
       setFormData(master);
-      setFormDetailData(detail);
+      setFormDetailData({ ...formDetailData, ...detail });
       setCommentData(comment);
     } catch (err) {
       console.log(err);
@@ -254,8 +255,7 @@ const EditForm = ({ match, history }) => {
     };
 
     try {
-      const id = match.params.id;
-      const url = ApiUrl + "/ideabox/edit/" + id;
+      const url = ApiUrl + "/ideabox/edit/";
 
       let form = new FormData();
       form.append("data", JSON.stringify(ideasheet));
@@ -277,13 +277,12 @@ const EditForm = ({ match, history }) => {
       }
     } catch (error) {
       console.log(error);
-      Alert.error(error.response.data.message, AlertOptions);
+      //Alert.error(error.response.data.message, AlertOptions);
     }
   };
 
   const renderDetail = () => {
-    const { ideaType } = FormData;
-    if (ideaType === "UMUM") {
+    if (formData.ideaType === "UMUM") {
       return renderDetailUmum();
     } else {
       return renderDetailKyt();
@@ -291,7 +290,8 @@ const EditForm = ({ match, history }) => {
   };
 
   const renderDetailUmum = () => {
-    const { beforeSummary, afterSummary } = formData;
+    const { beforeSummary, afterSummary } = formDetailData;
+
     return (
       <Card>
         <CardHeader>
@@ -519,7 +519,7 @@ const EditForm = ({ match, history }) => {
   };
 
   const showBeforeImage = () => {
-    const { beforeImage, beforeImageFile } = formData;
+    const { beforeImage, beforeImageFile } = formDetailData;
 
     if (beforeImageFile !== null) {
       return (
@@ -543,7 +543,7 @@ const EditForm = ({ match, history }) => {
   };
 
   const showAfterImage = () => {
-    const { afterImage, afterImageFile } = formData;
+    const { afterImage, afterImageFile } = formDetailData;
 
     if (afterImageFile !== null) {
       return (
@@ -618,61 +618,17 @@ const EditForm = ({ match, history }) => {
                         name="departmentId"
                         type="select"
                         onChange={handleFormChange}
+                        value={formData.departmentId}
                       >
-                        <option
-                          value="1"
-                          selected={formData.departmentId === 1}
-                        >
-                          HR
-                        </option>
-                        <option
-                          value="2"
-                          selected={formData.departmentId === 2}
-                        >
-                          GA
-                        </option>
-                        <option
-                          value="3"
-                          selected={formData.departmentId === 3}
-                        >
-                          PC
-                        </option>
-                        <option
-                          value="4"
-                          selected={formData.departmentId === 4}
-                        >
-                          SAL
-                        </option>
-                        <option
-                          value="5"
-                          selected={formData.departmentId === 5}
-                        >
-                          FA
-                        </option>
-                        <option
-                          value="6"
-                          selected={formData.departmentId === 6}
-                        >
-                          QA
-                        </option>
-                        <option
-                          value="7"
-                          selected={formData.departmentId === 7}
-                        >
-                          IT
-                        </option>
-                        <option
-                          value="8"
-                          selected={formData.departmentId === 8}
-                        >
-                          PROD
-                        </option>
-                        <option
-                          value="9"
-                          selected={formData.departmentId === 9}
-                        >
-                          TEC
-                        </option>
+                        <option value="1">HR</option>
+                        <option value="2">GA</option>
+                        <option value="3">PC</option>
+                        <option value="4">SAL</option>
+                        <option value="5">FA</option>
+                        <option value="6">QA</option>
+                        <option value="7">IT</option>
+                        <option value="8">PROD</option>
+                        <option value="9">TEC</option>
                       </Input>
                     </FormGroup>
                   </Col>
@@ -758,7 +714,7 @@ const EditForm = ({ match, history }) => {
                 <FormGroup tag="fieldset">
                   <legend>Isi pengaruhnya (Kalau ada)</legend>
                   <ImpactCheckbox
-                    value={formData.impact}
+                    value={impactData}
                     onChange={handleImpactChange}
                   />
                 </FormGroup>
