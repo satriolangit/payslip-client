@@ -28,6 +28,7 @@ import {
   KomiteButtonGroup,
   SectionManagerButtonGroup,
 } from "./ButtonGroup";
+import SearchBox from "../../SearchBox/SearchBox";
 
 const Dashboard = (props) => {
   const authContext = useContext(AuthContext);
@@ -56,6 +57,30 @@ const Dashboard = (props) => {
       const list = res.data.data;
 
       setData(list);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSearch = (keyword) => {
+    if (keyword === "") {
+      fetchData();
+    } else {
+      searchData(keyword);
+    }
+  };
+
+  const searchData = async (keywords) => {
+    try {
+      const url = ApiUrl + "/ideabox/list/search";
+      const formData = {
+        keywords,
+        employeeId: user.employee_id,
+        approvalRole: user.approval_role,
+      };
+
+      const res = await axios.post(url, formData, JsonContentType);
+      setData(res.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -400,7 +425,10 @@ const Dashboard = (props) => {
           <Card>
             <CardHeader>
               <Row>
-                <Col md="12" className="text-right">
+                <Col md="4">
+                  <SearchBox onSearch={handleSearch} />
+                </Col>
+                <Col md="8" className="text-right">
                   {renderButton()}
                   <ExcelFile
                     element={
