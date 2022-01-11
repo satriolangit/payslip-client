@@ -32,7 +32,9 @@ const InformationForm = React.lazy(() =>
   retry(() => import("./views/Information/Edit"))
 );
 const UserList = React.lazy(() => retry(() => import("./views/User/List")));
-const UserListBySite = React.lazy(() => retry(() => import("./views/User/ListBySite")));
+const UserListBySite = React.lazy(() =>
+  retry(() => import("./views/User/ListBySite"))
+);
 const UserForm = React.lazy(() => retry(() => import("./views/User/Edit")));
 const UserForm2 = React.lazy(() => retry(() => import("./views/User/Edit2")));
 
@@ -66,7 +68,7 @@ const UserChangePassword_DEV = React.lazy(() =>
 //ideabox routes
 const IdeaboxDashboard = React.lazy(() =>
   retry(() => import("./views/Ideabox/Dashboard/Dashboard"))
-); 
+);
 
 const IdeaboxApprovalList = React.lazy(() =>
   retry(() => import("./views/Ideabox/Approval/ApprovalMappingList"))
@@ -86,193 +88,200 @@ const IdeaboxEditForm = React.lazy(() =>
 
 const IdeaboxNotification = React.lazy(() =>
   retry(() => import("./views/Ideabox/Notification/NotificationMappingList"))
-); 
+);
 
 const IdeaboxNotificationReport = React.lazy(() =>
   retry(() => import("./views/Ideabox/Notification/Report"))
-); 
+);
 
-
+const IdeaboxApprovalMappingAdd = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Approval/ApprovalAdd"))
+);
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", exact: true, name: "Home" },
-  {path: "/welcome", exact: true, name : "Welcome"},
+  { path: "/welcome", exact: true, name: "Welcome" },
   { path: "/dashboard", name: "Dashboard", component: Home },
   { path: "/profile", exact: true, name: "Profile", component: Profile },
   {
     path: "/changepwd",
     exact: true,
     name: "Change Password",
-    component: ChangePassword
+    component: ChangePassword,
   },
   { path: "/home", exact: true, name: "Home", component: Home },
   {
     path: "/pages/information",
     exact: true,
     name: "Information",
-    component: Information
+    component: Information,
   },
   {
     path: "/pages/information/:id",
     name: "Information",
-    component: Information
+    component: Information,
   },
   {
     path: "/pages/announcement",
     exact: true,
     name: "Announcement",
-    component: Announcement
+    component: Announcement,
   },
   {
     path: "/pages/announcement/:id",
     name: "Announcement",
-    component: Announcement
+    component: Announcement,
   },
   { path: "/pages/payslip/:employeeId", name: "Payslip", component: Payslip },
   {
     path: "/privacy-policy",
     exact: true,
     name: "PrivacyPolicy",
-    component: PrivacyPolicy
+    component: PrivacyPolicy,
   },
   {
     path: "/admin/announcement",
     exact: true,
     name: "Announcement",
-    component: AnnouncementList
+    component: AnnouncementList,
   },
   {
     path: "/admin/announcement/:id",
     name: "Edit",
-    component: AnnouncementForm
+    component: AnnouncementForm,
   },
   {
     path: "/admin/information",
     exact: true,
     name: "Information",
-    component: InformationList
+    component: InformationList,
   },
   {
     path: "/admin/information/:id",
     name: "Edit",
-    component: InformationForm
+    component: InformationForm,
   },
   {
     path: "/admin/user",
     exact: true,
     name: "User",
-    component: UserList
+    component: UserList,
   },
   {
     path: "/admin/user_by_site",
     exact: true,
     name: "User",
-    component: UserListBySite
+    component: UserListBySite,
   },
   {
     path: "/admin/user/cp/:id",
     name: "Change Password",
     exact: true,
-    component: UserChangePassword
+    component: UserChangePassword,
   },
   {
     path: "/admin/user/cp_dev/:id",
     name: "Change Password",
     exact: true,
-    component: UserChangePassword_DEV
+    component: UserChangePassword_DEV,
   },
   {
     path: "/admin/user/:id",
     exact: true,
     name: "Edit",
-    component: UserForm
+    component: UserForm,
   },
   {
     path: "/admin/user/site/:id",
     exact: true,
     name: "Edit",
-    component: UserForm2
+    component: UserForm2,
   },
   {
     path: "/admin/payslip",
     exact: true,
     name: "Payslip",
-    component: PayslipList
+    component: PayslipList,
   },
   {
     path: "/admin/payslip/upload",
     exact: true,
     name: "Upload",
-    component: PayslipUpload
+    component: PayslipUpload,
   },
   {
     path: "/admin/files",
     exact: true,
     name: "Files",
-    component: FileList
+    component: FileList,
   },
   {
     path: "/admin/files/upload",
     exact: true,
     name: "Upload",
-    component: FileUpload
+    component: FileUpload,
   },
   {
     path: "/survey",
     exact: true,
     name: "Survey",
-    component: Survey
+    component: Survey,
   },
   {
     path: "/admin/survey/report",
     exact: true,
     name: "SurveyReport",
-    component: SurveyReport
+    component: SurveyReport,
   },
   {
     path: "/ideabox/dashboard",
     exact: true,
     name: "Dashboard",
-    component: IdeaboxDashboard
+    component: IdeaboxDashboard,
   },
   {
     path: "/ideabox/approval",
     exact: true,
     name: "Approval",
-    component: IdeaboxApprovalList
+    component: IdeaboxApprovalList,
   },
   {
     path: "/ideabox/submit",
     exact: true,
     name: "Submit Ideabox",
-    component: IdeaboxSubmitForm
+    component: IdeaboxSubmitForm,
   },
   {
     path: "/ideabox/view/:id",
     exact: true,
     name: "Ideabox Detail",
-    component: IdeaboxViewForm
+    component: IdeaboxViewForm,
   },
   {
     path: "/ideabox/edit/:id",
     exact: true,
     name: "Edit Ideabox",
-    component: IdeaboxEditForm
+    component: IdeaboxEditForm,
   },
   {
     path: "/ideabox/notification",
     exact: true,
     name: "Notification Setting",
-    component: IdeaboxNotification
+    component: IdeaboxNotification,
   },
   {
     path: "/ideabox/notification-report",
     exact: true,
     name: "Notification Report",
-    component: IdeaboxNotificationReport
-  }
-
+    component: IdeaboxNotificationReport,
+  },
+  {
+    path: "/ideabox/approval/mapping",
+    exact: true,
+    name: "Approval Mapping",
+    component: IdeaboxApprovalMappingAdd,
+  },
 ];
 
 export default routes;

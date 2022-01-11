@@ -1,16 +1,31 @@
 import React from "react";
 import axios from "axios";
-import { Row, Col, Card, CardHeader, CardBody, Button } from "reactstrap";
+import {
+  Row,
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  Button,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import { confirm } from "react-bootstrap-confirmation";
 import { Link } from "react-router-dom";
 
 import { ApiUrl, JsonContentType } from "../../../setting";
 import SearchBox from "../../SearchBox/SearchBox";
+import pagination from "../../Pagination/pagination";
 
-function ApprovalMappingList(props) {
+const ApprovalAdd = ({ history }) => {
   const [data, setData] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
+  const [dropdownOpen, setOpen] = React.useState(false);
+
+  const toggle = () => setOpen(!dropdownOpen);
 
   React.useEffect(() => {
     fetchData();
@@ -18,7 +33,7 @@ function ApprovalMappingList(props) {
 
   const fetchData = async () => {
     try {
-      const url = ApiUrl + "/approval/";
+      const url = ApiUrl + "/approval/mapping/";
       const res = await axios.get(url);
       const list = res.data.data;
 
@@ -34,7 +49,7 @@ function ApprovalMappingList(props) {
 
   const searchData = async (keywords) => {
     try {
-      const url = ApiUrl + "/approval/search";
+      const url = ApiUrl + "/approval/mapping/search";
       const formData = {
         keywords,
       };
@@ -54,27 +69,8 @@ function ApprovalMappingList(props) {
     }
   };
 
-  const handleDelete = async () => {
-    const result = await confirm("Apakah anda yakin menghapus user ini ?");
-
-    if (result === true) {
-      try {
-        const formData = {
-          employees: selected,
-        };
-        const url = ApiUrl + "/approval/remove";
-        await axios.post(url, formData, JsonContentType);
-
-        fetchData();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
   const handleOnSelect = (row, isSelect) => {
     if (isSelect) {
-      console.log(row);
       setSelected([...selected, row.employeeId]);
     } else {
       setSelected(selected.filter((x) => x !== row.employeeId));
@@ -91,6 +87,25 @@ function ApprovalMappingList(props) {
     }
   };
 
+  const handleMapping = async (role) => {
+    const result = await confirm(
+      "Apakah anda yakin melakukan proses mapping ?"
+    );
+    if (result) {
+      try {
+        const url = ApiUrl + "/approval/mapping/add";
+        const formData = {
+          employees: selected,
+          approvalRole: role,
+        };
+
+        await axios.post(url, formData, JsonContentType);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   const selectRow = {
     mode: "checkbox",
     clickToSelect: true,
@@ -101,14 +116,9 @@ function ApprovalMappingList(props) {
 
   const columns = [
     {
-      dataField: "mappingId",
+      dataField: "userId",
       text: "id",
       hidden: true,
-    },
-    {
-      dataField: "approvalRoleId",
-      text: "Role",
-      sort: true,
     },
     {
       dataField: "employeeId",
@@ -116,13 +126,8 @@ function ApprovalMappingList(props) {
       sort: true,
     },
     {
-      dataField: "username",
+      dataField: "name",
       text: "Username",
-      sort: true,
-    },
-    {
-      dataField: "department",
-      text: "Department",
       sort: true,
     },
     {
@@ -149,20 +154,43 @@ function ApprovalMappingList(props) {
                   >
                     <i className="icon-refresh" /> Refresh
                   </Button>
+
+                  <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+                    <DropdownToggle className="btn btn-sm btn-success" caret>
+                      Set To
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={(role) => handleMapping("EMPLOYEE")}
+                      >
+                        Employee
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={(role) => handleMapping("SECTION_MANAGER")}
+                      >
+                        Section Manager
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={(role) => handleMapping("DEPARTMENT_MANAGER")}
+                      >
+                        Department Manager
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={(role) => handleMapping("KOMITE_IDEABOX")}
+                      >
+                        Komite Ideabox
+                      </DropdownItem>
+                      <DropdownItem onClick={(role) => handleMapping("ADMIN")}>
+                        Administrator
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </ButtonDropdown>
                   <Link
                     to="/ideabox/approval/mapping"
-                    className="btn btn-sm btn-success"
+                    className="btn btn-sm btn-danger"
                   >
-                    <i className="icon-plus" /> Add
+                    <i className="icon-close" /> Close
                   </Link>
-
-                  <Button
-                    color="danger"
-                    onClick={handleDelete}
-                    className="btn btn-sm"
-                  >
-                    <i className="icon-trash" /> Delete
-                  </Button>
                 </Col>
               </Row>
             </CardHeader>
@@ -173,6 +201,7 @@ function ApprovalMappingList(props) {
                 data={data}
                 columns={columns}
                 selectRow={selectRow}
+                pagination={pagination}
                 wrapperClasses="table-responsive"
                 striped
               />
@@ -182,6 +211,6 @@ function ApprovalMappingList(props) {
       </Row>
     </div>
   );
-}
+};
 
-export default ApprovalMappingList;
+export default ApprovalAdd;

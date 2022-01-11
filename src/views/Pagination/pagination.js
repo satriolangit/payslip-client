@@ -1,7 +1,7 @@
 import paginationFactory from "react-bootstrap-table2-paginator";
 
 const options = {
-  paginationSize: 5,
+  paginationSize: 10,
   pageStartIndex: 1,
   alwaysShowAllBtns: true, // Always show next and previous button
   withFirstAndLast: false, // Hide the going to First and Last page button
@@ -15,7 +15,7 @@ const options = {
   prePageTitle: "Pre page",
   firstPageTitle: "Next page",
   lastPageTitle: "Last page",
-  showTotal: true
+  showTotal: true,
   // A numeric array is also available. the purpose of above example is custom the text
 };
 

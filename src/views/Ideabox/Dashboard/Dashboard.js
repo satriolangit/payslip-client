@@ -335,7 +335,6 @@ const Dashboard = (props) => {
       dataField: "ideaNumber",
       text: "Nomor Urut",
       sort: true,
-      style: { width: "90px" },
     },
     {
       dataField: "ideaboxType",
