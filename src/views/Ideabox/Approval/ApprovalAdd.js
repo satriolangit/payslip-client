@@ -88,20 +88,22 @@ const ApprovalAdd = ({ history }) => {
   };
 
   const handleMapping = async (role) => {
-    const result = await confirm(
-      "Apakah anda yakin melakukan proses mapping ?"
-    );
-    if (result) {
-      try {
-        const url = ApiUrl + "/approval/mapping/add";
-        const formData = {
-          employees: selected,
-          approvalRole: role,
-        };
+    if (selected.length > 0) {
+      const result = await confirm(
+        "Apakah anda yakin melakukan proses mapping ?"
+      );
+      if (result) {
+        try {
+          const url = ApiUrl + "/approval/mapping/add";
+          const formData = {
+            employees: selected,
+            approvalRole: role,
+          };
 
-        await axios.post(url, formData, JsonContentType);
-      } catch (err) {
-        console.log(err);
+          await axios.post(url, formData, JsonContentType);
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   };

@@ -55,19 +55,21 @@ function ApprovalMappingList(props) {
   };
 
   const handleDelete = async () => {
-    const result = await confirm("Apakah anda yakin menghapus user ini ?");
+    if (selected.length > 0) {
+      const result = await confirm("Apakah anda yakin menghapus user ini ?");
 
-    if (result === true) {
-      try {
-        const formData = {
-          employees: selected,
-        };
-        const url = ApiUrl + "/approval/remove";
-        await axios.post(url, formData, JsonContentType);
+      if (result === true) {
+        try {
+          const formData = {
+            employees: selected,
+          };
+          const url = ApiUrl + "/approval/remove";
+          await axios.post(url, formData, JsonContentType);
 
-        fetchData();
-      } catch (err) {
-        console.log(err);
+          fetchData();
+        } catch (err) {
+          console.log(err);
+        }
       }
     }
   };
