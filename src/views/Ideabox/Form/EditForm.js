@@ -66,6 +66,8 @@ const EditForm = ({ match, history }) => {
     afterRank: 0,
     beforeImageFile: null,
     afterImageFile: null,
+    beforeFile: null,
+    afterFile: null
   });
 
   const [impactData, setImpactData] = React.useState([]);
@@ -76,7 +78,7 @@ const EditForm = ({ match, history }) => {
   });
 
   const [totalIdeasheet, setTotalIdeasheet] = React.useState(0);
-
+  
   React.useEffect(() => {
     fetchTotalIdeasheet();
     fetchData();
@@ -130,7 +132,9 @@ const EditForm = ({ match, history }) => {
       ...formDetailData,
       beforeImage: file.name,
       beforeImageFile: imageFile,
+      beforeFile: file
     });
+    
   };
 
   const handleUploadAfterImage = (e) => {
@@ -141,6 +145,7 @@ const EditForm = ({ match, history }) => {
       ...formDetailData,
       afterImage: file.name,
       afterImageFile: imageFile,
+      afterFile: file
     });
   };
 
@@ -153,7 +158,7 @@ const EditForm = ({ match, history }) => {
   };
 
   const handleCommentChange = (e) => {
-    setCommentData({ ...commentData, comment: e.target.value });
+    setCommentData({ ...commentData, comment: e.target.value, createdBy: user.employee_id });
   };
 
   const isValidForm = () => {
@@ -256,9 +261,11 @@ const EditForm = ({ match, history }) => {
 
     try {
       const url = ApiUrl + "/ideabox/edit/";
-
+      
       let form = new FormData();
       form.append("data", JSON.stringify(ideasheet));
+      form.append("beforeImage", formDetailData.beforeFile);
+      form.append("afterImage", formDetailData.afterFile);
 
       if (isValidForm()) {
         const result = await axios.post(url, form, {
@@ -486,8 +493,9 @@ const EditForm = ({ match, history }) => {
                     type="radio"
                     value="1"
                     onChange={handleFormDetailChange}
+                    checked = {formDetailData.afterRank === 1}
                   />
-                  {"Rank 1"}
+                  {"Rank 1 "}
                   <Label check>Frekuensi Bertambah</Label>
                 </FormGroup>
                 <FormGroup check>
@@ -496,18 +504,20 @@ const EditForm = ({ match, history }) => {
                     type="radio"
                     value="2"
                     onChange={handleFormDetailChange}
+                    checked = {formDetailData.afterRank === 2}
                   />
-                  {"Rank 2"}
+                  {"Rank 2 "}
                   <Label check>Terjadi Sewaktu-waktu</Label>
                 </FormGroup>
                 <FormGroup check>
                   <Input
-                    name="afterRank"
+                    name="afterRank "
                     type="radio"
                     value="3"
                     onChange={handleFormDetailChange}
+                    checked = {formDetailData.afterRank === 3}
                   />
-                  {"Rank 3"}
+                  {"Rank 3 "}
                   <Label check>Jarang Terjadi</Label>
                 </FormGroup>
               </FormGroup>
@@ -664,6 +674,7 @@ const EditForm = ({ match, history }) => {
                         name="ideaType"
                         type="select"
                         onChange={handleFormChange}
+                        value={formData.ideaType}
                       >
                         <option value="UMUM">UMUM</option>
                         <option value="Q-KYT">Q-KYT</option>
@@ -740,6 +751,7 @@ const EditForm = ({ match, history }) => {
                     type="textarea"
                     name="ideboxComment"
                     onChange={handleCommentChange}
+                    value={commentData.comment}
                   />
                 </FormGroup>
               </CardBody>

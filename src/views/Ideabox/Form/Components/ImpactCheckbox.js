@@ -23,20 +23,27 @@ const data = [
 const Checkboxes = ({ onChange, value }) => {
   const [values, setValues] = React.useState(value);
   const prevValues = usePrevious(values);
+  const prevDefaultValue = usePrevious(value);
 
+  
   React.useEffect(() => {
     // this one is your didupdate method for count variable
     if (values !== prevValues) {
-      onChange(values);
-      console.log(values);
+      onChange(values);  
     }
   }, [values]);
 
-  const handleImpactChange = (checked, value) => {
+  React.useEffect(() => {
+    if(value !== prevValues) {
+      setValues([...values, ...value]);
+    }
+  }, [value]);  
+
+  const handleImpactChange = (checked, val) => {
     if (checked) {
-      setValues([...values, value]);
+      setValues([...values, val]);
     } else {
-      setValues(values.filter((x) => x !== value));
+      setValues(values.filter((x) => x !== val));
     }
   };
 
