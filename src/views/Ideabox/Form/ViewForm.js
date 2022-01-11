@@ -487,9 +487,6 @@ const ViewForm = ({ match }) => {
                 >
                   <span className="icon-close"></span> Close
                 </Link>
-                <Button type="submit" size="sm" color="primary float-right">
-                  <i className="fa fa-dot-circle-o"></i> Save
-                </Button>
               </CardHeader>
             </Card>
           </Form>

@@ -35,6 +35,7 @@ const Dashboard = (props) => {
 
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState([]);
+  const [selectedNumber, setSelectedNumber] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -76,38 +77,43 @@ const Dashboard = (props) => {
   const handleOnSelect = (row, isSelect) => {
     if (isSelect) {
       setSelected([...selected, row.ideaboxId]);
+      setSelectedNumber([...selectedNumber, row.ideaNumber]);
     } else {
       setSelected(selected.filter((x) => x !== row.ideaboxId));
+      setSelectedNumber(selectedNumber.filter((x) => x !== row.ideaNumber));
     }
   };
 
   const handleOnSelectAll = (isSelect, rows) => {
     const ids = rows.map((r) => r.ideaboxId);
+    const numbers = rows.map((r) => r.ideaNumber);
     if (isSelect) {
       setSelected(ids);
+      setSelectedNumber(numbers);
     } else {
       setSelected([]);
+      setSelectedNumber([]);
     }
   };
 
   const handleAccept = async () => {
     if (selected.length <= 0) return;
 
-    const result = await confirm("Apakah anda yakin untuk melakukan approve?");
+    const result = await confirm(
+      "Apakah anda yakin untuk melakukan approve ideasheet ?"
+    );
 
     if (result === true) {
       try {
         const url = ApiUrl + "/ideabox/approve";
 
-        selected.map(async (id) => {
-          const formData = {
-            employeeId: user.employee_id,
-            ideaboxId: id,
-          };
+        const formData = {
+          employeeId: user.employee_id,
+          ideaboxIds: selected,
+        };
 
-          const res = await axios.post(url, formData, JsonContentType);
-          console.log(res.data);
-        });
+        const res = await axios.post(url, formData, JsonContentType);
+        console.log(res.data);
 
         fetchData();
       } catch (err) {
@@ -127,25 +133,49 @@ const Dashboard = (props) => {
     props.history.push("/ideabox/submit");
   };
 
+  const handlePosting = async () => {
+    if (selected.length <= 0) return;
+
+    const result = await confirm(
+      "Apakah anda yakin untuk melakukan posting ideasheet?"
+    );
+
+    if (result === true) {
+      try {
+        const url = ApiUrl + "/ideabox/posting";
+
+        const formData = {
+          employeeId: user.employee_id,
+          ideaboxIds: selected,
+        };
+
+        const res = await axios.post(url, formData, JsonContentType);
+        console.log(res.data);
+        fetchData();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
   const handleApprove = async () => {
     if (selected.length <= 0) return;
 
-    const result = await confirm("Apakah anda yakin untuk melakukan approve ?");
+    const result = await confirm(
+      "Apakah anda yakin untuk melakukan approve ideasheet?"
+    );
 
     if (result === true) {
       try {
         const url = ApiUrl + "/ideabox/approve";
 
-        selected.map(async (id) => {
-          const formData = {
-            employeeId: user.employee_id,
-            ideaboxId: id,
-          };
+        const formData = {
+          employeeId: user.employee_id,
+          ideaboxIds: selected,
+        };
 
-          const res = await axios.post(url, formData, JsonContentType);
-          console.log(res.data);
-        });
-
+        const res = await axios.post(url, formData, JsonContentType);
+        console.log(res.data);
         fetchData();
       } catch (err) {
         console.log(err);
@@ -156,21 +186,22 @@ const Dashboard = (props) => {
   const handleReject = async () => {
     if (selected.length <= 0) return;
 
-    const result = await confirm("Apakah anda yakin untuk mereject ?");
+    const result = await confirm(
+      "Apakah anda yakin untuk melakukan reject ideasheet ?"
+    );
 
     if (result === true) {
       try {
         const url = ApiUrl + "/ideabox/reject";
 
-        selected.map(async (id) => {
-          const formData = {
-            employeeId: user.employee_id,
-            ideaboxId: id,
-          };
+        const formData = {
+          employeeId: user.employee_id,
+          ideaboxIds: selected,
+        };
 
-          const res = await axios.post(url, formData, JsonContentType);
-          console.log(res.data);
-        });
+        const res = await axios.post(url, formData, JsonContentType);
+        console.log(res.data);
+        fetchData();
       } catch (err) {
         console.log(err);
       }
@@ -179,41 +210,47 @@ const Dashboard = (props) => {
 
   const renderButton = () => {
     console.log("render buttons: ", user);
-    const { role, approval_role: approvalRole } = user;
-    console.log(role, approvalRole);
+    if (user) {
+      const { role, approval_role: approvalRole } = user;
+      console.log(role, approvalRole);
 
-    if (approvalRole === "KOMITE_IDEABOX") {
-      return (
-        <KomiteButtonGroup onAccept={handleAccept} onRefresh={handleRefresh} />
-      );
-    } else if (approvalRole === "SECTION_MANAGER") {
-      return (
-        <SectionManagerButtonGroup
-          onApprove={handleApprove}
-          onEdit={handleEdit}
-          onRefresh={handleRefresh}
-          onReject={handleReject}
-        />
-      );
-    } else if (approvalRole === "DEPARTMENT_MANAGER") {
-      return (
-        <DeparmentManagerButtonGroup
-          onApprove={handleApprove}
-          onEdit={handleEdit}
-          onRefresh={handleRefresh}
-          onReject={handleReject}
-        />
-      );
-    } else {
-      if (role === "administrator") {
-        return <AdminButtonGroup onRefresh={handleRefresh} />;
-      } else {
+      if (approvalRole === "KOMITE_IDEABOX") {
         return (
-          <EmployeeButtonGroup
-            onSubmit={handleSubmit}
+          <KomiteButtonGroup
+            onAccept={handleAccept}
             onRefresh={handleRefresh}
           />
         );
+      } else if (approvalRole === "SECTION_MANAGER") {
+        return (
+          <SectionManagerButtonGroup
+            onApprove={handleApprove}
+            onEdit={handleEdit}
+            onRefresh={handleRefresh}
+            onReject={handleReject}
+          />
+        );
+      } else if (approvalRole === "DEPARTMENT_MANAGER") {
+        return (
+          <DeparmentManagerButtonGroup
+            onApprove={handleApprove}
+            onEdit={handleEdit}
+            onRefresh={handleRefresh}
+            onReject={handleReject}
+          />
+        );
+      } else {
+        if (role === "administrator") {
+          return <AdminButtonGroup onRefresh={handleRefresh} />;
+        } else {
+          return (
+            <EmployeeButtonGroup
+              onSubmit={handleSubmit}
+              onRefresh={handleRefresh}
+              onPosting={handlePosting}
+            />
+          );
+        }
       }
     }
   };

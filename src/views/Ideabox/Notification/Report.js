@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
 
 function Report() {
-    return (
-        <div>
-            <h1>Notification report.</h1>
-        </div>
-    )
+  return (
+    <div>
+      <h4>Under Construction</h4>
+      <p>
+        Our website is currently undergoing scheduled maintenance. We should be
+        back shortly. Thank you for your patience.
+      </p>
+    </div>
+  );
 }
 
-export default Report
+export default Report;
