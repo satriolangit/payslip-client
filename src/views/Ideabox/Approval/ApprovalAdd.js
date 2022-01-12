@@ -188,7 +188,7 @@ const ApprovalAdd = ({ history }) => {
                     </DropdownMenu>
                   </ButtonDropdown>
                   <Link
-                    to="/ideabox/approval/mapping"
+                    to="/ideabox/approval"
                     className="btn btn-sm btn-danger"
                   >
                     <i className="icon-close" /> Close
