@@ -14,6 +14,7 @@ import { AppNavbarBrand, AppSidebarToggler } from "@coreui/react";
 import sygnet from "../../assets/img/brand/sygnet.svg";
 import logo2 from "./../../assets/img/brand/logo_payslip.png";
 import logo_survey from "./../../assets/img/brand/logo_kantin.png";
+import logo_ideabox from "./../../assets/img/brand/logo_ideabox.png";
 
 const propTypes = {
   children: PropTypes.node
@@ -66,15 +67,25 @@ class DefaultHeader extends Component {
             alt: "Shindengen Logo"
           }}
         />);
-      } else {
+      } else if(siteName === "IDEABOX") {
         return (
           <AppNavbarBrand
-          full={{ src: logo_survey, width: 120, height: 35, alt: "kantin Logo" }}
+          full={{ src: logo_ideabox, width: 120, height: 35, alt: "ideabox Logo" }}
           minimized={{
             src: sygnet,
             width: 30,
             height: 30,
-            alt: "Shindengen Logo"
+            alt: "Ideabox Logo"
+          }}/>);      
+      } else {
+        return (
+          <AppNavbarBrand
+          full={{ src: logo_survey, width: 120, height: 35, alt: "catering Logo" }}
+          minimized={{
+            src: sygnet,
+            width: 30,
+            height: 30,
+            alt: "Catering Logo"
           }}
         />
         );

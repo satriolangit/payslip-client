@@ -190,24 +190,10 @@ const SurveyForm = ({match, history}) => {
                 <option value={e.department_code}>{e.department_name}</option>
             ))
         );
-    }
-
-    const renderBreadcrumb = () => {
-        return (
-          <div>
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">Home</li>
-                <li class="active breadcrumb-item" aria-current="page">Survey</li>
-              </ol>
-            </nav>
-          </div>
-        )    
-    }
+    } 
 
     return (
         <div>
-            {renderBreadcrumb()}
             <div className = "animated fadeIn">
                 <Row>
                     <Col md="12">

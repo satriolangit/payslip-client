@@ -31,11 +31,15 @@ const Login = props => {
 
     console.log("siteName : ", siteName);
 
-    if (isAuthenticated) {
-      if(siteName === "PAYSLIP") {
-        props.history.push("/");
-      } else {
-        props.history.push("/survey");
+    if (isAuthenticated) {     
+
+      switch (siteName) {
+        case "IDEABOX": props.history.push("/ideabox/dashboard");
+          break;
+        case "SURVEY": props.history.push("/survey");
+          break;        
+        default: props.history.push("/");
+          break;
       }
       
     }

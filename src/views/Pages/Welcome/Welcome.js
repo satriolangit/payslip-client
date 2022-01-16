@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import LogoPayslip from '../../../assets/img/brand/logo_payslip.png';
 import LogoSurvey from '../../../assets/img/logo_catering.png';
+import LogoIdeabox from '../../../assets/img/logo_ideabox.png';
 import SiteContext from '../../../context/site/siteContext';
 
 export default function Welcome(props) {
@@ -25,11 +26,12 @@ export default function Welcome(props) {
     }
 
     return (
-        <div class="row vh-100">
-            <div class="col-sm-12 my-auto">
-                <div class="mx-auto text-center">
+        <div className="row vh-100">
+            <div className="col-sm-12 my-auto">
+                <div className="mx-auto text-center">
                 <img src={LogoSurvey} onClick={handleSurveyClick} alt="survey" style={{width: "150px", height:"auto"}}></img>
-                    <img src={LogoPayslip} onClick={handlePayslipClick} alt="payslip" style={{maxWidth: "200px", height:"auto"}}></img>
+                <img src={LogoPayslip} onClick={handlePayslipClick} alt="payslip" style={{maxWidth: "200px", height:"auto"}}></img>
+                <img src={LogoIdeabox} onClick={handleIdeaBoxClick} alt="ideabox" style={{maxWidth: "200px", height:"auto"}}></img>
                 </div>
             </div>
         </div>                
