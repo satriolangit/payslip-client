@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 
 import { ApiUrl, JsonContentType } from "../../../setting";
 import SearchBox from "../../SearchBox/SearchBox";
+import Modal from "./AddModal";
 
 function ApprovalMappingList(props) {
   const [data, setData] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
+  const [isOpenModal, SetIsOpenModal] = React.useState(false);
 
   React.useEffect(() => {
     fetchData();
@@ -52,6 +54,10 @@ function ApprovalMappingList(props) {
     } else {
       searchData(keyword);
     }
+  };
+
+  const handleAdd = () => {
+    SetIsOpenModal(true);
   };
 
   const handleDelete = async () => {
@@ -157,6 +163,9 @@ function ApprovalMappingList(props) {
                   >
                     <i className="icon-plus" /> Add
                   </Link>
+                  <Button color="success" onClick={handleAdd}>
+                    <i className="icon-plus" /> Add
+                  </Button>
 
                   <Button
                     color="danger"
@@ -182,6 +191,7 @@ function ApprovalMappingList(props) {
           </Card>
         </Col>
       </Row>
+      <Modal isOpen={isOpenModal} />
     </div>
   );
 }

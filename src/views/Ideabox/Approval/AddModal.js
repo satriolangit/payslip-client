@@ -19,19 +19,21 @@ import axios from "axios";
 import { ApiUrl, AlertOptions, JsonContentType } from "../../../setting";
 import DepartmentCheckbox from "./DepartmentCheckbox";
 
-const roleOptions = [{ value: "SECTION_MANAGER", label }];
+const roleOptions = [
+  { value: "SECTION_MANAGER", label: "Section Manager" },
+  { value: "DEPARTMENT_MANAGER", label: "Department Manager" },
+  { value: "KOMITE_IDEABOX", label: "Komite Ideabox" },
+  { value: "ADMIN", label: "Administrator" },
+];
 
-const AddModal = ({ isOpen, employeeId, departments, approvalRole }) => {
+const AddModal = ({ isOpen, data }) => {
   const [formData, setFormData] = React.useState({
-    employeeId: employeeId,
-    approvalRole: approvalRole,
-    departments: departments,
+    employeeId: "",
+    approvalRole: "",
+    departments: [],
   });
 
   const [options, setOptions] = React.useState([]);
-  const [roleOption, setRoleOption] = React.useState([
-    { value: "SECTION_MANAGER", label: "Section Manager" },
-  ]);
 
   React.useEffect(() => {
     if (isOpen && options.length <= 0) {
@@ -81,6 +83,16 @@ const AddModal = ({ isOpen, employeeId, departments, approvalRole }) => {
               isSearchable={true}
               name="employeeId"
               options={options}
+              isClearable={true}
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Role</Label>
+            <Select
+              isSearchable={true}
+              name="employeeId"
+              options={roleOptions}
               isClearable={true}
               onChange={handleChange}
             />
