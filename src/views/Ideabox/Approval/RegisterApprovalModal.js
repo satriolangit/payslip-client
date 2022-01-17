@@ -6,17 +6,14 @@ import {
   Button,
   Form,
   FormGroup,
-  Input,
   Label,
-  Col,
-  Row,
   ModalFooter,
 } from "reactstrap";
-
+import { confirm } from "react-bootstrap-confirmation";
 import Select from "react-select";
 import axios from "axios";
 
-import { ApiUrl, AlertOptions, JsonContentType } from "../../../setting";
+import { ApiUrl, JsonContentType } from "../../../setting";
 import DepartmentCheckbox from "./DepartmentCheckbox";
 
 const roleOptions = [
@@ -26,20 +23,19 @@ const roleOptions = [
   { value: "ADMIN", label: "Administrator" },
 ];
 
-const AddModal = ({ isOpen, data }) => {
+const AddModal = ({ isOpen }) => {
   const [formData, setFormData] = React.useState({
     employeeId: "",
     approvalRole: "",
     departments: [],
   });
 
+  const [close, setClose] = React.useState(false);
   const [options, setOptions] = React.useState([]);
 
   React.useEffect(() => {
-    if (isOpen && options.length <= 0) {
-      fetchUser();
-    }
-  }, [options, isOpen]);
+    fetchUser();
+  }, [isOpen]);
 
   const fetchUser = async () => {
     try {
@@ -60,23 +56,48 @@ const AddModal = ({ isOpen, data }) => {
     }
   };
 
-  const handleSave = () => {
-    alert("save");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    const result = await confirm(
+      "Apakah anda yakin untuk melakukan register role ?"
+    );
+    if (result) {
+      try {
+        const url = ApiUrl + "/approval/mapping/add";
+        const payload = {
+          employeeId: formData.employeeId,
+          approvalRole: formData.approvalRole,
+          departments: formData.departments,
+        };
+
+        await axios.post(url, payload, JsonContentType);
+
+        setClose(true);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
-  const handleChange = (e) => {
-    alert(e.target.value);
+  const handleNameChange = (e) => {
+    setFormData({ ...formData, employeeId: e.value });
   };
 
-  const handleDepartmentChange = (value) => {
-    alert(value);
+  const handleRoleChange = (e) => {
+    setFormData({ ...formData, approvalRole: e.value });
+  };
+
+  const handleDepartmentChange = (e) => {
+    setFormData({ ...formData, departments: e });
   };
 
   return (
-    <Modal isOpen={isOpen}>
-      <ModalHeader>Register Approval</ModalHeader>
-      <ModalBody>
-        <Form>
+    <Modal isOpen={isOpen && !close}>
+      <Form onSubmit={handleSubmit}>
+        <ModalHeader>Register Approval</ModalHeader>
+        <ModalBody>
           <FormGroup>
             <Label>Name</Label>
             <Select
@@ -84,28 +105,31 @@ const AddModal = ({ isOpen, data }) => {
               name="employeeId"
               options={options}
               isClearable={true}
-              onChange={handleChange}
+              onChange={handleNameChange}
             />
           </FormGroup>
           <FormGroup>
             <Label>Role</Label>
             <Select
               isSearchable={true}
-              name="employeeId"
+              name="approvalRole"
               options={roleOptions}
               isClearable={true}
-              onChange={handleChange}
+              onChange={handleRoleChange}
             />
           </FormGroup>
           <FormGroup>
             <Label>Department</Label>
             <DepartmentCheckbox onChange={handleDepartmentChange} value={[]} />
           </FormGroup>
-        </Form>
-      </ModalBody>
-      <ModalFooter>
-        <Button onClick={handleSave}>Save</Button>
-      </ModalFooter>
+        </ModalBody>
+        <ModalFooter>
+          <Button type="submit" color="success">
+            Save
+          </Button>
+          <Button onClick={() => setClose(true)}>Cancel</Button>
+        </ModalFooter>
+      </Form>
     </Modal>
   );
 };

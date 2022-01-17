@@ -47,7 +47,7 @@ const DepartmentCheckbox = ({ onChange, value }) => {
   };
 
   return data.map((item, i) => {
-    if (value) {
+    if (value.length > 0) {
       return (
         <FormGroup check key={i}>
           <Input
@@ -59,7 +59,7 @@ const DepartmentCheckbox = ({ onChange, value }) => {
             }
             checked={value.filter((x) => x === item.id).length > 0}
           />{" "}
-          <Label check>{item.description}</Label>
+          <Label check>{item.departmentName}</Label>
         </FormGroup>
       );
     } else {
