@@ -236,7 +236,7 @@ const ViewForm = ({ match }) => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label>Bagaimana hal ini bisa menjadi masalah ?</Label>
+                <Label>Bagaimana hal ini bisa menjadi masalah (situasi)?</Label>
                 <Input
                   name="beforeSituation"
                   type="text"

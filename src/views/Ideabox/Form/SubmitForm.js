@@ -77,7 +77,11 @@ const SubmitForm = (props) => {
   const fetchTotalIdeasheet = async () => {
     try {
       const url =
-        ApiUrl + "/ideabox/closedIdeaCount/" + moment().format("YYYY");
+        ApiUrl +
+        "/ideabox/closedIdeaCount?year=" +
+        moment().format("YYYY") +
+        "&employeeId=" +
+        user.employee_id;
       const res = await axios.get(url);
       const result = res.data.data;
 
