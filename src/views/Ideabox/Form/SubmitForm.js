@@ -481,7 +481,9 @@ const SubmitForm = (props) => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label>Bagaimana hal ini bisa menjadi masalah ?</Label>
+                <Label>
+                  Bagaimana hal ini bisa menjadi masalah (situasi) ?
+                </Label>
                 <Input
                   name="beforeSituation"
                   type="text"
@@ -525,11 +527,11 @@ const SubmitForm = (props) => {
                   <Input
                     name="afterRank"
                     type="radio"
-                    value="1"
+                    value="3"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 1"}
-                  <Label check>Frekuensi Bertambah</Label>
+                  {"Rank 3"}
+                  <Label check>Jarang Terjadi</Label>
                 </FormGroup>
                 <FormGroup check>
                   <Input
@@ -541,15 +543,16 @@ const SubmitForm = (props) => {
                   {"Rank 2"}
                   <Label check>Terjadi Sewaktu-waktu</Label>
                 </FormGroup>
+
                 <FormGroup check>
                   <Input
                     name="afterRank"
                     type="radio"
-                    value="3"
+                    value="1"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 3"}
-                  <Label check>Jarang Terjadi</Label>
+                  {"Rank 1"}
+                  <Label check>Frekuensi Bertambah</Label>
                 </FormGroup>
               </FormGroup>
             </Col>

@@ -100,6 +100,11 @@ function ApprovalMappingList(props) {
     }
   };
 
+  const handleModalSubmit = () => {
+    SetIsOpenModal(false);
+    fetchData();
+  };
+
   const selectRow = {
     mode: "checkbox",
     clickToSelect: true,
@@ -190,7 +195,7 @@ function ApprovalMappingList(props) {
           </Card>
         </Col>
       </Row>
-      <Modal isOpen={isOpenModal} />
+      <Modal isOpen={isOpenModal} onSubmit={handleModalSubmit} />
     </div>
   );
 }

@@ -23,19 +23,18 @@ const roleOptions = [
   { value: "ADMIN", label: "Administrator" },
 ];
 
-const AddModal = ({ isOpen }) => {
+const AddModal = ({ isOpen, onSubmit }) => {
   const [formData, setFormData] = React.useState({
     employeeId: "",
     approvalRole: "",
     departments: [],
   });
 
-  const [close, setClose] = React.useState(false);
   const [options, setOptions] = React.useState([]);
 
   React.useEffect(() => {
     fetchUser();
-  }, [isOpen]);
+  }, []);
 
   const fetchUser = async () => {
     try {
@@ -60,33 +59,32 @@ const AddModal = ({ isOpen }) => {
     e.preventDefault();
     console.log(formData);
 
-    const result = await confirm(
-      "Apakah anda yakin untuk melakukan register role ?"
-    );
-    if (result) {
-      try {
-        const url = ApiUrl + "/approval/mapping/add";
-        const payload = {
-          employeeId: formData.employeeId,
-          approvalRole: formData.approvalRole,
-          departments: formData.departments,
-        };
+    try {
+      const url = ApiUrl + "/approval/mapping/add";
+      const payload = {
+        employeeId: formData.employeeId,
+        approvalRole: formData.approvalRole,
+        departments: formData.departments,
+      };
 
-        await axios.post(url, payload, JsonContentType);
+      await axios.post(url, payload, JsonContentType);
 
-        setClose(true);
-      } catch (err) {
-        console.log(err);
-      }
+      onSubmit();
+    } catch (err) {
+      console.log(err);
     }
   };
 
   const handleNameChange = (e) => {
-    setFormData({ ...formData, employeeId: e.value });
+    if (e.value) {
+      setFormData({ ...formData, employeeId: e.value });
+    }
   };
 
   const handleRoleChange = (e) => {
-    setFormData({ ...formData, approvalRole: e.value });
+    if (e.value) {
+      setFormData({ ...formData, approvalRole: e.value });
+    }
   };
 
   const handleDepartmentChange = (e) => {
@@ -94,7 +92,7 @@ const AddModal = ({ isOpen }) => {
   };
 
   return (
-    <Modal isOpen={isOpen && !close}>
+    <Modal isOpen={isOpen}>
       <Form onSubmit={handleSubmit}>
         <ModalHeader>Register Approval</ModalHeader>
         <ModalBody>
@@ -127,7 +125,7 @@ const AddModal = ({ isOpen }) => {
           <Button type="submit" color="success">
             Save
           </Button>
-          <Button onClick={() => setClose(true)}>Cancel</Button>
+          <Button onClick={() => onSubmit()}>Cancel</Button>
         </ModalFooter>
       </Form>
     </Modal>
