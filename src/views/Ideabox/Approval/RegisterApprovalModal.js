@@ -20,7 +20,6 @@ const roleOptions = [
   { value: "SECTION_MANAGER", label: "Section Manager" },
   { value: "DEPARTMENT_MANAGER", label: "Department Manager" },
   { value: "KOMITE_IDEABOX", label: "Komite Ideabox" },
-  { value: "ADMIN", label: "Administrator" },
 ];
 
 const AddModal = ({ isOpen, onSubmit }) => {
