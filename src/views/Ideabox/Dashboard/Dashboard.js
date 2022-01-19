@@ -158,31 +158,6 @@ const Dashboard = (props) => {
     props.history.push("/ideabox/submit");
   };
 
-  const handlePosting = async () => {
-    if (selected.length <= 0) return;
-
-    const result = await confirm(
-      "Apakah anda yakin untuk melakukan posting ideasheet?"
-    );
-
-    if (result === true) {
-      try {
-        const url = ApiUrl + "/ideabox/posting";
-
-        const formData = {
-          employeeId: user.employee_id,
-          ideaboxIds: selected,
-        };
-
-        const res = await axios.post(url, formData, JsonContentType);
-        console.log(res.data);
-        fetchData();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
   const handleApprove = async () => {
     if (selected.length <= 0) return;
 
@@ -272,7 +247,6 @@ const Dashboard = (props) => {
             <EmployeeButtonGroup
               onSubmit={handleSubmit}
               onRefresh={handleRefresh}
-              onPosting={handlePosting}
             />
           );
         }

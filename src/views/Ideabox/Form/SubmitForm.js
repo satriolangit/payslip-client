@@ -269,7 +269,7 @@ const SubmitForm = (props) => {
           Alert.error(result.data.message, AlertOptions);
         } else {
           Alert.info("Ideasheet sudah terkirim", AlertOptions);
-          //handleClearForm();
+          props.history.push("/ideabox/dashboard");
         }
       }
     } catch (error) {

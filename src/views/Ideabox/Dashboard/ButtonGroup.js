@@ -62,7 +62,7 @@ const DeparmentManagerButtonGroup = ({
   );
 };
 
-const EmployeeButtonGroup = ({ onSubmit, onRefresh, onPosting }) => {
+const EmployeeButtonGroup = ({ onSubmit, onRefresh }) => {
   return (
     <Fragment>
       <Button color="secondary" onClick={onRefresh} className="btn btn-sm">
@@ -70,9 +70,6 @@ const EmployeeButtonGroup = ({ onSubmit, onRefresh, onPosting }) => {
       </Button>
       <Button color="info" onClick={onSubmit} className="btn btn-sm">
         <i className="icon-plus" /> Submit
-      </Button>
-      <Button color="success" onClick={onPosting} className="btn btn-sm">
-        <i className="icon-check" /> Posting
       </Button>
     </Fragment>
   );
