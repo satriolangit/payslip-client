@@ -77,7 +77,11 @@ const SubmitForm = (props) => {
   const fetchTotalIdeasheet = async () => {
     try {
       const url =
-        ApiUrl + "/ideabox/closedIdeaCount/" + moment().format("YYYY");
+        ApiUrl +
+        "/ideabox/closedIdeaCount?year=" +
+        moment().format("YYYY") +
+        "&employeeId=" +
+        user.employee_id;
       const res = await axios.get(url);
       const result = res.data.data;
 
@@ -265,7 +269,7 @@ const SubmitForm = (props) => {
           Alert.error(result.data.message, AlertOptions);
         } else {
           Alert.info("Ideasheet sudah terkirim", AlertOptions);
-          //handleClearForm();
+          props.history.push("/ideabox/dashboard");
         }
       }
     } catch (error) {
@@ -481,7 +485,9 @@ const SubmitForm = (props) => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label>Bagaimana hal ini bisa menjadi masalah ?</Label>
+                <Label>
+                  Bagaimana hal ini bisa menjadi masalah (situasi) ?
+                </Label>
                 <Input
                   name="beforeSituation"
                   type="text"
@@ -525,11 +531,11 @@ const SubmitForm = (props) => {
                   <Input
                     name="afterRank"
                     type="radio"
-                    value="1"
+                    value="3"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 1"}
-                  <Label check>Frekuensi Bertambah</Label>
+                  {"Rank 3"}
+                  <Label check>Jarang Terjadi</Label>
                 </FormGroup>
                 <FormGroup check>
                   <Input
@@ -541,15 +547,16 @@ const SubmitForm = (props) => {
                   {"Rank 2"}
                   <Label check>Terjadi Sewaktu-waktu</Label>
                 </FormGroup>
+
                 <FormGroup check>
                   <Input
                     name="afterRank"
                     type="radio"
-                    value="3"
+                    value="1"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 3"}
-                  <Label check>Jarang Terjadi</Label>
+                  {"Rank 1"}
+                  <Label check>Frekuensi Bertambah</Label>
                 </FormGroup>
               </FormGroup>
             </Col>

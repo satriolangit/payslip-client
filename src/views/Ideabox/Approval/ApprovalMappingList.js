@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 
 import { ApiUrl, JsonContentType } from "../../../setting";
 import SearchBox from "../../SearchBox/SearchBox";
+import Modal from "./RegisterApprovalModal";
 
 function ApprovalMappingList(props) {
   const [data, setData] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
+  const [isOpenModal, SetIsOpenModal] = React.useState(false);
 
   React.useEffect(() => {
     fetchData();
@@ -54,14 +56,19 @@ function ApprovalMappingList(props) {
     }
   };
 
+  const handleAdd = () => {
+    SetIsOpenModal(true);
+  };
+
   const handleDelete = async () => {
     if (selected.length > 0) {
+      console.log("selected", selected);
       const result = await confirm("Apakah anda yakin menghapus user ini ?");
 
       if (result === true) {
         try {
           const formData = {
-            employees: selected,
+            ids: selected,
           };
           const url = ApiUrl + "/approval/remove";
           await axios.post(url, formData, JsonContentType);
@@ -77,20 +84,25 @@ function ApprovalMappingList(props) {
   const handleOnSelect = (row, isSelect) => {
     if (isSelect) {
       console.log(row);
-      setSelected([...selected, row.employeeId]);
+      setSelected([...selected, row.mappingId]);
     } else {
-      setSelected(selected.filter((x) => x !== row.employeeId));
+      setSelected(selected.filter((x) => x !== row.mappingId));
     }
   };
 
   const handleOnSelectAll = (isSelect, rows) => {
-    const ids = rows.map((r) => r.employeeId);
+    const ids = rows.map((r) => r.mappingId);
 
     if (isSelect) {
       setSelected(ids);
     } else {
       setSelected([]);
     }
+  };
+
+  const handleModalSubmit = () => {
+    SetIsOpenModal(false);
+    fetchData();
   };
 
   const selectRow = {
@@ -151,12 +163,13 @@ function ApprovalMappingList(props) {
                   >
                     <i className="icon-refresh" /> Refresh
                   </Button>
-                  <Link
-                    to="/ideabox/approval/mapping"
-                    className="btn btn-sm btn-success"
+                  <Button
+                    color="success"
+                    className="btn btn-sm"
+                    onClick={handleAdd}
                   >
                     <i className="icon-plus" /> Add
-                  </Link>
+                  </Button>
 
                   <Button
                     color="danger"
@@ -171,7 +184,7 @@ function ApprovalMappingList(props) {
             <CardBody>
               <BootstrapTable
                 bootstrap4
-                keyField="employeeId"
+                keyField="mappingId"
                 data={data}
                 columns={columns}
                 selectRow={selectRow}
@@ -182,6 +195,7 @@ function ApprovalMappingList(props) {
           </Card>
         </Col>
       </Row>
+      <Modal isOpen={isOpenModal} onSubmit={handleModalSubmit} />
     </div>
   );
 }
