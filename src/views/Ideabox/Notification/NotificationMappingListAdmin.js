@@ -22,7 +22,7 @@ import { confirm } from "react-bootstrap-confirmation";
 import { ApiUrl, JsonContentType } from "../../../setting";
 import AuthContext from "./../../../context/auth/authContext";
 
-const NotificationMappingList = () => {
+function NotificationMappingListAdmin() {
   const authContext = React.useContext(AuthContext);
   const { user } = authContext;
 
@@ -30,18 +30,18 @@ const NotificationMappingList = () => {
   const [modalData, setModalData] = React.useState({
     employeeId: user.employee_id,
     departmentId: 0,
-    departmentList: [{ value: 0, label: "-- Departemen --" }],
+    departmentList: [],
     approvalRole: user.approval_role,
     notificationType: 0,
-    notificationTypeList: [{ value: 0, label: "-- Notification --" }],
+    notificationTypeList: [],
   });
   const [isOpenModal, setIsOpenModal] = false;
   const [selected, setSelected] = React.useState([]);
 
   React.useEffect(() => {
     fetchMappingData();
-    //fetchDepartmentList();
-    //fetchNotificationTypeList();
+    fetchDepartmentList();
+    fetchNotificationTypeList();
   }, []);
 
   const fetchMappingData = async () => {
@@ -72,10 +72,7 @@ const NotificationMappingList = () => {
           label: item.departmentname,
         };
       });
-      setModalData({
-        ...modalData,
-        departmentList: [...modalData.departmentList, options],
-      });
+      setModalData({ ...modalData, departmentList: options });
     } catch (err) {
       console.log(err);
     }
@@ -93,10 +90,7 @@ const NotificationMappingList = () => {
           label: item.description,
         };
       });
-      setModalData({
-        ...modalData,
-        notificationTypeList: [...modalData.notificationTypeList, options],
-      });
+      setModalData({ ...modalData, departmentList: options });
     } catch (err) {
       console.log(err);
     }
@@ -229,7 +223,7 @@ const NotificationMappingList = () => {
             <CardBody>
               <BootstrapTable
                 bootstrap4
-                keyField="id"
+                keyField="mappingId"
                 data={data}
                 columns={columns}
                 selectRow={selectRow}
@@ -283,6 +277,6 @@ const NotificationMappingList = () => {
       </Modal>
     </div>
   );
-};
+}
 
-export default NotificationMappingList;
+export default NotificationMappingListAdmin;

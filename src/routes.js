@@ -90,6 +90,12 @@ const IdeaboxNotification = React.lazy(() =>
   retry(() => import("./views/Ideabox/Notification/NotificationMappingList"))
 );
 
+const IdeaboxNotificationAdmin = React.lazy(() =>
+  retry(() =>
+    import("./views/Ideabox/Notification/NotificationMappingListAdmin")
+  )
+);
+
 const IdeaboxNotificationReport = React.lazy(() =>
   retry(() => import("./views/Ideabox/Notification/Report"))
 );
@@ -241,7 +247,7 @@ const routes = [
     component: IdeaboxDashboard,
   },
   {
-    path: "/ideabox/approval",
+    path: "/ideabox/administration/approval",
     exact: true,
     name: "Approval",
     component: IdeaboxApprovalList,
@@ -271,7 +277,13 @@ const routes = [
     component: IdeaboxNotification,
   },
   {
-    path: "/ideabox/notification-report",
+    path: "/ideabox/administration/notification",
+    exact: true,
+    name: "Notification Setting",
+    component: IdeaboxNotificationAdmin,
+  },
+  {
+    path: "/ideabox/administration/notification-report",
     exact: true,
     name: "Notification Report",
     component: IdeaboxNotificationReport,
