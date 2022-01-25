@@ -22,7 +22,7 @@ import { confirm } from "react-bootstrap-confirmation";
 import { ApiUrl, JsonContentType } from "../../../setting";
 import AuthContext from "./../../../context/auth/authContext";
 
-const NotificationMappingList = () => {
+const NotificationMappingList = ({ history }) => {
   const authContext = React.useContext(AuthContext);
   const { user } = authContext;
 
@@ -35,19 +35,21 @@ const NotificationMappingList = () => {
     notificationType: 0,
     notificationTypeList: [{ value: 0, label: "-- Notification --" }],
   });
-  const [isOpenModal, setIsOpenModal] = false;
+
+  const [departmentOptions, setDepartmentOptions] = React.useState([]);
+  const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [selected, setSelected] = React.useState([]);
 
   React.useEffect(() => {
     fetchMappingData();
-    //fetchDepartmentList();
-    //fetchNotificationTypeList();
+    fetchDepartmentList();
+    fetchNotificationTypeList();
   }, []);
 
   const fetchMappingData = async () => {
     try {
       const url =
-        ApiUrl + "/ideabox/notification/mapping?employeeId=" + user.employeeId;
+        ApiUrl + "/ideabox/notification/mapping?employeeId=" + user.employee_id;
       const res = await axios.get(url);
       const result = res.data.data;
 
@@ -69,13 +71,11 @@ const NotificationMappingList = () => {
       const options = result.map((item) => {
         return {
           value: item.departmentId,
-          label: item.departmentname,
+          label: item.departmentName,
         };
       });
-      setModalData({
-        ...modalData,
-        departmentList: [...modalData.departmentList, options],
-      });
+
+      setDepartmentOptions(options);
     } catch (err) {
       console.log(err);
     }
@@ -93,10 +93,8 @@ const NotificationMappingList = () => {
           label: item.description,
         };
       });
-      setModalData({
-        ...modalData,
-        notificationTypeList: [...modalData.notificationTypeList, options],
-      });
+
+      setModalData({ ...modalData, notificationTypeList: options });
     } catch (err) {
       console.log(err);
     }
@@ -112,7 +110,25 @@ const NotificationMappingList = () => {
     setIsOpenModal(true);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    if (selected.length > 0) {
+      const result = await confirm("Apakah anda yakin menghapus setting ini ?");
+
+      if (result === true) {
+        try {
+          const formData = {
+            ids: selected,
+          };
+          const url = ApiUrl + "/ideabox/notification/mapping/remove";
+          await axios.post(url, formData, JsonContentType);
+
+          fetchMappingData();
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  };
 
   const handleModalSubmit = async (e) => {
     e.preventDefault();
@@ -128,19 +144,20 @@ const NotificationMappingList = () => {
       await axios.post(url, payload, JsonContentType);
 
       setIsOpenModal(false);
+      fetchMappingData();
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleDepartmentChange = (item) => {
-    if (item.value) {
+    if (item.value !== null) {
       setModalData({ ...modalData, departmentId: item.value });
     }
   };
 
   const handleNotificationTypeChange = (item) => {
-    if (item.value) {
+    if (item.value !== null) {
       setModalData({ ...modalData, notificationType: item.value });
     }
   };
@@ -173,8 +190,8 @@ const NotificationMappingList = () => {
 
   const columns = [
     {
-      dataField: "notificationType",
-      text: "Type",
+      dataField: "id",
+      text: "id",
       hidden: true,
     },
     {
@@ -184,13 +201,17 @@ const NotificationMappingList = () => {
     },
     {
       dataField: "name",
-      text: "username",
+      text: "Name",
       sort: true,
     },
     {
-      dataField: "department",
+      dataField: "departmentName",
       text: "Department",
       sort: true,
+    },
+    {
+      dataField: "notifTypeDescription",
+      text: "Setting",
     },
   ];
 
@@ -246,18 +267,14 @@ const NotificationMappingList = () => {
           <ModalBody>
             <FormGroup>
               <Label>NIK</Label>
-              <Input name="employeeId" value={modalData.employeeId} readonly />
-            </FormGroup>
-            <FormGroup>
-              <Label>Nama</Label>
-              <Input name="name" value={modalData.name} readonly />
+              <Input name="employeeId" value={modalData.employeeId} readOnly />
             </FormGroup>
             <FormGroup>
               <Label>Department</Label>
               <Select
                 isSearchable={true}
                 name="departmentId"
-                options={modalData.departmentList}
+                options={departmentOptions}
                 isClearable={true}
                 onChange={handleDepartmentChange}
               />
@@ -274,10 +291,10 @@ const NotificationMappingList = () => {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
+            <Button onClick={() => setIsOpenModal(false)}>Cancel</Button>
             <Button type="submit" color="success">
               Save
             </Button>
-            <Button onClick={() => setIsOpenModal(false)}>Cancel</Button>
           </ModalFooter>
         </Form>
       </Modal>
