@@ -28,10 +28,10 @@ const NotificationMappingList = ({ history }) => {
 
   const [data, setData] = React.useState([]);
   const [modalData, setModalData] = React.useState({
-    employeeId: user.employee_id,
+    employeeId: user ? user.employee_id : "",
     departmentId: 0,
     departmentList: [{ value: 0, label: "-- Departemen --" }],
-    approvalRole: user.approval_role,
+    approvalRole: user ? user.approvalRole : "",
     notificationType: 0,
     notificationTypeList: [{ value: 0, label: "-- Notification --" }],
   });
