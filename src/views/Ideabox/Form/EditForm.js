@@ -494,13 +494,13 @@ const EditForm = ({ match, history }) => {
                 <legend>Rank</legend>
                 <FormGroup check>
                   <Input
-                    name="afterRank"
+                    name="afterRank "
                     type="radio"
-                    value="1"
+                    value="3"
                     onChange={handleFormDetailChange}
-                    checked={formDetailData.afterRank === 1}
+                    checked={formDetailData.afterRank === 3}
                   />
-                  {"Rank 1 "}
+                  {"Rank 3 "}
                   <Label check>Frekuensi Bertambah</Label>
                 </FormGroup>
                 <FormGroup check>
@@ -516,13 +516,13 @@ const EditForm = ({ match, history }) => {
                 </FormGroup>
                 <FormGroup check>
                   <Input
-                    name="afterRank "
+                    name="afterRank"
                     type="radio"
-                    value="3"
+                    value="1"
                     onChange={handleFormDetailChange}
-                    checked={formDetailData.afterRank === 3}
+                    checked={formDetailData.afterRank === 1}
                   />
-                  {"Rank 3 "}
+                  {"Rank 1 "}
                   <Label check>Jarang Terjadi</Label>
                 </FormGroup>
               </FormGroup>

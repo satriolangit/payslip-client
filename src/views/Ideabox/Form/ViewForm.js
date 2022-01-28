@@ -263,12 +263,12 @@ const ViewForm = ({ match }) => {
                   <Input
                     name="afterRank"
                     type="radio"
-                    value="1"
-                    checked={formDetailData.afterRank === 1}
+                    value="3"
+                    checked={formDetailData.afterRank === 3}
                     readOnly
                   />
-                  {"Rank 1 "}
-                  <Label check>Rank 1 Frekuensi Bertambah</Label>
+                  {"Rank 3 "}
+                  <Label check>Frekuensi Bertambah</Label>
                 </FormGroup>
                 <FormGroup check>
                   <Input
@@ -285,11 +285,11 @@ const ViewForm = ({ match }) => {
                   <Input
                     name="afterRank"
                     type="radio"
-                    value="3"
-                    checked={formDetailData.afterRank === 3}
+                    value="1"
+                    checked={formDetailData.afterRank === 1}
                     readOnly
                   />
-                  {"Rank 3 "}
+                  {"Rank 1 "}
                   <Label check>Jarang Terjadi</Label>
                 </FormGroup>
               </FormGroup>
