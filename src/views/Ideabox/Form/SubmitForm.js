@@ -534,8 +534,8 @@ const SubmitForm = (props) => {
                     value="3"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 3"}
-                  <Label check>Jarang Terjadi</Label>
+                  {"Rank 3 "}
+                  <Label check>Frekuensi Bertambah</Label>
                 </FormGroup>
                 <FormGroup check>
                   <Input
@@ -544,7 +544,7 @@ const SubmitForm = (props) => {
                     value="2"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 2"}
+                  {"Rank 2 "}
                   <Label check>Terjadi Sewaktu-waktu</Label>
                 </FormGroup>
 
@@ -555,8 +555,9 @@ const SubmitForm = (props) => {
                     value="1"
                     onChange={handleDetailFormChange}
                   />
-                  {"Rank 1"}
-                  <Label check>Frekuensi Bertambah</Label>
+                  {"Rank 1 "}
+                  <Label check>Jarang Terjadi</Label>
+
                 </FormGroup>
               </FormGroup>
             </Col>
