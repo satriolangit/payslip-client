@@ -557,6 +557,7 @@ const SubmitForm = (props) => {
                   />
                   {"Rank 1 "}
                   <Label check>Jarang Terjadi</Label>
+
                 </FormGroup>
               </FormGroup>
             </Col>
