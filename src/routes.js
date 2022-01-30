@@ -70,6 +70,10 @@ const IdeaboxDashboard = React.lazy(() =>
   retry(() => import("./views/Ideabox/Dashboard/Dashboard"))
 );
 
+const IdeaboxDashboardAdmin = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Dashboard/DashboardAdmin"))
+);
+
 const IdeaboxApprovalList = React.lazy(() =>
   retry(() => import("./views/Ideabox/Approval/ApprovalMappingList"))
 );
@@ -293,6 +297,12 @@ const routes = [
     exact: true,
     name: "Approval Mapping",
     component: IdeaboxApprovalMappingAdd,
+  },
+  {
+    path: "/ideabox/dashboard-admin",
+    exact: true,
+    name: "Dashboard",
+    component: IdeaboxDashboardAdmin,
   },
 ];
 

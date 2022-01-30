@@ -283,6 +283,7 @@ const EditForm = ({ match, history }) => {
           Alert.error(result.data.message, AlertOptions);
         } else {
           Alert.info("Ideasheet sudah terkirim", AlertOptions);
+          history.push("/ideabox/dashboard");
         }
       }
     } catch (error) {

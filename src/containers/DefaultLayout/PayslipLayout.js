@@ -16,7 +16,14 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from "@coreui/react";
 // sidebar nav config
-import defaultNavigation from "../../_navigation";
+import {
+  defaultNavigation,
+  employeeNavigation,
+  sectionManagerNavigation,
+  departmentManagerNavigation,
+  komiteNavigation,
+  administratorNavigation,
+} from "../../_navigation";
 
 // routes config
 import routes from "../../routes";
@@ -39,6 +46,7 @@ const DefaultLayout = (props) => {
     role: "",
     photo: "",
     employee_id: "",
+    approval_role: "",
   });
   const [homeRoute, setHomeRoute] = useState("/home");
 
@@ -73,6 +81,7 @@ const DefaultLayout = (props) => {
       setCurrentUser(user);
 
       const isAdmin = currentUser.role === "admin";
+
       let navigationData = defaultNavigation.items.filter(
         (item) => item.site === siteName
       );
@@ -84,6 +93,25 @@ const DefaultLayout = (props) => {
       }
 
       setNavigation({ ...navigation, items: navigationData });
+
+      //for ideabox only
+
+      if (siteName === "IDEABOX") {
+        if (
+          currentUser.approval_role === "EMPLOYEE" &&
+          currentUser.role !== "admin"
+        ) {
+          setNavigation({ ...navigation, items: employeeNavigation });
+        } else if (currentUser.approval_role === "SECTION_MANAGER") {
+          setNavigation({ ...navigation, items: sectionManagerNavigation });
+        } else if (currentUser.approval_role === "DEPARTMENT_MANAGER") {
+          setNavigation({ ...navigation, items: departmentManagerNavigation });
+        } else if (currentUser.approval_role === "KOMITE_IDEABOX") {
+          setNavigation({ ...navigation, items: komiteNavigation });
+        } else if (currentUser.role === "admin") {
+          setNavigation({ ...navigation, items: administratorNavigation });
+        }
+      }
 
       let homeRoute = "";
       switch (siteName) {

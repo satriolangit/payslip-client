@@ -14,8 +14,6 @@ import {
 import BootstrapTable from "react-bootstrap-table-next";
 import ReactExport from "react-data-export";
 import { confirm } from "react-bootstrap-confirmation";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import { Link } from "react-router-dom";
 
 import pagination from "../../Pagination/pagination";
@@ -42,22 +40,16 @@ const Dashboard = (props) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [user]);
-
   const handleRefresh = () => {
     fetchData();
   };
 
   const fetchData = async () => {
     try {
-      const approvalRole = user.role === "admin" ? "ADMIN" : user.approval_role;
-
       const url = ApiUrl + "/ideabox/list";
       const formData = {
         employeeId: user.employee_id,
-        approvalRole: approvalRole,
+        approvalRole: "ADMIN",
       };
       const res = await axios.post(url, formData, JsonContentType);
       const list = res.data.data;
@@ -78,13 +70,11 @@ const Dashboard = (props) => {
 
   const searchData = async (keywords) => {
     try {
-      const approvalRole = user.role === "admin" ? "ADMIN" : user.approval_role;
-
       const url = ApiUrl + "/ideabox/list/search";
       const formData = {
         keywords,
         employeeId: user.employee_id,
-        approvalRole: approvalRole,
+        approvalRole: "ADMIN",
       };
 
       const res = await axios.post(url, formData, JsonContentType);
@@ -132,144 +122,6 @@ const Dashboard = (props) => {
     } else {
       setSelected([]);
       setSelectedNumber([]);
-    }
-  };
-
-  const handleAccept = async () => {
-    if (selected.length <= 0) return;
-
-    const result = await confirm(
-      "Apakah anda yakin untuk melakukan approve ideasheet ?"
-    );
-
-    if (result === true) {
-      try {
-        const url = ApiUrl + "/ideabox/approve";
-
-        const formData = {
-          employeeId: user.employee_id,
-          ideaboxIds: selected,
-        };
-
-        const res = await axios.post(url, formData, JsonContentType);
-        console.log(res.data);
-
-        fetchData();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const handleEdit = () => {
-    if (selected.length > 0) {
-      const ideaboxId = selected[0];
-      props.history.push("/ideabox/edit/" + ideaboxId);
-    }
-  };
-
-  const handleSubmit = () => {
-    props.history.push("/ideabox/submit");
-  };
-
-  const handleApprove = async () => {
-    if (selected.length <= 0) return;
-
-    const result = await confirm(
-      "Apakah anda yakin untuk melakukan approve ideasheet?"
-    );
-
-    if (result === true) {
-      try {
-        const url = ApiUrl + "/ideabox/approve";
-
-        const formData = {
-          employeeId: user.employee_id,
-          ideaboxIds: selected,
-        };
-
-        const res = await axios.post(url, formData, JsonContentType);
-        console.log(res.data);
-        fetchData();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const handleReject = async () => {
-    if (selected.length <= 0) return;
-
-    const result = await confirm(
-      "Apakah anda yakin untuk melakukan reject ideasheet ?"
-    );
-
-    if (result === true) {
-      try {
-        const url = ApiUrl + "/ideabox/reject";
-
-        const formData = {
-          employeeId: user.employee_id,
-          ideaboxIds: selected,
-        };
-
-        const res = await axios.post(url, formData, JsonContentType);
-        console.log(res.data);
-        fetchData();
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
-
-  const renderButton = () => {
-    console.log("render buttons: ", user);
-    if (user) {
-      const { role, approval_role: approvalRole } = user;
-      console.log(role, approvalRole);
-
-      if (approvalRole === "KOMITE_IDEABOX") {
-        return (
-          <KomiteButtonGroup
-            onAccept={handleAccept}
-            onRefresh={handleRefresh}
-          />
-        );
-      } else if (approvalRole === "SECTION_MANAGER") {
-        return (
-          <SectionManagerButtonGroup
-            onApprove={handleApprove}
-            onEdit={handleEdit}
-            onRefresh={handleRefresh}
-            onReject={handleReject}
-          />
-        );
-      } else if (approvalRole === "DEPARTMENT_MANAGER") {
-        return (
-          <DeparmentManagerButtonGroup
-            onApprove={handleApprove}
-            onEdit={handleEdit}
-            onRefresh={handleRefresh}
-            onReject={handleReject}
-          />
-        );
-      } else {
-        if (role === "admin") {
-          return (
-            <AdminButtonGroup
-              onRefresh={handleRefresh}
-              onDelete={handleDeleteItems}
-            />
-          );
-        } else {
-          return (
-            <EmployeeButtonGroup
-              onSubmit={handleSubmit}
-              onRefresh={handleRefresh}
-            />
-          );
-        }
-      }
     }
   };
 
@@ -421,7 +273,10 @@ const Dashboard = (props) => {
                   <SearchBox onSearch={handleSearch} />
                 </Col>
                 <Col md="8" className="text-right">
-                  {renderButton()}
+                  <AdminButtonGroup
+                    onRefresh={handleRefresh}
+                    onDelete={handleDeleteItems}
+                  />
                   <ExcelFile
                     element={
                       <button
