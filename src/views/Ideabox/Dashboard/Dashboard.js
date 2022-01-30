@@ -42,6 +42,10 @@ const Dashboard = (props) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [user]);
+
   const handleRefresh = () => {
     fetchData();
   };
