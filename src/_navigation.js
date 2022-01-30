@@ -222,6 +222,13 @@ const administratorNavigation = [
         site: "IDEABOX",
         isAdmin: true,
       },
+      {
+        name: "User",
+        url: "/admin/user_by_site",
+        icon: "icon-user",
+        site: "IDEABOX",
+        isAdmin: true,
+      },
     ],
   },
 ];
