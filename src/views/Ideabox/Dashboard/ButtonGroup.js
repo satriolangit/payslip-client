@@ -75,11 +75,14 @@ const EmployeeButtonGroup = ({ onSubmit, onRefresh }) => {
   );
 };
 
-const AdminButtonGroup = ({ onRefresh }) => {
+const AdminButtonGroup = ({ onRefresh, onDelete }) => {
   return (
     <Fragment>
       <Button color="secondary" onClick={onRefresh} className="btn btn-sm">
         <i className="icon-refresh" /> Refresh
+      </Button>
+      <Button color="danger" onClick={onDelete} className="btn btn-sm">
+        <i className="icon-trash" /> Delete
       </Button>
     </Fragment>
   );
