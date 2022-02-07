@@ -7,7 +7,7 @@ import checkboxChecked from "./images/checkbox-checked.png";
 function Impact({ data }) {
   return data.map((item) => {
     return (
-      <View style={{ display: "flex", flexDirection: "row" }}>
+      <View key={item.id} style={{ display: "flex", flexDirection: "row" }}>
         <Image
           source={item.checked === 1 ? checkboxChecked : checkboxUnchecked}
           style={{ height: 12, width: 14 }}

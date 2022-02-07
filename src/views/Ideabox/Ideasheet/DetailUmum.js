@@ -1,6 +1,8 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 
+import { IdeaboxFileUrl } from "../../../setting";
+
 function DetailUmum({ data }) {
   const sheet = StyleSheet.create({
     container: {
@@ -95,7 +97,7 @@ function DetailUmum({ data }) {
           </View>
           <Image
             style={{ width: 250, display: "flex", alignSelf: "center" }}
-            src={data.beforeImage}
+            src={IdeaboxFileUrl + data.beforeImage}
           />
         </View>
         <View style={[sheet.cellRight, { height: 200 }]}>
@@ -111,7 +113,7 @@ function DetailUmum({ data }) {
           </View>
           <Image
             style={{ width: 250, display: "flex", alignSelf: "center" }}
-            src={data.afterImage}
+            src={IdeaboxFileUrl + data.afterImage}
           />
         </View>
       </View>

@@ -19,7 +19,7 @@ import Signature from "./Signature";
 import DetailUmum from "./DetailUmum";
 import DetailKyt from "./DetailKyt";
 
-const Ideasheet = ({ data }) => {
+const Ideasheet = ({ data, width }) => {
   console.log("ideasheet data:", data);
 
   const { master, detail, comment, impact } = data;
@@ -37,8 +37,8 @@ const Ideasheet = ({ data }) => {
       flexGrow: 1,
     },
     viewer: {
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: width,
+      height: 1200,
     },
     header: {
       flexDirection: "row",
@@ -108,361 +108,374 @@ const Ideasheet = ({ data }) => {
     },
   });
 
-  return (
-    <PDFViewer style={styles.viewer}>
-      <Document>
-        <Page size="A4" style={styles.page}>
-          <View style={styles.header}>
-            <View style={{ flexGrow: 1 }}>
-              <Image src={logo} style={{ width: 250 }} />
+  const renderPdf = () => {
+    return (
+      <PDFViewer style={styles.viewer}>
+        <Document>
+          <Page size="A4" style={styles.page}>
+            <View style={styles.header}>
+              <View style={{ flexGrow: 1 }}>
+                <Image src={logo} style={{ width: 250 }} />
+              </View>
+              <View style={{ flexGrow: 1 }}>
+                <Text style={{ fontSize: 10 }}>
+                  Modified, {master.submittedAt}
+                </Text>
+              </View>
+              <View style={{ flexGrow: 1 }}>
+                <Text style={{ fontSize: 10 }}>
+                  Tgl. Efektif : {master.submittedAt}
+                </Text>
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      padding: 1,
+                      flexGrow: 1,
+                      textAlign: "right",
+                    }}
+                  >
+                    <Text style={{ fontSize: 10 }}>No. Document</Text>
+                  </View>
+                  <View
+                    style={{
+                      borderTop: 1,
+                      borderBottom: 1,
+                      borderRight: 1,
+                      padding: 1,
+                      flexGrow: 1,
+                    }}
+                  >
+                    <Text style={{ fontSize: 10 }}>{master.ideaNumber}</Text>
+                  </View>
+                </View>
+              </View>
             </View>
-            <View style={{ flexGrow: 1 }}>
-              <Text style={{ fontSize: 10 }}>
-                Modified, {master.submittedAt}
-              </Text>
+            <View style={kop.container}>
+              <View style={kop.section}>
+                <Image src={logoMaster} style={{ width: 120 }} />
+              </View>
+              <View style={kop.section}>
+                <Text style={{ fontSize: 16 }}>PT. SHINDENGEN INDONESIA</Text>
+                <Text
+                  style={{ fontSize: 16, display: "flex", alignSelf: "center" }}
+                >
+                  IDEA BOX
+                </Text>
+              </View>
+              <View style={kop.section}>
+                <Image src={logo3tahun} style={{ width: 100 }} />
+              </View>
             </View>
-            <View style={{ flexGrow: 1 }}>
-              <Text style={{ fontSize: 10 }}>
-                Tgl. Efektif : {master.submittedAt}
-              </Text>
+            <View style={{ borderWidth: 1 }}>
+              <View style={sheet.row}>
+                <View style={sheet.cellLeft}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>Nama</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text style={sheet.font12}>{master.submitterName}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={sheet.cellRight}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>NIK</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text style={sheet.font12}>{master.submittedBy}</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={sheet.row}>
+                <View style={sheet.cellLeft}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>Departement</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text style={sheet.font12}>{master.departmentName}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={sheet.cellRight}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>Area Kaizen</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text style={sheet.font12}>{master.kaizenArea}</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={sheet.row}>
+                <View style={sheet.cellLeft}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>Tanggal</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text style={sheet.font12}>{master.submittedAt}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={sheet.cellRight}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>Jenis Idea</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text
+                        style={
+                          master.ideaType === "UMUM"
+                            ? sheet.font12
+                            : sheet.font12Strikethrough
+                        }
+                      >
+                        UMUM
+                      </Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text
+                        style={
+                          master.ideaType === "Q-KYT"
+                            ? sheet.font12
+                            : sheet.font12Strikethrough
+                        }
+                      >
+                        Q-KYT
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={sheet.row}>
+                <View style={sheet.cell}>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ width: 80 }}>
+                      <Text style={sheet.font12}>Tema</Text>
+                    </View>
+                    <View style={{ width: 10 }}>
+                      <Text style={sheet.font12}>:</Text>
+                    </View>
+                    <View style={{ flexGrow: 1 }}>
+                      <Text style={sheet.font12}>{master.tema}</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={sheet.row}>
+                <View style={sheet.cell}>
+                  <Text style={sheet.font8}>
+                    Isi nama, departemen, tanggal, tema, NIK, dan area dengan
+                    jelas tanpa di singkat, pilih jenis idea umum atau Q-KYT
+                    dengan mencoret yang tidak sesuai.
+                  </Text>
+                </View>
+              </View>
+              <View style={sheet.row}>
+                <View style={sheet.cell}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontWeight: "bold",
+                      display: "flex",
+                      alignSelf: "center",
+                    }}
+                  >
+                    Explanation (Penjelasan)
+                  </Text>
+                </View>
+              </View>
+              {master.ideaType === "UMUM" ? (
+                <DetailUmum data={detail} />
+              ) : (
+                <DetailKyt data={detail} />
+              )}
+              <View
+                style={{
+                  borderWidth: 1,
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <View
+                  style={{
+                    flexGrow: 1,
+                    flexBasis: 0,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                    }}
+                  >
+                    Pelaksanaan Ideasheet
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexGrow: 1,
+                    flexBasis: 0,
+                  }}
+                >
+                  <Image
+                    source={
+                      master.isIdeasheet === 1
+                        ? checkboxChecked
+                        : checkboxUnchecked
+                    }
+                    style={sheet.checkbox}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      display: "flex",
+                      alignSelf: "center",
+                    }}
+                  >
+                    Sudah
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexGrow: 1,
+                    flexBasis: 0,
+                  }}
+                >
+                  <Image
+                    source={
+                      master.isIdeasheet === 0
+                        ? checkboxChecked
+                        : checkboxUnchecked
+                    }
+                    style={sheet.checkbox}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      display: "flex",
+                      alignSelf: "center",
+                    }}
+                  >
+                    Belum
+                  </Text>
+                </View>
+              </View>
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <View
+                  style={{
+                    flexGrow: 1,
+                    borderWidth: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text style={{ fontSize: 11 }}>Isi Pengaruhnya</Text>
+                </View>
+                <View style={{ flexGrow: 1, borderWidth: 1 }}>
+                  <Impact data={impact} />
+                </View>
+              </View>
               <View style={{ display: "flex", flexDirection: "row" }}>
                 <View
                   style={{
                     borderWidth: 1,
-                    padding: 1,
                     flexGrow: 1,
-                    textAlign: "right",
+                    flexBasis: 0,
+                    height: 30,
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <Text style={{ fontSize: 10 }}>No. Document</Text>
+                  <Text style={{ fontSize: 12 }}>
+                    Nilai Kaizen jika di Rupiahkan
+                  </Text>
                 </View>
                 <View
                   style={{
-                    borderTop: 1,
-                    borderBottom: 1,
-                    borderRight: 1,
-                    padding: 1,
+                    borderWidth: 1,
                     flexGrow: 1,
+                    flexBasis: 0,
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <Text style={{ fontSize: 10 }}>{master.ideaNumber}</Text>
+                  <Text style={{ fontSize: 12 }}>{master.kaizenAmount}</Text>
                 </View>
               </View>
             </View>
-          </View>
-          <View style={kop.container}>
-            <View style={kop.section}>
-              <Image src={logoMaster} style={{ width: 120 }} />
-            </View>
-            <View style={kop.section}>
-              <Text style={{ fontSize: 16 }}>PT. SHINDENGEN INDONESIA</Text>
-              <Text
-                style={{ fontSize: 16, display: "flex", alignSelf: "center" }}
-              >
-                IDEA BOX
-              </Text>
-            </View>
-            <View style={kop.section}>
-              <Image src={logo3tahun} style={{ width: 100 }} />
-            </View>
-          </View>
-          <View style={{ borderWidth: 1 }}>
-            <View style={sheet.row}>
-              <View style={sheet.cellLeft}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>Nama</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={sheet.font12}>{master.submitterName}</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={sheet.cellRight}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>NIK</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={sheet.font12}>{master.submittedBy}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={sheet.row}>
-              <View style={sheet.cellLeft}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>Departement</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={sheet.font12}>{master.departmentName}</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={sheet.cellRight}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>Area Kaizen</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={sheet.font12}>{master.kaizenArea}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={sheet.row}>
-              <View style={sheet.cellLeft}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>Tanggal</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={sheet.font12}>{master.submittedAt}</Text>
-                  </View>
-                </View>
-              </View>
-              <View style={sheet.cellRight}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>Jenis Idea</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text
-                      style={
-                        master.ideaType === "UMUM"
-                          ? sheet.font12
-                          : sheet.font12Strikethrough
-                      }
-                    >
-                      UMUM
-                    </Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text
-                      style={
-                        master.ideaType === "Q-KYT"
-                          ? sheet.font12
-                          : sheet.font12Strikethrough
-                      }
-                    >
-                      Q-KYT
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={sheet.row}>
-              <View style={sheet.cell}>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ width: 80 }}>
-                    <Text style={sheet.font12}>Tema</Text>
-                  </View>
-                  <View style={{ width: 10 }}>
-                    <Text style={sheet.font12}>:</Text>
-                  </View>
-                  <View style={{ flexGrow: 1 }}>
-                    <Text style={sheet.font12}>{master.tema}</Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={sheet.row}>
-              <View style={sheet.cell}>
-                <Text style={sheet.font8}>
-                  Isi nama, departemen, tanggal, tema, NIK, dan area dengan
-                  jelas tanpa di singkat, pilih jenis idea umum atau Q-KYT
-                  dengan mencoret yang tidak sesuai.
-                </Text>
-              </View>
-            </View>
-            <View style={sheet.row}>
-              <View style={sheet.cell}>
+            <View style={{ borderWidth: 1, marginTop: 2 }}>
+              <View style={{ borderWidth: 1 }}>
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: "bold",
                     display: "flex",
                     alignSelf: "center",
                   }}
                 >
-                  Explanation (Penjelasan)
+                  Permintaan atau komentar dari pimpinan kerja pembuat Ideasheet
                 </Text>
+              </View>
+              <View style={{ borderWidth: 1, padding: 2 }}>
+                {comment.map((item, idx) => {
+                  return (
+                    <Text key={idx} style={{ fontSize: 11 }}>
+                      BY {item.createdBy} : {item.value}
+                    </Text>
+                  );
+                })}
               </View>
             </View>
-            {master.ideaType === "UMUM" ? (
-              <DetailUmum data={detail} />
-            ) : (
-              <DetailKyt data={detail} />
-            )}
-            <View
-              style={{
-                borderWidth: 1,
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <View
-                style={{
-                  flexGrow: 1,
-                  flexBasis: 0,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                  }}
-                >
-                  Pelaksanaan Ideasheet
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  flexGrow: 1,
-                  flexBasis: 0,
-                }}
-              >
-                <Image
-                  source={
-                    master.isIdeasheet === 1
-                      ? checkboxChecked
-                      : checkboxUnchecked
-                  }
-                  style={sheet.checkbox}
-                />
-                <Text
-                  style={{ fontSize: 12, display: "flex", alignSelf: "center" }}
-                >
-                  Sudah
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  flexGrow: 1,
-                  flexBasis: 0,
-                }}
-              >
-                <Image
-                  source={
-                    master.isIdeasheet === 0
-                      ? checkboxChecked
-                      : checkboxUnchecked
-                  }
-                  style={sheet.checkbox}
-                />
-                <Text
-                  style={{ fontSize: 12, display: "flex", alignSelf: "center" }}
-                >
-                  Belum
-                </Text>
-              </View>
-            </View>
-            <View style={{ display: "flex", flexDirection: "row" }}>
-              <View
-                style={{
-                  flexGrow: 1,
-                  borderWidth: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ fontSize: 11 }}>Isi Pengaruhnya</Text>
-              </View>
-              <View style={{ flexGrow: 1, borderWidth: 1 }}>
-                <Impact data={impact} />
-              </View>
-            </View>
-            <View style={{ display: "flex", flexDirection: "row" }}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  flexGrow: 1,
-                  flexBasis: 0,
-                  height: 30,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ fontSize: 12 }}>
-                  Nilai Kaizen jika di Rupiahkan
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderWidth: 1,
-                  flexGrow: 1,
-                  flexBasis: 0,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ fontSize: 12 }}>{master.kaizenAmount}</Text>
-              </View>
-            </View>
-          </View>
-          <View style={{ borderWidth: 1, marginTop: 2 }}>
-            <View style={{ borderWidth: 1 }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignSelf: "center",
-                }}
-              >
-                Permintaan atau komentar dari pimpinan kerja pembuat Ideasheet
+            <View>
+              <Text style={{ fontSize: 11 }}>
+                Note : Untuk Penjelasan Detail Dgn Gambar bisa dilampirkan
+                gambar.
               </Text>
             </View>
-            <View style={{ borderWidth: 1, padding: 2 }}>
-              {comment.map((item) => {
-                return (
-                  <Text style={{ fontSize: 11 }}>
-                    BY {item.createdBy} : {item.value}
-                  </Text>
-                );
-              })}
-            </View>
-          </View>
-          <View>
-            <Text style={{ fontSize: 11 }}>
-              Note : Untuk Penjelasan Detail Dgn Gambar bisa dilampirkan gambar.
-            </Text>
-          </View>
-          <Signature
-            submittedBy={master.submitterName}
-            reviewedBy={master.reviewerName}
-            approvedBy={master.approverName}
-            acceptedBy={master.receiverName}
-          />
-        </Page>
-      </Document>
-    </PDFViewer>
-  );
+            <Signature
+              submittedBy={master.submitterName}
+              reviewedBy={master.reviewerName}
+              approvedBy={master.approverName}
+              acceptedBy={master.receiverName}
+            />
+          </Page>
+        </Document>
+      </PDFViewer>
+    );
+  };
+
+  return master !== null ? renderPdf() : "";
 };
 
 export default Ideasheet;

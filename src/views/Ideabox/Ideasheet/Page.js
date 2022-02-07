@@ -3,7 +3,7 @@ import { Card, CardHeader, Col, Row, Button, CardBody } from "reactstrap";
 import axios from "axios";
 
 import { ApiUrl, IdeaboxFileUrl } from "../../../setting";
-//import Ideasheet from "./Ideasheet";
+import Ideasheet from "./Ideasheet";
 
 const Page = ({ match, history }) => {
   const [data, setData] = React.useState({
@@ -13,88 +13,44 @@ const Page = ({ match, history }) => {
     impact: [],
   });
 
-  const [masterData, setMasterData] = React.useState({
-    ideaboxId: 0,
-    ideaNumber: "",
-    ideaType: "",
-    submittedBy: "",
-    submittedAt: "",
-    submitterName: "",
-    tema: "",
-    kaizenArea: "",
-    kaizenAmount: "",
-    departmentId: 1,
-    reviewerName: "",
-    approverName: "",
-    receiverName: "",
-    status: "",
-    isIdeasheet: 0,
-    departmentName: "",
-  });
+  const [documentWidth, setDocumentWidth] = React.useState(800);
 
-  const [detailData, setDetailData] = React.useState({
-    id: 0,
-    ideaboxId: 0,
-    beforeSummary: "",
-    beforeImage: "",
-    beforeKapan: "",
-    beforeDimana: "",
-    beforeSiapa: "",
-    beforeApa: " ",
-    beforeBagaimana: "",
-    beforeIncident: "",
-    beforeSituation: "",
-    afterSummary: "",
-    afterImage: "",
-    afterRank: 1,
-  });
+  const fetchData = async () => {
+    try {
+      const id = match.params.id;
+      const url = `${ApiUrl}/ideabox/pdf/${id}`;
 
-  const [commentData, setCommentData] = React.useState([]);
-  const [impactData, setImpactData] = React.useState([]);
+      const res = await axios.get(url);
+      const result = res.data.data;
+
+      //console.log("fetch data", url, result);
+
+      const { master, detail, comment, impact } = result;
+      //console.log(master);
+
+      setData({
+        ...data,
+        master: master,
+        detail: detail,
+        comment: comment,
+        impact: impact,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const id = match.params.id;
-        const url = `${ApiUrl}/ideabox/pdf/${id}`;
-
-        const res = await axios.get(url);
-        const result = res.data.data;
-
-        //console.log("fetch data", url, result);
-
-        const { master, detail, comment, impact } = result;
-        //console.log(master);
-
-        setData({
-          ...data,
-          master: master,
-          detail: detail,
-          comment: [...comment, comment],
-          impact: [...impact, impact],
-        });
-
-        // setMasterData(master);
-        // setDetailData(detail);
-        // setImpactData(impact);
-        // setCommentData(comment);
-
-        // console.log("data :", masterData, detailData, impactData, commentData);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     fetchData();
-
-    //console.log("DATA :", data);
+    const width = document.getElementById("pdfContainer").clientWidth;
+    setDocumentWidth(width - 50);
   }, []);
 
   return (
     <div>
       <Row>
         <Col md="12">
-          <Card>
+          <Card id="pdfContainer">
             <CardHeader>
               <Row>
                 <Col md="12">
@@ -107,7 +63,9 @@ const Page = ({ match, history }) => {
                 </Col>
               </Row>
             </CardHeader>
-            <CardBody></CardBody>
+            <CardBody>
+              <Ideasheet data={data} width={documentWidth} />
+            </CardBody>
           </Card>
         </Col>
       </Row>

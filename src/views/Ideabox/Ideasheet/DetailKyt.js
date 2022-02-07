@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+import { IdeaboxFileUrl } from "../../../setting";
 
 function DetailKyt({ data }) {
   const styles = StyleSheet.create({
@@ -139,7 +140,10 @@ function DetailKyt({ data }) {
         {renderBeforeItem("Apa", data.beforeApa)}
         {renderBeforeItem("Bagaimana", data.beforeBagaimana)}
         {renderBeforeItem("Apa yg terjadi", data.beforeIncident)}
-        {renderSituation(data.beforeSituation, data.beforeImage)}
+        {renderSituation(
+          data.beforeSituation,
+          IdeaboxFileUrl + data.beforeImage
+        )}
       </View>
       <View style={[styles.cell]}>
         <View style={{ borderBottom: 1 }}>
@@ -160,7 +164,10 @@ function DetailKyt({ data }) {
           <Text style={{ fontSize: 12 }}>{data.afterSummary}</Text>
         </View>
         <View style={{ height: 100 }}>
-          <Image source={data.afterImage} style={{ objectFit: "cover" }} />
+          <Image
+            source={IdeaboxFileUrl + data.afterImage}
+            style={{ objectFit: "cover" }}
+          />
         </View>
         {renderRank(data.afterRank)}
       </View>
