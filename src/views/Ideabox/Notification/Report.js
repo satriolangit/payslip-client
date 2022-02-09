@@ -1,31 +1,10 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-} from "reactstrap";
-import Select from "react-select";
+import { Row, Col, Card, CardHeader, CardBody, Button } from "reactstrap";
 import axios from "axios";
 import BootstrapTable from "react-bootstrap-table-next";
-import { confirm } from "react-bootstrap-confirmation";
-import { ApiUrl, JsonContentType } from "../../../setting";
-import AuthContext from "./../../../context/auth/authContext";
+import { ApiUrl } from "../../../setting";
 
 const Report = ({ history }) => {
-  const authContext = React.useContext(AuthContext);
-  const { user } = authContext;
-
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {

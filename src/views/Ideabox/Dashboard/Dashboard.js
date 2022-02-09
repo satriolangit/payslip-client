@@ -302,18 +302,8 @@ const Dashboard = (props) => {
     else return "-";
   };
 
-  const pdfFormatter = (cell, row) => {
-    return (
-      <ButtonGroup>
-        <Button color="info" onClick={(id) => handlePreview(row.ideaboxId)}>
-          Preview Formulir
-        </Button>
-      </ButtonGroup>
-    );
-  };
-
   const previewFormatter = (cell, row) => {
-    const route = `/ideabox/view/${row.ideaboxId}`;
+    const route = `/ideabox/pdf/${row.ideaboxId}`;
     return (
       <ButtonGroup>
         <Link to={route} className="btn btn-info btn-sm">

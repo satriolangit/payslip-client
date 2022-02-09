@@ -16,12 +16,11 @@ import {
   FormText,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
 } from "reactstrap";
 import Alert from "react-s-alert";
 import { ApiUrl, AlertOptions } from "../../setting";
 import avatar from "./../../assets/img/users/no-image.jpg";
-
 
 const Edit = ({ match, history }) => {
   const [data, setData] = useState({
@@ -32,14 +31,12 @@ const Edit = ({ match, history }) => {
     password: "",
     confirmPassword: "",
     phone: "",
-    siteName: ""
+    siteName: "",
   });
 
   const [photoFile, setPhotoFile] = useState(null);
   const [role, setRole] = useState("employee");
   const [status, setStatus] = useState(0);
-  
-
 
   const {
     email,
@@ -49,7 +46,7 @@ const Edit = ({ match, history }) => {
     password,
     confirmPassword,
     phone,
-    site_name:siteName
+    site_name: siteName,
   } = data;
 
   useEffect(() => {
@@ -59,7 +56,7 @@ const Edit = ({ match, history }) => {
     // eslint-disable-next-line
   }, []);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (match.params.id !== "0") {
@@ -79,7 +76,7 @@ const Edit = ({ match, history }) => {
       password,
       phone,
       confirmPassword,
-      siteName
+      siteName,
     };
 
     try {
@@ -90,8 +87,8 @@ const Edit = ({ match, history }) => {
       const url = ApiUrl + "/users/add";
       const result = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       //  console.log(result);
@@ -117,11 +114,11 @@ const Edit = ({ match, history }) => {
       userId: match.params.id,
       phone,
       photo,
-      siteName
+      siteName,
     };
 
     console.log(user);
-    
+
     try {
       const url = ApiUrl + "/users/update";
       let formData = new FormData();
@@ -130,8 +127,8 @@ const Edit = ({ match, history }) => {
 
       const result = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       //  console.log(result);
@@ -139,7 +136,7 @@ const Edit = ({ match, history }) => {
       if (result.data.result === "FAIL") {
         Alert.error(result.data.message, AlertOptions);
       } else {
-          history.push("/admin/user");        
+        history.push("/admin/user");
       }
     } catch (err) {
       console.log("error: ", err.response);
@@ -157,27 +154,26 @@ const Edit = ({ match, history }) => {
         setData(record);
         setRole(record.role);
         setStatus(record.is_active);
-        
-        console.log("data:", data);
 
+        console.log("data:", data);
       } catch (err) {
         console.log(err);
       }
     }
   };
 
-  const onChange = e => setData({ ...data, [e.target.name]: e.target.value });
-  const onStatusChange = e => setStatus(e.target.checked ? 1 : 0);
-  const onRoleChange = e => {
+  const onChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
+  const onStatusChange = (e) => setStatus(e.target.checked ? 1 : 0);
+  const onRoleChange = (e) => {
     setRole(e.target.value);
   };
-  const onSiteChange = e => setData({ ...data, site_name: e.target.value });
+  const onSiteChange = (e) => setData({ ...data, site_name: e.target.value });
 
-  const handlePhotoChange = e => {
+  const handlePhotoChange = (e) => {
     setPhotoFile(e.target.files[0]);
   };
 
-  const handleClearForm = e => {
+  const handleClearForm = (e) => {
     setData({
       email: "",
       name: "",
@@ -185,7 +181,7 @@ const Edit = ({ match, history }) => {
       photo: "",
       password: "",
       confirmPassword: "",
-      phone: ""
+      phone: "",
     });
   };
 
@@ -259,11 +255,13 @@ const Edit = ({ match, history }) => {
   };
 
   const renderBackButton = () => {
-    let url = "/admin/user";
-    return(      
-        <Link to={url} className="btn btn-secondary btn-sm float-right">
-          <span className="icon-close"></span> Close
-        </Link>      
+    return (
+      <Button
+        className="btn btn-secondary btn-sm float-right"
+        onClick={() => history.goBack()}
+      >
+        <span className="icon-close"></span> Close
+      </Button>
     );
   };
 

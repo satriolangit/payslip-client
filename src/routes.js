@@ -108,6 +108,14 @@ const IdeaboxApprovalMappingAdd = React.lazy(() =>
   retry(() => import("./views/Ideabox/Approval/ApprovalAdd"))
 );
 
+const IdeaboxUser = React.lazy(() =>
+  retry(() => import("./views/Ideabox/User/ListAdmin"))
+);
+
+const IdeaboxPdf = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Ideasheet/Page"))
+);
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -303,6 +311,18 @@ const routes = [
     exact: true,
     name: "Dashboard",
     component: IdeaboxDashboardAdmin,
+  },
+  {
+    path: "/ideabox/administration/user",
+    exact: true,
+    name: "User",
+    component: IdeaboxUser,
+  },
+  {
+    path: "/ideabox/pdf/:id",
+    exact: true,
+    name: "Ideasheet",
+    component: IdeaboxPdf,
   },
 ];
 
