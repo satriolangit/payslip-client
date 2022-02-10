@@ -68,6 +68,7 @@ const SubmitForm = (props) => {
   const [previewBeforeImage, setPreviewBeforeImage] = useState(null);
   const [previewAfterImage, setPreviewAfterImage] = useState(null);
   const [totalIdeasheet, setTotalIdeasheet] = useState(0);
+  const [submit, setSubmit] = useState(false);
 
   React.useEffect(() => {
     fetchNumber();
@@ -269,6 +270,7 @@ const SubmitForm = (props) => {
           Alert.error(result.data.message, AlertOptions);
         } else {
           Alert.info("Ideasheet sudah terkirim", AlertOptions);
+          setSubmit(true);
           props.history.push("/ideabox/dashboard");
         }
       }
@@ -557,7 +559,6 @@ const SubmitForm = (props) => {
                   />
                   {"Rank 1 "}
                   <Label check>Jarang Terjadi</Label>
-
                 </FormGroup>
               </FormGroup>
             </Col>
@@ -765,7 +766,12 @@ const SubmitForm = (props) => {
                 >
                   <span className="icon-close"></span> Close
                 </Link>
-                <Button type="submit" size="sm" color="primary float-right">
+                <Button
+                  type="submit"
+                  size="sm"
+                  color="primary float-right"
+                  disabled={submit}
+                >
                   <i className="fa fa-dot-circle-o"></i> Save
                 </Button>
               </CardHeader>
