@@ -385,10 +385,11 @@ const SubmitForm = (props) => {
             <Col md="6">
               <FormGroup>
                 <Label>Image</Label>
-                <Input
-                  name="beforeImage"
+                <input
+                  className="form-control"
                   type="file"
-                  accept="jpg, jpeg, png, gif, bmp"
+                  name="beforeImage"
+                  accept="image/*"
                   onChange={handleUploadBeforeImage}
                 />
                 {showBeforeImage()}
@@ -397,10 +398,11 @@ const SubmitForm = (props) => {
             <Col md="6">
               <FormGroup>
                 <Label>Image</Label>
-                <Input
+                <input
+                  className="form-control"
                   name="afterImage"
                   type="file"
-                  accept="jpg, jpeg, png, gif, bmp"
+                  accept="image/*"
                   onChange={handleUploadAfterImage}
                 />
                 {showAfterImage()}
@@ -498,10 +500,11 @@ const SubmitForm = (props) => {
                 />
               </FormGroup>
               <FormGroup>
-                <Input
+                <input
+                  className="form-control"
                   name="beforeImage"
                   type="file"
-                  accept="jpg, jpeg, png, gif, bmp"
+                  accept="image/*"
                   onChange={handleUploadBeforeImage}
                 />
                 {showBeforeImage()}
@@ -519,10 +522,11 @@ const SubmitForm = (props) => {
               </FormGroup>
               <FormGroup>
                 <Label>Image</Label>
-                <Input
+                <input
+                  className="form-control"
                   name="afterImage"
                   type="file"
-                  accept="jpg, jpeg, png, gif, bmp"
+                  accept="image/*"
                   onChange={handleUploadAfterImage}
                 />
                 {showAfterImage()}
