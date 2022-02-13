@@ -21,7 +21,7 @@ import SignBox from "./SignBox";
 import AuthContext from "./../../../context/auth/authContext";
 import IdeasheetCheckbox from "./Components/IdeasheetCheckbox";
 import ImpactCheckbox from "./Components/ImpactCheckbox";
-import { ApiUrl, JsonContentType, AlertOptions } from "../../../setting";
+import { ApiUrl, AlertOptions } from "../../../setting";
 
 const SubmitForm = (props) => {
   const authContext = useContext(AuthContext);
@@ -30,14 +30,14 @@ const SubmitForm = (props) => {
   const [formData, setFormData] = useState({
     ideaType: "UMUM",
     ideaNumber: "",
-    submittedBy: user.employee_id,
-    submitterName: user.name,
+    submittedBy: user !== null ? user.employee_id : "",
+    submitterName: user !== null ? user.name : "",
     submittedAt: moment().format("YYYY-MM-DD"),
     tema: "",
     kaizenArea: "",
     isIdeasheet: 0,
     kaizenAmount: "",
-    departmentId: 0,
+    departmentId: user !== null ? user.departmentId : 0,
     impact: [],
     approvalRole: user.approval_role,
   });
@@ -388,7 +388,7 @@ const SubmitForm = (props) => {
                 <Input
                   name="beforeImage"
                   type="file"
-                  accept="image/*|MIME_type"
+                  accept="jpg, jpeg, png, gif, bmp"
                   onChange={handleUploadBeforeImage}
                 />
                 {showBeforeImage()}
@@ -400,7 +400,7 @@ const SubmitForm = (props) => {
                 <Input
                   name="afterImage"
                   type="file"
-                  accept="image/*|MIME_type"
+                  accept="jpg, jpeg, png, gif, bmp"
                   onChange={handleUploadAfterImage}
                 />
                 {showAfterImage()}
@@ -501,7 +501,7 @@ const SubmitForm = (props) => {
                 <Input
                   name="beforeImage"
                   type="file"
-                  accept="image/*|MIME_type"
+                  accept="jpg, jpeg, png, gif, bmp"
                   onChange={handleUploadBeforeImage}
                 />
                 {showBeforeImage()}
@@ -522,7 +522,7 @@ const SubmitForm = (props) => {
                 <Input
                   name="afterImage"
                   type="file"
-                  accept="image/*|MIME_type"
+                  accept="jpg, jpeg, png, gif, bmp"
                   onChange={handleUploadAfterImage}
                 />
                 {showAfterImage()}
@@ -620,6 +620,7 @@ const SubmitForm = (props) => {
                         name="departmentId"
                         type="select"
                         onChange={handleFormChange}
+                        value={formData.departmentId}
                       >
                         <option value="1">HR</option>
                         <option value="2">GA</option>
