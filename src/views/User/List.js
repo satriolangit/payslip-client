@@ -10,7 +10,7 @@ import {
   CardBody,
   Button,
   ButtonGroup,
-  Badge
+  Badge,
 } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 
@@ -36,15 +36,16 @@ const List = () => {
       const url = ApiUrl + "/users/";
       const res = await axios.get(url);
       const list = res.data.data;
+
       setData(list);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
     const formData = {
-      userId: id
+      userId: id,
     };
 
     try {
@@ -59,7 +60,7 @@ const List = () => {
 
   const handleDeleteItems = async () => {
     const formData = {
-      ids: selected
+      ids: selected,
     };
 
     try {
@@ -78,12 +79,12 @@ const List = () => {
     if (isSelect) {
       setSelected([...selected, row.user_id]);
     } else {
-      setSelected(selected.filter(x => x !== row.user_id));
+      setSelected(selected.filter((x) => x !== row.user_id));
     }
   };
 
   const handleOnSelectAll = (isSelect, rows) => {
-    const ids = rows.map(r => r.user_id);
+    const ids = rows.map((r) => r.user_id);
     if (isSelect) {
       setSelected(ids);
     } else {
@@ -91,7 +92,7 @@ const List = () => {
     }
   };
 
-  const handleSearch = keyword => {
+  const handleSearch = (keyword) => {
     if (keyword === "") {
       fetchData();
     } else {
@@ -99,10 +100,14 @@ const List = () => {
     }
   };
 
-  const searchData = async keywords => {
+  const searchData = async (keywords) => {
     try {
       const url = ApiUrl + "/users/search";
-      const res = await axios.post(url, { keywords, siteName : "ALL" }, JsonContentType);
+      const res = await axios.post(
+        url,
+        { keywords, siteName: "ALL" },
+        JsonContentType
+      );
       setData(res.data.data);
     } catch (err) {
       console.log(err);
@@ -121,9 +126,9 @@ const List = () => {
             <i className="icon-pencil"></i>
           </span>
         </Link>
-        <Button color="danger" onClick={id => handleDelete(row.user_id)}>
+        <Button color="danger" onClick={(id) => handleDelete(row.user_id)}>
           <i className="icon-trash" />
-        </Button>       
+        </Button>
         <Link className="btn btn-info" to={"/admin/user/cp_dev/" + row.user_id}>
           <span>
             <i className="fa fa-lock"></i>
@@ -147,7 +152,7 @@ const List = () => {
 
   const renderSummaryLabel = () => {
     const total = data.length;
-    const admin = data.filter(x => x.role === "admin").length;
+    const admin = data.filter((x) => x.role === "admin").length;
     const employee = total - admin;
 
     return (
@@ -162,61 +167,66 @@ const List = () => {
     clickToSelect: true,
     selected: selected,
     onSelect: handleOnSelect,
-    onSelectAll: handleOnSelectAll
+    onSelectAll: handleOnSelectAll,
   };
 
   const columns = [
     {
       dataField: "name",
       text: "Nama",
-      sort: true
+      sort: true,
     },
     {
       dataField: "email",
       text: "Email",
-      sort: true
+      sort: true,
     },
     {
       dataField: "password_plain",
-      text: "Password"
+      text: "Password",
     },
     {
       dataField: "employee_id",
       text: "N.I.K",
-      sort: true
+      sort: true,
+    },
+    {
+      dataField: "department_name",
+      text: "Department",
+      sort: true,
     },
     {
       dataField: "role",
       text: "Role",
-      sort: true
+      sort: true,
     },
     {
       dataField: "phone",
       text: "No. Telepon",
-      sort: true
+      sort: true,
     },
     {
       dataField: "is_active",
       text: "Status",
       formatter: statusFormatter,
-      sort: true
+      sort: true,
     },
     {
       dataField: "created_on",
       text: "Created on",
       formatter: datetimeFormatter,
-      sort: true
+      sort: true,
     },
     {
       dataField: "site_name",
       text: "Site",
-      sort: true
+      sort: true,
     },
     {
       text: "Option",
       isDummy: true,
-      formatter: optionFormatter
-    }
+      formatter: optionFormatter,
+    },
   ];
 
   return (
