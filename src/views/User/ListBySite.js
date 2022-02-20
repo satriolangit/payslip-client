@@ -10,7 +10,7 @@ import {
   CardBody,
   Button,
   ButtonGroup,
-  Badge
+  Badge,
 } from "reactstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import SiteContext from "../../context/site/siteContext";
@@ -19,13 +19,11 @@ import pagination from "../Pagination/pagination";
 import SearchBox from "../SearchBox/SearchBox";
 import { ApiUrl, JsonContentType } from "../../setting";
 
-
 const List = () => {
   const [data, setData] = useState([]);
   const [selected, setSelected] = useState([]);
   const siteContext = useContext(SiteContext);
-  const {siteName} = siteContext;
-
+  const { siteName } = siteContext;
 
   useEffect(() => {
     fetchData();
@@ -46,17 +44,16 @@ const List = () => {
     }
   };
 
-  
   const handleOnSelect = (row, isSelect) => {
     if (isSelect) {
       setSelected([...selected, row.user_id]);
     } else {
-      setSelected(selected.filter(x => x !== row.user_id));
+      setSelected(selected.filter((x) => x !== row.user_id));
     }
   };
 
   const handleOnSelectAll = (isSelect, rows) => {
-    const ids = rows.map(r => r.user_id);
+    const ids = rows.map((r) => r.user_id);
     if (isSelect) {
       setSelected(ids);
     } else {
@@ -64,7 +61,7 @@ const List = () => {
     }
   };
 
-  const handleSearch = keyword => {
+  const handleSearch = (keyword) => {
     if (keyword === "") {
       fetchData();
     } else {
@@ -72,10 +69,14 @@ const List = () => {
     }
   };
 
-  const searchData = async keywords => {
+  const searchData = async (keywords) => {
     try {
       const url = ApiUrl + "/users/search";
-      const res = await axios.post(url, { keywords, siteName }, JsonContentType);
+      const res = await axios.post(
+        url,
+        { keywords, siteName },
+        JsonContentType
+      );
       setData(res.data.data);
     } catch (err) {
       console.log(err);
@@ -89,11 +90,14 @@ const List = () => {
   const optionFormatter = (cell, row) => {
     return (
       <ButtonGroup>
-        <Link className="btn btn-success" to={"/admin/user/site/" + row.user_id}>
+        <Link
+          className="btn btn-success"
+          to={"/admin/user/site/" + row.user_id}
+        >
           <span>
             <i className="icon-pencil"></i>
           </span>
-        </Link>        
+        </Link>
       </ButtonGroup>
     );
   };
@@ -112,7 +116,7 @@ const List = () => {
 
   const renderSummaryLabel = () => {
     const total = data.length;
-    const admin = data.filter(x => x.role === "admin").length;
+    const admin = data.filter((x) => x.role === "admin").length;
     const employee = total - admin;
 
     return (
@@ -127,75 +131,82 @@ const List = () => {
     clickToSelect: true,
     selected: selected,
     onSelect: handleOnSelect,
-    onSelectAll: handleOnSelectAll
+    onSelectAll: handleOnSelectAll,
   };
 
   const columns = [
     {
       dataField: "name",
       text: "Nama",
-      sort: true
+      sort: true,
     },
     {
       dataField: "email",
       text: "Email",
-      sort: true
+      sort: true,
     },
     {
       dataField: "password_plain",
-      text: "Password"
+      text: "Password",
     },
     {
       dataField: "employee_id",
       text: "N.I.K",
-      sort: true
+      sort: true,
+    },
+    {
+      dataField: "department_name",
+      text: "Department",
+      sort: true,
     },
     {
       dataField: "role",
       text: "Role",
-      sort: true
+      sort: true,
     },
     {
       dataField: "phone",
       text: "No. Telepon",
-      sort: true
+      sort: true,
     },
     {
       dataField: "is_active",
       text: "Status",
       formatter: statusFormatter,
-      sort: true
+      sort: true,
     },
     {
       dataField: "created_on",
       text: "Created on",
       formatter: datetimeFormatter,
-      sort: true
+      sort: true,
     },
     {
       dataField: "site_name",
       text: "Site",
-      sort: true
+      sort: true,
     },
     {
       text: "Option",
       isDummy: true,
-      formatter: optionFormatter
-    }
+      formatter: optionFormatter,
+    },
   ];
 
   const renderBreadcrumb = () => {
-      return (
-        <div>
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">Home</li>
-              <li class="active breadcrumb-item" aria-current="page">User</li>
-            </ol>
-          </nav>
-        </div>
-      )    
-  } 
+    return (
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="active breadcrumb-item" aria-current="page">
+              User
+            </li>
+          </ol>
+        </nav>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -219,7 +230,7 @@ const List = () => {
                       className="btn btn-sm"
                     >
                       <i className="icon-refresh" /> Refresh
-                    </Button>                    
+                    </Button>
                   </Col>
                 </Row>
               </CardHeader>
