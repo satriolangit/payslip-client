@@ -69,10 +69,12 @@ const SubmitForm = (props) => {
   const [previewAfterImage, setPreviewAfterImage] = useState(null);
   const [totalIdeasheet, setTotalIdeasheet] = useState(0);
   const [submit, setSubmit] = useState(false);
+  const [departmentName, setDepartmentName] = useState("");
 
   React.useEffect(() => {
     fetchNumber();
     fetchTotalIdeasheet();
+    fetchDepartment();
   }, []);
 
   const fetchTotalIdeasheet = async () => {
@@ -101,6 +103,18 @@ const SubmitForm = (props) => {
       setFormData({ ...formData, ideaNumber: number });
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const fetchDepartment = async () => {
+    try {
+      const url = `${ApiUrl}/master/department/${formData.departmentId}`;
+      const res = await axios.get(url);
+      const department = res.data.data;
+
+      setDepartmentName(department);
+    } catch (error) {
+      console.log("fetch department : ", error);
     }
   };
 
@@ -621,21 +635,11 @@ const SubmitForm = (props) => {
                     <FormGroup>
                       <Label>Departemen</Label>
                       <Input
+                        type="text"
                         name="departmentId"
-                        type="select"
-                        onChange={handleFormChange}
-                        value={formData.departmentId}
-                      >
-                        <option value="1">HR</option>
-                        <option value="2">GA</option>
-                        <option value="3">PC</option>
-                        <option value="4">SAL</option>
-                        <option value="5">FA</option>
-                        <option value="6">QA</option>
-                        <option value="7">IT</option>
-                        <option value="8">PROD</option>
-                        <option value="9">TEC</option>
-                      </Input>
+                        defaultValue={departmentName}
+                        readOnly
+                      />
                     </FormGroup>
                   </Col>
                   <Col md="6">

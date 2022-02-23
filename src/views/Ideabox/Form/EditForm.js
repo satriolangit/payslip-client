@@ -78,10 +78,12 @@ const EditForm = ({ match, history }) => {
   });
 
   const [totalIdeasheet, setTotalIdeasheet] = React.useState(0);
+  const [departmentName, setDepartmentName] = React.useState("");
 
   React.useEffect(() => {
     fetchTotalIdeasheet();
     fetchData();
+    fetchDepartment();
   }, []);
 
   const fetchData = async () => {
@@ -114,6 +116,18 @@ const EditForm = ({ match, history }) => {
       setTotalIdeasheet(result);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const fetchDepartment = async () => {
+    try {
+      const url = `${ApiUrl}/master/department/${formData.departmentId}`;
+      const res = await axios.get(url);
+      const department = res.data.data;
+
+      setDepartmentName(department);
+    } catch (error) {
+      console.log("fetch department : ", error);
     }
   };
 
@@ -632,20 +646,10 @@ const EditForm = ({ match, history }) => {
                       <Label>Departemen</Label>
                       <Input
                         name="departmentId"
-                        type="select"
-                        onChange={handleFormChange}
-                        value={formData.departmentId}
-                      >
-                        <option value="1">HR</option>
-                        <option value="2">GA</option>
-                        <option value="3">PC</option>
-                        <option value="4">SAL</option>
-                        <option value="5">FA</option>
-                        <option value="6">QA</option>
-                        <option value="7">IT</option>
-                        <option value="8">PROD</option>
-                        <option value="9">TEC</option>
-                      </Input>
+                        type="text"
+                        value={departmentName}
+                        readOnly
+                      />
                     </FormGroup>
                   </Col>
                   <Col md="6">
