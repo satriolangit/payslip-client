@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment, useContext } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   Row,
@@ -16,9 +15,10 @@ import {
   FormText,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
 } from "reactstrap";
 import Alert from "react-s-alert";
+
 import { ApiUrl, AlertOptions } from "../../setting";
 import avatar from "./../../assets/img/users/no-image.jpg";
 import SiteContext from "../../context/site/siteContext";
@@ -32,14 +32,17 @@ const Edit = ({ match, history }) => {
     password: "",
     confirmPassword: "",
     phone: "",
-    siteName: ""
+    siteName: "",
+    department_id: 0,
   });
 
   const [photoFile, setPhotoFile] = useState(null);
   const [role, setRole] = useState("employee");
   const [status, setStatus] = useState(0);
+  const [departments, setDepartments] = useState([]);
+
   const siteContext = useContext(SiteContext);
-  const {siteName: currentSite} = siteContext;
+  const { siteName: currentSite } = siteContext;
 
   const {
     email,
@@ -49,17 +52,19 @@ const Edit = ({ match, history }) => {
     password,
     confirmPassword,
     phone,
-    site_name:siteName
+    site_name: siteName,
+    department_id: departmentId,
   } = data;
 
   useEffect(() => {
     if (match.params.id !== "0") {
       loadData();
     }
+    fetchDepartments();
     // eslint-disable-next-line
   }, []);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (match.params.id !== "0") {
@@ -79,7 +84,8 @@ const Edit = ({ match, history }) => {
       password,
       phone,
       confirmPassword,
-      siteName
+      siteName,
+      departmentId,
     };
 
     try {
@@ -90,8 +96,8 @@ const Edit = ({ match, history }) => {
       const url = ApiUrl + "/users/add";
       const result = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       //  console.log(result);
@@ -117,11 +123,10 @@ const Edit = ({ match, history }) => {
       userId: match.params.id,
       phone,
       photo,
-      siteName:currentSite
+      siteName: currentSite,
+      departmentId,
     };
 
-    console.log(user);
-    
     try {
       const url = ApiUrl + "/users/update";
       let formData = new FormData();
@@ -130,14 +135,14 @@ const Edit = ({ match, history }) => {
 
       const result = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       if (result.data.result === "FAIL") {
         Alert.error(result.data.message, AlertOptions);
       } else {
-          history.push("/admin/user_by_site");        
+        history.push("/admin/user_by_site");
       }
     } catch (err) {
       console.log("error: ", err.response);
@@ -154,24 +159,42 @@ const Edit = ({ match, history }) => {
 
         setData(record);
         setRole(record.role);
-        setStatus(record.is_active);        
+        setStatus(record.is_active);
       } catch (err) {
         console.log(err);
       }
     }
   };
 
-  const onChange = e => setData({ ...data, [e.target.name]: e.target.value });
-  const onStatusChange = e => setStatus(e.target.checked ? 1 : 0);
-  const onRoleChange = e => {
+  const fetchDepartments = async () => {
+    try {
+      const url = `${ApiUrl}/master/department`;
+
+      const res = await axios.get(url);
+
+      setDepartments(res.data.data);
+    } catch (error) {
+      console.error("fetch department :", error);
+    }
+  };
+
+  const onChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
+
+  const onStatusChange = (e) => setStatus(e.target.checked ? 1 : 0);
+
+  const onRoleChange = (e) => {
     setRole(e.target.value);
   };
 
-  const handlePhotoChange = e => {
+  const handlePhotoChange = (e) => {
     setPhotoFile(e.target.files[0]);
   };
 
-  const handleClearForm = e => {
+  const handleDepartmentChange = (e) => {
+    setData({ ...data, department_id: e.target.value });
+  };
+
+  const handleClearForm = (e) => {
     setData({
       email: "",
       name: "",
@@ -180,7 +203,7 @@ const Edit = ({ match, history }) => {
       password: "",
       confirmPassword: "",
       phone: "",
-      site_name: currentSite
+      site_name: currentSite,
     });
   };
 
@@ -254,14 +277,13 @@ const Edit = ({ match, history }) => {
   };
 
   const renderBackButton = () => {
-    let url = "/admin/user";
-    if(currentSite !== "PAYSLIP") {
-      url = "/admin/user_by_site/"
-    } 
-    return(      
-        <Link to={url} className="btn btn-secondary btn-sm float-right">
-          <span className="icon-close"></span> Close
-        </Link>      
+    return (
+      <Button
+        className="btn btn-secondary btn-sm float-right"
+        onClick={() => history.goBack()}
+      >
+        <span className="icon-close"></span> Close
+      </Button>
     );
   };
 
@@ -393,6 +415,24 @@ const Edit = ({ match, history }) => {
                       </Label>
                     </FormGroup>
                     <FormText color="muted">Role</FormText>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>Department</Label>
+                  </Col>
+                  <Col xs="12" md="9">
+                    <select
+                      name="departmentId"
+                      className="form-control"
+                      value={data.department_id}
+                      onChange={handleDepartmentChange}
+                    >
+                      {departments.map((dept) => (
+                        <option value={dept.id}>{dept.departmentName}</option>
+                      ))}
+                    </select>
+                    <FormText color="muted">No. Telp</FormText>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
