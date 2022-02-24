@@ -69,7 +69,7 @@ const SubmitForm = (props) => {
   const [previewAfterImage, setPreviewAfterImage] = useState(null);
   const [totalIdeasheet, setTotalIdeasheet] = useState(0);
   const [submit, setSubmit] = useState(false);
-  const [departmentName, setDepartmentName] = useState("");
+  const [department, setDepartment] = useState({});
 
   React.useEffect(() => {
     fetchNumber();
@@ -112,7 +112,7 @@ const SubmitForm = (props) => {
       const res = await axios.get(url);
       const department = res.data.data;
 
-      setDepartmentName(department);
+      setDepartment(department);
     } catch (error) {
       console.log("fetch department : ", error);
     }
@@ -637,7 +637,7 @@ const SubmitForm = (props) => {
                       <Input
                         type="text"
                         name="departmentId"
-                        defaultValue={departmentName}
+                        defaultValue={department.departmentName}
                         readOnly
                       />
                     </FormGroup>

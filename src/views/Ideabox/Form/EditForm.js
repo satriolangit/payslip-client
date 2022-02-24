@@ -78,7 +78,7 @@ const EditForm = ({ match, history }) => {
   });
 
   const [totalIdeasheet, setTotalIdeasheet] = React.useState(0);
-  const [departmentName, setDepartmentName] = React.useState("");
+  const [department, setDepartment] = React.useState({});
 
   React.useEffect(() => {
     fetchTotalIdeasheet();
@@ -125,7 +125,7 @@ const EditForm = ({ match, history }) => {
       const res = await axios.get(url);
       const department = res.data.data;
 
-      setDepartmentName(department);
+      setDepartment(department);
     } catch (error) {
       console.log("fetch department : ", error);
     }
@@ -647,7 +647,7 @@ const EditForm = ({ match, history }) => {
                       <Input
                         name="departmentId"
                         type="text"
-                        value={departmentName}
+                        defaultValue={department.departmentName}
                         readOnly
                       />
                     </FormGroup>

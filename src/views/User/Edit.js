@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   Row,
@@ -19,6 +18,7 @@ import {
   InputGroupText,
 } from "reactstrap";
 import Alert from "react-s-alert";
+
 import { ApiUrl, AlertOptions } from "../../setting";
 import avatar from "./../../assets/img/users/no-image.jpg";
 
@@ -32,11 +32,13 @@ const Edit = ({ match, history }) => {
     confirmPassword: "",
     phone: "",
     siteName: "",
+    department_id: 0,
   });
 
   const [photoFile, setPhotoFile] = useState(null);
   const [role, setRole] = useState("employee");
   const [status, setStatus] = useState(0);
+  const [departments, setDepartments] = useState([]);
 
   const {
     email,
@@ -47,12 +49,16 @@ const Edit = ({ match, history }) => {
     confirmPassword,
     phone,
     site_name: siteName,
+    department_id: departmentId,
   } = data;
 
   useEffect(() => {
+    fetchDepartments();
+
     if (match.params.id !== "0") {
       loadData();
     }
+
     // eslint-disable-next-line
   }, []);
 
@@ -77,6 +83,7 @@ const Edit = ({ match, history }) => {
       phone,
       confirmPassword,
       siteName,
+      departmentId,
     };
 
     try {
@@ -115,6 +122,7 @@ const Edit = ({ match, history }) => {
       phone,
       photo,
       siteName,
+      departmentId,
     };
 
     console.log(user);
@@ -162,6 +170,18 @@ const Edit = ({ match, history }) => {
     }
   };
 
+  const fetchDepartments = async () => {
+    try {
+      const url = `${ApiUrl}/master/department`;
+
+      const res = await axios.get(url);
+
+      setDepartments(res.data.data);
+    } catch (error) {
+      console.error("fetch department :", error);
+    }
+  };
+
   const onChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
   const onStatusChange = (e) => setStatus(e.target.checked ? 1 : 0);
   const onRoleChange = (e) => {
@@ -171,6 +191,10 @@ const Edit = ({ match, history }) => {
 
   const handlePhotoChange = (e) => {
     setPhotoFile(e.target.files[0]);
+  };
+
+  const handleDepartmentChange = (e) => {
+    setData({ ...data, department_id: e.target.value });
   };
 
   const handleClearForm = (e) => {
@@ -393,6 +417,24 @@ const Edit = ({ match, history }) => {
                       </Label>
                     </FormGroup>
                     <FormText color="muted">Role</FormText>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>Department</Label>
+                  </Col>
+                  <Col xs="12" md="9">
+                    <select
+                      name="departmentId"
+                      className="form-control"
+                      value={data.department_id}
+                      onChange={handleDepartmentChange}
+                    >
+                      {departments.map((dept) => (
+                        <option value={dept.id}>{dept.departmentName}</option>
+                      ))}
+                    </select>
+                    <FormText color="muted">Departemen</FormText>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
