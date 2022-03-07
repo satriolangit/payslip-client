@@ -117,15 +117,13 @@ const Ideasheet = ({ data, width }) => {
               <View style={{ flexGrow: 1 }}>
                 <Image src={logo} style={{ width: 250 }} />
               </View>
+              <View style={{ flexGrow: 1 }}></View>
               <View style={{ flexGrow: 1 }}>
-                <Text style={{ fontSize: 10 }}>
-                  Modified, {master.submittedAt}
-                </Text>
-              </View>
-              <View style={{ flexGrow: 1 }}>
-                <Text style={{ fontSize: 10 }}>
-                  Tgl. Efektif : {master.submittedAt}
-                </Text>
+                <View style={{ borderWidth: 1, padding: 1, flexGrow: 1 }}>
+                  <Text style={{ fontSize: 10 }}>
+                    Tgl. Efektif : {master.submittedAt}
+                  </Text>
+                </View>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                   <View
                     style={{
@@ -146,7 +144,7 @@ const Ideasheet = ({ data, width }) => {
                       flexGrow: 1,
                     }}
                   >
-                    <Text style={{ fontSize: 10 }}>{master.ideaNumber}</Text>
+                    <Text style={{ fontSize: 10 }}>S-FR-HR-049/4</Text>
                   </View>
                 </View>
               </View>
@@ -156,11 +154,10 @@ const Ideasheet = ({ data, width }) => {
                 <Image src={logoMaster} style={{ width: 120 }} />
               </View>
               <View style={kop.section}>
-                <Text style={{ fontSize: 16 }}>PT. SHINDENGEN INDONESIA</Text>
                 <Text
                   style={{ fontSize: 16, display: "flex", alignSelf: "center" }}
                 >
-                  IDEA BOX
+                  IDEA SHEET
                 </Text>
               </View>
               <View style={kop.section}>
@@ -283,6 +280,9 @@ const Ideasheet = ({ data, width }) => {
                     <View style={{ flexGrow: 1 }}>
                       <Text style={sheet.font12}>{master.tema}</Text>
                     </View>
+                    <View>
+                      <Text style={sheet.font12}>No. {master.ideaNumber}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -290,8 +290,7 @@ const Ideasheet = ({ data, width }) => {
                 <View style={sheet.cell}>
                   <Text style={sheet.font8}>
                     Isi nama, departemen, tanggal, tema, NIK, dan area dengan
-                    jelas tanpa di singkat, pilih jenis idea umum atau Q-KYT
-                    dengan mencoret yang tidak sesuai.
+                    jelas tanpa di singkat.
                   </Text>
                 </View>
               </View>
