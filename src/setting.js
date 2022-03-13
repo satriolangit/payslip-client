@@ -1,18 +1,25 @@
-const ApiUrl = "http://localhost:3001/api";
-const PayslipFileUrl = "http://localhost:3001/payslip/";
-const SurveyPhotoUrl = "http://localhost:3001/survey/";
-const IdeaboxFileUrl = "http://localhost:3001/ideabox/";
+const ApiUrl = "https://hrinformationsystem.com/api";
+const PayslipFileUrl = "https://hrinformationsystem.com/payslip/";
+const SurveyPhotoUrl = "https://hrinformationsystem.com/files-survey/";
+const IdeaboxFileUrl = "https://hrinformationsystem.com/files-ideabox/";
 
 const AlertOptions = {
   position: "bottom-right",
   effect: "slide",
-  timeout: 3000
+  timeout: 3000,
 };
 
 const JsonContentType = {
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 };
 
-export { ApiUrl, PayslipFileUrl, AlertOptions, JsonContentType, SurveyPhotoUrl, IdeaboxFileUrl };
+export {
+  ApiUrl,
+  PayslipFileUrl,
+  AlertOptions,
+  JsonContentType,
+  SurveyPhotoUrl,
+  IdeaboxFileUrl,
+};
