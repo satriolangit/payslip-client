@@ -83,7 +83,10 @@ const List = () => {
   const optionFormatter = (cell, row) => {
     return (
       <ButtonGroup>
-        <Link className="btn btn-success" to={"/admin/user/" + row.user_id}>
+        <Link
+          className="btn btn-success"
+          to={"/admin/user/site/" + row.user_id}
+        >
           <span>
             <i className="icon-pencil"></i>
           </span>

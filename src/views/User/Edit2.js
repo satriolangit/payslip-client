@@ -105,7 +105,8 @@ const Edit = ({ match, history }) => {
       if (result.data.result === "FAIL") {
         Alert.error(result.data.message, AlertOptions);
       } else {
-        history.push("/admin/user");
+        // history.push("/admin/user");
+        history.goBack();
       }
     } catch (err) {
       console.log(err.response);
@@ -124,7 +125,7 @@ const Edit = ({ match, history }) => {
       phone,
       photo,
       siteName: currentSite,
-      departmentId,
+      departmentId: departmentId === null ? 0 : departmentId,
     };
 
     try {
@@ -142,7 +143,8 @@ const Edit = ({ match, history }) => {
       if (result.data.result === "FAIL") {
         Alert.error(result.data.message, AlertOptions);
       } else {
-        history.push("/admin/user_by_site");
+        // history.push("/admin/user_by_site");
+        history.goBack();
       }
     } catch (err) {
       console.log("error: ", err.response);
