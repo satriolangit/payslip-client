@@ -121,7 +121,7 @@ const Ideasheet = ({ data, width }) => {
               <View style={{ flexGrow: 1 }}>
                 <View style={{ borderWidth: 1, padding: 1, flexGrow: 1 }}>
                   <Text style={{ fontSize: 10 }}>
-                    Tgl. Efektif : {master.submittedAt}
+                    Tgl. Efektif : 3 Januari 2022
                   </Text>
                 </View>
                 <View style={{ display: "flex", flexDirection: "row" }}>
