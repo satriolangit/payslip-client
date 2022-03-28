@@ -11,6 +11,7 @@ import {
   Row,
   FormGroup,
   Button,
+  FormText,
 } from "reactstrap";
 import moment from "moment";
 import axios from "axios";
@@ -406,6 +407,9 @@ const SubmitForm = (props) => {
                   accept="image/*"
                   onChange={handleUploadBeforeImage}
                 />
+                <FormText color="muted">
+                  (.jpg, .png, .bmp, .gif, .tiff max 5 MB)
+                </FormText>
                 {showBeforeImage()}
               </FormGroup>
             </Col>
@@ -419,6 +423,9 @@ const SubmitForm = (props) => {
                   accept="image/*"
                   onChange={handleUploadAfterImage}
                 />
+                <FormText color="muted">
+                  (.jpg, .png, .bmp, .gif, .tiff max 5 MB)
+                </FormText>
                 {showAfterImage()}
               </FormGroup>
             </Col>
@@ -521,6 +528,9 @@ const SubmitForm = (props) => {
                   accept="image/*"
                   onChange={handleUploadBeforeImage}
                 />
+                <FormText color="muted">
+                  (.jpg, .png, .bmp, .gif, .tiff max 5 MB)
+                </FormText>
                 {showBeforeImage()}
               </FormGroup>
             </Col>
