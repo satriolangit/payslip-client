@@ -15,6 +15,7 @@ import {
 import axios from "axios";
 import Alert from "react-s-alert";
 import moment from "moment";
+import LoadingOverlay from "react-loading-overlay";
 
 import SignBox from "./SignBox";
 import IdeasheetCheckbox from "./Components/IdeasheetCheckbox";
@@ -79,6 +80,7 @@ const EditForm = ({ match, history }) => {
 
   const [totalIdeasheet, setTotalIdeasheet] = React.useState(0);
   const [department, setDepartment] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     fetchTotalIdeasheet();
@@ -276,6 +278,8 @@ const EditForm = ({ match, history }) => {
       impact: impactData,
     };
 
+    setIsLoading(true);
+
     try {
       const url = ApiUrl + "/ideabox/edit/";
 
@@ -300,9 +304,12 @@ const EditForm = ({ match, history }) => {
           history.push("/ideabox/dashboard");
         }
       }
+
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       //Alert.error(error.response.data.message, AlertOptions);
+      setIsLoading(false);
     }
   };
 
@@ -597,205 +604,207 @@ const EditForm = ({ match, history }) => {
 
   return (
     <div>
-      <Row>
-        <Col md="12">
-          <IdeaboxCounter value={totalIdeasheet} />
-          <Form onSubmit={handleSubmit}>
-            <Card>
-              <CardHeader>
-                <Link
-                  to="/ideabox/dashboard"
-                  className="btn btn-secondary btn-sm float-right"
-                >
-                  <span className="icon-close"></span> Close
-                </Link>
-                <Button type="submit" size="sm" color="primary float-right">
-                  <i className="fa fa-dot-circle-o"></i> Save
-                </Button>
-              </CardHeader>
-              <CardBody>
-                <Row form>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>Nama</Label>
-                      <Input
-                        type="text"
-                        name="submitterName"
-                        value={formData.submitterName}
-                        onChange={handleFormChange}
-                        readOnly
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>NIK</Label>
-                      <Input
-                        type="text"
-                        name="submittedBy"
-                        value={formData.submittedBy}
-                        onChange={handleFormChange}
-                        readOnly
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>Departemen</Label>
-                      <Input
-                        name="departmentId"
-                        type="text"
-                        defaultValue={department.departmentName}
-                        readOnly
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>Area Kaizen</Label>
-                      <Input
-                        type="text"
-                        name="kaizenArea"
-                        value={formData.kaizenArea}
-                        onChange={handleFormChange}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>Tanggal</Label>
-                      <Input
-                        name="submitDate"
-                        type="text"
-                        value={formData.submittedAt}
-                        onChange={handleFormChange}
-                        readOnly
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>Jenis Idea</Label>
-                      <Input
-                        name="ideaType"
-                        type="select"
-                        onChange={handleFormChange}
-                        value={formData.ideaType}
-                      >
-                        <option value="UMUM">UMUM</option>
-                        <option value="Q-KYT">Q-KYT</option>
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>Tema</Label>
-                      <Input
-                        type="text"
-                        name="tema"
-                        value={formData.tema}
-                        onChange={handleFormChange}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <Label>No. Urut</Label>
-                      <Input
-                        type="text"
-                        name="ideaNumber"
-                        value={formData.ideaNumber}
-                        onChange={handleFormChange}
-                        readOnly
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </CardBody>
-            </Card>
-            {renderDetail()}
-            <Card>
-              <CardHeader></CardHeader>
-            </Card>
-            <Card>
-              <CardBody>
-                <FormGroup tag="fieldset">
-                  <legend>Pelaksanaan Ideasheet</legend>
-                  <IdeasheetCheckbox
-                    value={formData.isIdeasheet}
-                    onChange={handleIdeasheetCheckChange}
-                  />
-                </FormGroup>
-                <FormGroup tag="fieldset">
-                  <legend>Isi pengaruhnya (Kalau ada)</legend>
-                  <ImpactCheckbox
-                    value={impactData}
-                    onChange={handleImpactChange}
-                  />
-                </FormGroup>
-              </CardBody>
-            </Card>
-            <Card>
-              <CardBody>
-                <FormGroup>
-                  <Label>Nilai Kaizen Jika dirupiahkan</Label>
-                  <Input
-                    type="text"
-                    name="kaizenAmount"
-                    value={formData.kaizenAmount}
-                    onChange={handleFormChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label>
-                    Permintaan atau komentar dari pimpinan kerja pembuat
-                    ideasheet
-                  </Label>
-                  <Input
-                    type="textarea"
-                    name="ideboxComment"
-                    onChange={handleCommentChange}
-                    value={commentData.comment}
-                  />
-                </FormGroup>
-              </CardBody>
-            </Card>
-            <Row>
-              <Col md="3">
-                <SignBox title="Diterima" value={formData.receiverName} />
-              </Col>
-              <Col md="3">
-                <SignBox title="Disetujui" value={formData.approverName} />
-              </Col>
-              <Col md="3">
-                <SignBox title="Diperiksa" value={formData.reviewerName} />
-              </Col>
-              <Col md="3">
-                <SignBox title="Dibuat" value={formData.submitterName} />
-              </Col>
-            </Row>
-            <Card>
-              <CardHeader>
-                <Link
-                  to="/ideabox/dashboard"
-                  className="btn btn-secondary btn-sm float-right"
-                >
-                  <span className="icon-close"></span> Close
-                </Link>
-                <Button type="submit" size="sm" color="primary float-right">
-                  <i className="fa fa-dot-circle-o"></i> Save
-                </Button>
-              </CardHeader>
-            </Card>
-          </Form>
-        </Col>
-      </Row>
+      <LoadingOverlay active={isLoading} spinner text="Loading please wait...">
+        <Row>
+          <Col md="12">
+            <IdeaboxCounter value={totalIdeasheet} />
+            <Form onSubmit={handleSubmit}>
+              <Card>
+                <CardHeader>
+                  <Link
+                    to="/ideabox/dashboard"
+                    className="btn btn-secondary btn-sm float-right"
+                  >
+                    <span className="icon-close"></span> Close
+                  </Link>
+                  <Button type="submit" size="sm" color="primary float-right">
+                    <i className="fa fa-dot-circle-o"></i> Save
+                  </Button>
+                </CardHeader>
+                <CardBody>
+                  <Row form>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>Nama</Label>
+                        <Input
+                          type="text"
+                          name="submitterName"
+                          value={formData.submitterName}
+                          onChange={handleFormChange}
+                          readOnly
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>NIK</Label>
+                        <Input
+                          type="text"
+                          name="submittedBy"
+                          value={formData.submittedBy}
+                          onChange={handleFormChange}
+                          readOnly
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>Departemen</Label>
+                        <Input
+                          name="departmentId"
+                          type="text"
+                          defaultValue={department.departmentName}
+                          readOnly
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>Area Kaizen</Label>
+                        <Input
+                          type="text"
+                          name="kaizenArea"
+                          value={formData.kaizenArea}
+                          onChange={handleFormChange}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>Tanggal</Label>
+                        <Input
+                          name="submitDate"
+                          type="text"
+                          value={formData.submittedAt}
+                          onChange={handleFormChange}
+                          readOnly
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>Jenis Idea</Label>
+                        <Input
+                          name="ideaType"
+                          type="select"
+                          onChange={handleFormChange}
+                          value={formData.ideaType}
+                        >
+                          <option value="UMUM">UMUM</option>
+                          <option value="Q-KYT">Q-KYT</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>Tema</Label>
+                        <Input
+                          type="text"
+                          name="tema"
+                          value={formData.tema}
+                          onChange={handleFormChange}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label>No. Urut</Label>
+                        <Input
+                          type="text"
+                          name="ideaNumber"
+                          value={formData.ideaNumber}
+                          onChange={handleFormChange}
+                          readOnly
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </CardBody>
+              </Card>
+              {renderDetail()}
+              <Card>
+                <CardHeader></CardHeader>
+              </Card>
+              <Card>
+                <CardBody>
+                  <FormGroup tag="fieldset">
+                    <legend>Pelaksanaan Ideasheet</legend>
+                    <IdeasheetCheckbox
+                      value={formData.isIdeasheet}
+                      onChange={handleIdeasheetCheckChange}
+                    />
+                  </FormGroup>
+                  <FormGroup tag="fieldset">
+                    <legend>Isi pengaruhnya (Kalau ada)</legend>
+                    <ImpactCheckbox
+                      value={impactData}
+                      onChange={handleImpactChange}
+                    />
+                  </FormGroup>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <FormGroup>
+                    <Label>Nilai Kaizen Jika dirupiahkan</Label>
+                    <Input
+                      type="text"
+                      name="kaizenAmount"
+                      value={formData.kaizenAmount}
+                      onChange={handleFormChange}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>
+                      Permintaan atau komentar dari pimpinan kerja pembuat
+                      ideasheet
+                    </Label>
+                    <Input
+                      type="textarea"
+                      name="ideboxComment"
+                      onChange={handleCommentChange}
+                      value={commentData.comment}
+                    />
+                  </FormGroup>
+                </CardBody>
+              </Card>
+              <Row>
+                <Col md="3">
+                  <SignBox title="Diterima" value={formData.receiverName} />
+                </Col>
+                <Col md="3">
+                  <SignBox title="Disetujui" value={formData.approverName} />
+                </Col>
+                <Col md="3">
+                  <SignBox title="Diperiksa" value={formData.reviewerName} />
+                </Col>
+                <Col md="3">
+                  <SignBox title="Dibuat" value={formData.submitterName} />
+                </Col>
+              </Row>
+              <Card>
+                <CardHeader>
+                  <Link
+                    to="/ideabox/dashboard"
+                    className="btn btn-secondary btn-sm float-right"
+                  >
+                    <span className="icon-close"></span> Close
+                  </Link>
+                  <Button type="submit" size="sm" color="primary float-right">
+                    <i className="fa fa-dot-circle-o"></i> Save
+                  </Button>
+                </CardHeader>
+              </Card>
+            </Form>
+          </Col>
+        </Row>
+      </LoadingOverlay>
     </div>
   );
 };
