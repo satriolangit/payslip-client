@@ -414,7 +414,8 @@ const SubmitForm = (props) => {
                   onChange={handleUploadBeforeImage}
                 />
                 <FormText color="muted">
-                  (.jpg, .png, .bmp, .gif, .tiff max 2 MB)
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
                 </FormText>
                 {showBeforeImage()}
               </FormGroup>
@@ -430,7 +431,8 @@ const SubmitForm = (props) => {
                   onChange={handleUploadAfterImage}
                 />
                 <FormText color="muted">
-                  (.jpg, .png, .bmp, .gif, .tiff max 2 MB)
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
                 </FormText>
                 {showAfterImage()}
               </FormGroup>
@@ -535,7 +537,8 @@ const SubmitForm = (props) => {
                   onChange={handleUploadBeforeImage}
                 />
                 <FormText color="muted">
-                  (.jpg, .png, .bmp, .gif, .tiff max 2 MB)
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
                 </FormText>
                 {showBeforeImage()}
               </FormGroup>

@@ -11,6 +11,7 @@ import {
   Row,
   FormGroup,
   Button,
+  FormText,
 } from "reactstrap";
 import axios from "axios";
 import Alert from "react-s-alert";
@@ -364,6 +365,10 @@ const EditForm = ({ match, history }) => {
                   accept="image/*|MIME_type"
                   onChange={handleUploadBeforeImage}
                 />
+                <FormText color="muted">
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
+                </FormText>
                 {showBeforeImage()}
               </FormGroup>
             </Col>
@@ -376,6 +381,10 @@ const EditForm = ({ match, history }) => {
                   accept="image/*|MIME_type"
                   onChange={handleUploadAfterImage}
                 />
+                <FormText color="muted">
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
+                </FormText>
                 {showAfterImage()}
               </FormGroup>
             </Col>
@@ -489,6 +498,10 @@ const EditForm = ({ match, history }) => {
                   accept="image/*|MIME_type"
                   onChange={handleUploadBeforeImage}
                 />
+                <FormText color="muted">
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
+                </FormText>
                 {showBeforeImage()}
               </FormGroup>
             </Col>
