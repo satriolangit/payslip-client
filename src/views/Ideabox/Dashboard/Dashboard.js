@@ -194,6 +194,8 @@ const Dashboard = (props) => {
       } catch (err) {
         console.log(err);
       }
+
+      setSelected([]);
     }
   };
 
@@ -219,6 +221,8 @@ const Dashboard = (props) => {
       } catch (err) {
         console.log(err);
       }
+
+      setSelected([]);
     }
   };
 
