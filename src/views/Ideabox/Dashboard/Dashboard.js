@@ -48,6 +48,7 @@ const Dashboard = (props) => {
 
   const handleRefresh = () => {
     fetchData();
+    setSelected([]);
   };
 
   const fetchData = async () => {
@@ -159,6 +160,8 @@ const Dashboard = (props) => {
         console.log(err);
       }
     }
+
+    setSelected([]);
   };
 
   const handleEdit = () => {
@@ -194,9 +197,9 @@ const Dashboard = (props) => {
       } catch (err) {
         console.log(err);
       }
-
-      setSelected([]);
     }
+
+    setSelected([]);
   };
 
   const handleReject = async () => {
@@ -221,9 +224,9 @@ const Dashboard = (props) => {
       } catch (err) {
         console.log(err);
       }
-
-      setSelected([]);
     }
+
+    setSelected([]);
   };
 
   const renderButton = () => {
