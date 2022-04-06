@@ -562,6 +562,10 @@ const SubmitForm = (props) => {
                   accept="image/*"
                   onChange={handleUploadAfterImage}
                 />
+                <FormText color="muted">
+                  (image file type JPG, JPEG, BMP, PNG, GIF, TIFF dan maximal
+                  2MB)
+                </FormText>
                 {showAfterImage()}
               </FormGroup>
               <FormGroup tag="fieldset">

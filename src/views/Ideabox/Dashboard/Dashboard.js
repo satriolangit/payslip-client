@@ -337,18 +337,20 @@ const Dashboard = (props) => {
       sort: true,
     },
     {
-      dataField: "submittedBy",
-      text: "NIK Pembuat Ide",
+      dataField: "tema",
+      text: "Tema",
       sort: true,
     },
+
     {
       dataField: "departmentName",
       text: "Department",
       sort: true,
     },
     {
-      dataField: "isIdeasheet",
-      text: "Pelaksanaan Ide",
+      text: "File",
+      dataField: "ideaboxId",
+      formatter: previewFormatter,
     },
     {
       dataField: "amount",
@@ -397,9 +399,13 @@ const Dashboard = (props) => {
       formatter: statusFormatter,
     },
     {
-      text: "File",
-      dataField: "ideaboxId",
-      formatter: previewFormatter,
+      dataField: "submittedBy",
+      text: "NIK Pembuat Ide",
+      sort: true,
+    },
+    {
+      dataField: "isIdeasheet",
+      text: "Pelaksanaan Ide",
     },
   ];
 
