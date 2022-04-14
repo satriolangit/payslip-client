@@ -7,7 +7,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Button,
   ButtonGroup,
   Badge,
 } from "reactstrap";
@@ -340,6 +339,9 @@ const Dashboard = (props) => {
       dataField: "tema",
       text: "Tema",
       sort: true,
+      headerStyle: (colum, colIndex) => {
+        return { minWidth: "300px", textAlign: "center" };
+      },
     },
 
     {
