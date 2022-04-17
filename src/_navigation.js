@@ -202,6 +202,13 @@ const administratorNavigation = [
     isAdmin: false,
   },
   {
+    name: "Report",
+    url: "/ideabox/report",
+    icon: "icon-speedometer",
+    site: "IDEABOX",
+    isAdmin: false,
+  },
+  {
     name: "Administration",
     url: "/ideabox/admin",
     icon: "icon-settings",

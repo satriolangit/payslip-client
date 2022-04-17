@@ -116,6 +116,10 @@ const IdeaboxPdf = React.lazy(() =>
   retry(() => import("./views/Ideabox/Ideasheet/Page"))
 );
 
+const IdeaboxReport = React.lazy(() =>
+  retry(() => import("./views/Ideabox/Report/Report"))
+);
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -323,6 +327,12 @@ const routes = [
     exact: true,
     name: "Ideasheet",
     component: IdeaboxPdf,
+  },
+  {
+    path: "/ideabox/report",
+    exact: true,
+    name: "Report",
+    component: IdeaboxReport,
   },
 ];
 

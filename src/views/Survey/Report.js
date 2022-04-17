@@ -217,14 +217,6 @@ const Report = () => {
             </div>
           </div>
         </Row>
-        {/* <Row>        
-          <Col md="2"><label>Tanggal Submit :</label></Col>
-          <Col md="4"><DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /></Col>
-          <Col md="4"><DatePicker selected={endDate} onChange={(date) => setEndDate(date)} /></Col>
-          <Col md="2">
-            <button class="btn btn-sm btn-info" onClick={handleFilter}><i className="fa fa-search"></i>Filter</button>
-          </Col>
-        </Row> */}
       </Col>
     );
   };
