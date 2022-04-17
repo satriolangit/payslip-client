@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Alert from "react-s-alert";
 
-import { ApiUrl } from "../../../setting";
+import { ApiUrl, AlertOptions } from "../../../setting";
 import Ideasheet from "../Ideasheet/IdeasheetReport";
 import {
   Card,
@@ -53,6 +54,10 @@ function Report() {
 
   const handleReport = async () => {
     await fetchData();
+
+    if (data.length <= 0) {
+      Alert.error("Data tidak ditemukan.", AlertOptions);
+    }
   };
 
   const handleTypeChange = (type) => {
@@ -92,6 +97,7 @@ function Report() {
                     name="rAll"
                     type="radio"
                     value="ALL"
+                    checked={ideaType === "ALL"}
                     onChange={() => handleTypeChange("ALL")}
                   />{" "}
                   <Label check>ALL</Label>
@@ -101,6 +107,7 @@ function Report() {
                     name="rUmum"
                     type="radio"
                     value="UMUM"
+                    checked={ideaType === "UMUM"}
                     onChange={() => handleTypeChange("UMUM")}
                   />{" "}
                   <Label check>UMUM</Label>
@@ -110,6 +117,7 @@ function Report() {
                     name="rQKYT"
                     type="radio"
                     value="Q-KYT"
+                    checked={ideaType === "Q-KYT"}
                     onChange={() => handleTypeChange("Q-KYT")}
                   />{" "}
                   <Label check>Q-KYT</Label>

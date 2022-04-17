@@ -204,7 +204,7 @@ const administratorNavigation = [
   {
     name: "Report",
     url: "/ideabox/report",
-    icon: "icon-speedometer",
+    icon: "icon-book-open",
     site: "IDEABOX",
     isAdmin: false,
   },
@@ -225,7 +225,7 @@ const administratorNavigation = [
       {
         name: "Report Notification",
         url: "/ideabox/administration/notification-report",
-        icon: "icon-puzzle",
+        icon: "icon-book-open",
         site: "IDEABOX",
         isAdmin: true,
       },
