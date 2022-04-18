@@ -54,10 +54,6 @@ function Report() {
 
   const handleReport = async () => {
     await fetchData();
-
-    if (data.length <= 0) {
-      Alert.error("Data tidak ditemukan.", AlertOptions);
-    }
   };
 
   const handleTypeChange = (type) => {

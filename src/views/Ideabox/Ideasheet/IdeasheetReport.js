@@ -468,7 +468,7 @@ const Ideasheet = ({ data, width }) => {
 
   const page = (master, detail, impact, comment) => {
     return (
-      <View wrap={false}>
+      <View wrap={false} key={master.ideaboxId}>
         {header}
         {kopHeader}
         {content(master, detail, impact)}
