@@ -208,6 +208,7 @@ const administratorNavigation = [
     site: "IDEABOX",
     isAdmin: false,
   },
+
   {
     name: "Administration",
     url: "/ideabox/admin",
