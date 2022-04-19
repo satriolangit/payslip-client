@@ -19,12 +19,15 @@ import {
   Button,
 } from "reactstrap";
 
+import LoadingOverlay from "react-loading-overlay";
+
 function Report() {
   const [data, setData] = useState([]);
   const [documentWidth, setDocumentWidth] = useState(800);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [ideaType, setIdeaType] = useState("ALL");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const width = document.getElementById("pdfContainer").clientWidth;
@@ -53,6 +56,7 @@ function Report() {
   };
 
   const handleReport = async () => {
+    setIsLoading(true);
     await fetchData();
   };
 
@@ -60,8 +64,16 @@ function Report() {
     setIdeaType(type);
   };
 
+  const handleRender = (value) => {
+    setIsLoading(false);
+  };
+
   const pdf = data.length > 0 && (
-    <Ideasheet data={data} width={documentWidth} />
+    <Ideasheet
+      data={data}
+      width={documentWidth}
+      onRenderFinished={handleRender}
+    />
   );
 
   return (
@@ -126,9 +138,11 @@ function Report() {
           <Button onClick={handleReport}>Generate File</Button>
         </CardFooter>
       </Card>
-      <Card id="pdfContainer">
-        <CardBody>{pdf}</CardBody>
-      </Card>
+      <LoadingOverlay active={isLoading} spinner text="Loading please wait...">
+        <Card id="pdfContainer">
+          <CardBody>{pdf}</CardBody>
+        </Card>
+      </LoadingOverlay>
     </div>
   );
 }

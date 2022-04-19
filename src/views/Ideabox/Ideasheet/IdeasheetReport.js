@@ -19,7 +19,7 @@ import Signature from "./Signature";
 import DetailUmum from "./DetailUmum";
 import DetailKyt from "./DetailKyt";
 
-const Ideasheet = ({ data, width }) => {
+const Ideasheet = ({ data, width, onRenderFinished }) => {
   const styles = StyleSheet.create({
     page: {
       paddingTop: 10,
@@ -482,7 +482,7 @@ const Ideasheet = ({ data, width }) => {
   const renderPdf = () => {
     return (
       <PDFViewer style={styles.viewer}>
-        <Document>
+        <Document onRender={() => onRenderFinished(true)}>
           <Page size="A4" style={styles.page}>
             {data.map((item, index) => {
               return page(item.master, item.detail, item.impact, item.comment);
