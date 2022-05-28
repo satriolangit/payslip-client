@@ -23,20 +23,15 @@ import LoadingOverlay from "react-loading-overlay";
 
 function Report() {
   const [data, setData] = useState([]);
-  const [documentWidth, setDocumentWidth] = useState(800);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [ideaType, setIdeaType] = useState("ALL");
   const [isLoading, setIsLoading] = useState(false);
+  const [downloadLink, setDownloadLink] = useState("");
 
-  useEffect(() => {
-    const width = document.getElementById("pdfContainer").clientWidth;
-    setDocumentWidth(width - 50);
-  }, []);
-
-  const fetchData = async () => {
+  const generateReport = async () => {
     try {
-      const url = `${ApiUrl}/ideabox/report`;
+      const url = `${ApiUrl}/report`;
 
       const payload = {
         startDate,
@@ -44,105 +39,124 @@ function Report() {
         type: ideaType,
       };
 
+      console.log(payload);
+
       const res = await axios.post(url, payload);
-      const result = res.data.data;
+      console.log(res.data.download_link);
 
-      setData(result);
+      const reportCount = res.data.data.generated_report;
 
-      console.log(result);
+      if (res.data.result === "OK" && reportCount > 0) {
+        setDownloadLink(res.data.data.download_link);
+      }
+
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
   const handleReport = async () => {
     setIsLoading(true);
-    await fetchData();
+    await generateReport();
   };
 
   const handleTypeChange = (type) => {
     setIdeaType(type);
   };
 
-  const handleRender = (value) => {
-    setIsLoading(false);
+  const showDownloadLink = () => {
+    return downloadLink !== "" ? (
+      <a href={downloadLink} style={{ marginLeft: "10px" }}>
+        Download report here.
+      </a>
+    ) : (
+      ""
+    );
   };
 
-  const pdf = data.length > 0 && (
-    <Ideasheet
-      data={data}
-      width={documentWidth}
-      onRenderFinished={handleRender}
-    />
-  );
+  let minTime = new Date();
+  minTime.setMinutes(0);
+  minTime.setHours(0);
+
+  let maxTime = new Date();
+  maxTime.setMinutes(59);
+  maxTime.setHours(23);
 
   return (
     <div>
       <Card>
         <CardHeader>Generate Report</CardHeader>
-        <CardBody>
-          <Row>
-            <Col md="6">
-              <FormGroup>
-                <Label>Tanggal Dari</Label>
+        <LoadingOverlay
+          active={isLoading}
+          spinner
+          text="Loading please wait..."
+        >
+          <CardBody>
+            <Row>
+              <Col md="6">
+                <FormGroup>
+                  <Label>Tanggal Dari</Label>
 
-                <DatePicker
-                  dateFormat="yyyy-MM-dd"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                />
-                <Label>Tanggal Sampai</Label>
-                <DatePicker
-                  dateFormat="yyyy-MM-dd"
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                />
-              </FormGroup>
-              <FormGroup tag="fieldset">
-                <legend>Jenis Form</legend>
-                <FormGroup check>
-                  <Input
-                    name="rAll"
-                    type="radio"
-                    value="ALL"
-                    checked={ideaType === "ALL"}
-                    onChange={() => handleTypeChange("ALL")}
-                  />{" "}
-                  <Label check>ALL</Label>
+                  <DatePicker
+                    dateFormat="yyyy-MM-dd"
+                    selected={startDate}
+                    minTime={minTime}
+                    maxTime={maxTime}
+                    onChange={(date) => setStartDate(date)}
+                  />
+                  <Label>Tanggal Sampai</Label>
+                  <DatePicker
+                    dateFormat="yyyy-MM-dd"
+                    selected={endDate}
+                    minTime={minTime}
+                    maxTime={maxTime}
+                    onChange={(date) => setEndDate(date)}
+                  />
                 </FormGroup>
-                <FormGroup check>
-                  <Input
-                    name="rUmum"
-                    type="radio"
-                    value="UMUM"
-                    checked={ideaType === "UMUM"}
-                    onChange={() => handleTypeChange("UMUM")}
-                  />{" "}
-                  <Label check>UMUM</Label>
+                <FormGroup tag="fieldset">
+                  <legend>Jenis Form</legend>
+                  <FormGroup check>
+                    <Input
+                      name="rAll"
+                      type="radio"
+                      value="ALL"
+                      checked={ideaType === "ALL"}
+                      onChange={() => handleTypeChange("ALL")}
+                    />{" "}
+                    <Label check>ALL</Label>
+                  </FormGroup>
+                  <FormGroup check>
+                    <Input
+                      name="rUmum"
+                      type="radio"
+                      value="UMUM"
+                      checked={ideaType === "UMUM"}
+                      onChange={() => handleTypeChange("UMUM")}
+                    />{" "}
+                    <Label check>UMUM</Label>
+                  </FormGroup>
+                  <FormGroup check>
+                    <Input
+                      name="rQKYT"
+                      type="radio"
+                      value="Q-KYT"
+                      checked={ideaType === "Q-KYT"}
+                      onChange={() => handleTypeChange("Q-KYT")}
+                    />{" "}
+                    <Label check>Q-KYT</Label>
+                  </FormGroup>
                 </FormGroup>
-                <FormGroup check>
-                  <Input
-                    name="rQKYT"
-                    type="radio"
-                    value="Q-KYT"
-                    checked={ideaType === "Q-KYT"}
-                    onChange={() => handleTypeChange("Q-KYT")}
-                  />{" "}
-                  <Label check>Q-KYT</Label>
-                </FormGroup>
-              </FormGroup>
-            </Col>
-          </Row>
-        </CardBody>
+              </Col>
+            </Row>
+          </CardBody>
+        </LoadingOverlay>
         <CardFooter>
           <Button onClick={handleReport}>Generate File</Button>
+          {showDownloadLink()}
         </CardFooter>
       </Card>
-      <LoadingOverlay active={isLoading} spinner text="Loading please wait...">
-        <Card id="pdfContainer">
-          <CardBody>{pdf}</CardBody>
-        </Card>
-      </LoadingOverlay>
     </div>
   );
 }
