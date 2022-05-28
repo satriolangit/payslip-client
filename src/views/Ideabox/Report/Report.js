@@ -27,27 +27,7 @@ function Report() {
   const [endDate, setEndDate] = useState(new Date());
   const [ideaType, setIdeaType] = useState("ALL");
   const [isLoading, setIsLoading] = useState(false);
-
-  const fetchData = async () => {
-    try {
-      const url = `${ApiUrl}/ideabox/report`;
-
-      const payload = {
-        startDate,
-        endDate,
-        type: ideaType,
-      };
-
-      const res = await axios.post(url, payload);
-      const result = res.data.data;
-
-      setData(result);
-
-      console.log(result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [downloadLink, setDownloadLink] = useState("");
 
   const generateReport = async () => {
     try {
@@ -61,7 +41,15 @@ function Report() {
 
       console.log(payload);
 
-      await axios.post(url, payload);
+      const res = await axios.post(url, payload);
+      console.log(res.data.download_link);
+
+      const reportCount = res.data.data.generated_report;
+
+      if (res.data.result === "OK" && reportCount > 0) {
+        setDownloadLink(res.data.data.download_link);
+      }
+
       setIsLoading(false);
     } catch (err) {
       console.log(err);
@@ -78,8 +66,14 @@ function Report() {
     setIdeaType(type);
   };
 
-  const handleRender = (value) => {
-    setIsLoading(false);
+  const showDownloadLink = () => {
+    return downloadLink !== "" ? (
+      <a href={downloadLink} style={{ marginLeft: "10px" }}>
+        Download report here.
+      </a>
+    ) : (
+      ""
+    );
   };
 
   let minTime = new Date();
@@ -160,6 +154,7 @@ function Report() {
         </LoadingOverlay>
         <CardFooter>
           <Button onClick={handleReport}>Generate File</Button>
+          {showDownloadLink()}
         </CardFooter>
       </Card>
     </div>
