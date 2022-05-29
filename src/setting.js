@@ -7,6 +7,7 @@ const ApiUrl = "http://localhost:3001/api";
 const PayslipFileUrl = "http://localhost:3001/payslip/";
 const SurveyPhotoUrl = "http://localhost:3001/files-survey/";
 const IdeaboxFileUrl = "http://localhost:3001/files-ideabox/";
+const ReportUrl = "http://localhost:3001/public/report";
 
 const AlertOptions = {
   position: "bottom-right",
@@ -27,4 +28,5 @@ export {
   JsonContentType,
   SurveyPhotoUrl,
   IdeaboxFileUrl,
+  ReportUrl,
 };

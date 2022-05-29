@@ -18,7 +18,7 @@ import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import { Link } from "react-router-dom";
 
 import pagination from "../../Pagination/pagination";
-import { ApiUrl, JsonContentType } from "../../../setting";
+import { ApiUrl, JsonContentType, ReportUrl } from "../../../setting";
 import AuthContext from "./../../../context/auth/authContext";
 import {
   AdminButtonGroup,
@@ -319,6 +319,18 @@ const Dashboard = (props) => {
     );
   };
 
+  const pdfFormatter = (cell, row) => {
+    return (
+      <a
+        href={`${ReportUrl}/${row.pdfFile}`}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        {row.pdfFile}
+      </a>
+    );
+  };
+
   const columns = [
     {
       dataField: "ideaNumber",
@@ -408,6 +420,11 @@ const Dashboard = (props) => {
     {
       dataField: "isIdeasheet",
       text: "Pelaksanaan Ide",
+    },
+    {
+      dataField: "pdfFile",
+      text: "PDF File",
+      formatter: pdfFormatter,
     },
   ];
 
