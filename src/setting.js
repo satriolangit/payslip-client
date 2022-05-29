@@ -2,6 +2,8 @@
 // const PayslipFileUrl = "https://hrinformationsystem.com/payslip/";
 // const SurveyPhotoUrl = "https://hrinformationsystem.com/files-survey/";
 // const IdeaboxFileUrl = "https://hrinformationsystem.com/files-ideabox/";
+// const ReportUrl = "https://hrinformationsystem.com/public/report";
+
 
 const ApiUrl = "http://localhost:3001/api";
 const PayslipFileUrl = "http://localhost:3001/payslip/";
